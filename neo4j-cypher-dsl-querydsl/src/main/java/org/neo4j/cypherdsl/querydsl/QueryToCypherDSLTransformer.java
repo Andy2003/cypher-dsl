@@ -162,8 +162,11 @@ final class QueryToCypherDSLTransformer implements Visitor<Expression, Object> {
 	@Override
 	public Expression visit(ParamExpression<?> expr, Object context) {
 
-		System.err.println("ParamExpression " + expr);
-		return null;
+		if (expr.isAnon()) {
+			throw new IllegalArgumentException("Anonymous parameters are not supported");
+		}
+
+		return Cypher.parameter(expr.getName());
 	}
 
 	@Override

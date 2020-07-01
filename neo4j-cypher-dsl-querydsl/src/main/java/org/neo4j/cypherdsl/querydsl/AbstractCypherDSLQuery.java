@@ -39,6 +39,12 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.ParamExpression;
 import com.querydsl.core.types.Predicate;
 
+/**
+ * @author Michael J. Simons
+ *
+ * @param <T> Type of the object returned
+ * @param <Q> Type of the query object
+ */
 abstract class AbstractCypherDSLQuery<T, Q extends AbstractCypherDSLQuery<T, Q>> implements SimpleQuery<Q> {
 
 	protected final EntityPath<?> rootEntity;

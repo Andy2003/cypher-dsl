@@ -27,6 +27,7 @@ import org.neo4j.cypherdsl.core.renderer.Renderer;
 import org.neo4j.cypherdsl.querydsl.CypherDSLQuery;
 
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.dsl.Param;
 
 /**
  * @author Michael J. Simons
@@ -43,6 +44,22 @@ class QueryMoviesTest {
 
 		Statement statement = movieQuery.buildStatement();
 		assertThat(RENDERER.render(statement)).isEqualTo("MATCH (r:`Movie`) RETURN r");
+	}
+
+	@Nested
+	class Parameters {
+
+		@Test
+		void simpleParameters() {
+
+			QMovie qMovie = new QMovie("Movie");
+			CypherDSLQuery<Movie> movieQuery = CypherDSLQuery.match(qMovie)
+				.where(qMovie.title.eq(new Param<>(String.class, "title")));
+
+			Statement statement = movieQuery.buildStatement();
+			assertThat(RENDERER.render(statement))
+				.isEqualTo("MATCH (r:`Movie`) WHERE r.title = $title RETURN r");
+		}
 	}
 
 	@Nested

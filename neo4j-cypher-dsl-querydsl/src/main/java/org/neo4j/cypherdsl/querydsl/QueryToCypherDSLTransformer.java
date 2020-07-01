@@ -25,6 +25,7 @@ import java.util.EnumSet;
 
 import org.neo4j.cypherdsl.core.Condition;
 import org.neo4j.cypherdsl.core.Conditions;
+import org.neo4j.cypherdsl.core.Cypher;
 import org.neo4j.cypherdsl.core.Expression;
 import org.neo4j.cypherdsl.core.Functions;
 import org.neo4j.cypherdsl.core.PropertyContainer;
@@ -48,8 +49,7 @@ final class QueryToCypherDSLTransformer implements Visitor<Expression, Object> {
 	@Override
 	public Expression visit(FactoryExpression<?> expr, Object context) {
 
-		System.err.println("FactoryExpression " + expr);
-		return null;
+		return Cypher.listOf(expr.getArgs().stream().map(e -> e.accept(this, context)).toArray(Expression[]::new));
 	}
 
 	boolean ignoreCase(Operator operator) {

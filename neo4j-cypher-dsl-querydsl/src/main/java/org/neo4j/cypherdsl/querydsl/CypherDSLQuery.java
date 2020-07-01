@@ -18,7 +18,11 @@
  */
 package org.neo4j.cypherdsl.querydsl;
 
+import com.querydsl.core.QueryMetadata;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.EntityPath;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.Projections;
 
 /**
  * Proposed entry point to the QueryDSL integration.
@@ -28,7 +32,23 @@ import com.querydsl.core.types.EntityPath;
  */
 public final class CypherDSLQuery<T> extends AbstractCypherDSLQuery<T, CypherDSLQuery<T>> {
 
-	public CypherDSLQuery(EntityPath<T> rootEntity) {
+	public static <T> CypherDSLQuery<T> match(EntityPath<T> rootEntity) {
+		return new CypherDSLQuery<>(rootEntity);
+	}
+
+	private CypherDSLQuery(EntityPath<T> rootEntity) {
 		super(rootEntity);
+	}
+
+	private CypherDSLQuery(EntityPath<?> rootEntity, QueryMetadata queryMetadata) {
+		super(rootEntity, queryMetadata);
+	}
+
+	public CypherDSLQuery<Tuple> returning(Expression<?>... o) {
+
+		QueryMetadata queryMetadata = super.queryMixin.getMetadata().clone();
+		queryMetadata.setProjection(Projections.tuple(o));
+
+		return new CypherDSLQuery<>(super.rootEntity, queryMetadata);
 	}
 }

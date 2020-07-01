@@ -26,6 +26,8 @@ import org.neo4j.cypherdsl.core.Statement;
 import org.neo4j.cypherdsl.core.renderer.Renderer;
 import org.neo4j.cypherdsl.querydsl.CypherDSLQuery;
 
+import com.querydsl.core.Tuple;
+
 /**
  * @author Michael J. Simons
  */
@@ -37,10 +39,27 @@ class QueryMoviesTest {
 	void simpleMatchShouldWork() {
 
 		QMovie qMovie = new QMovie("Movie");
-		CypherDSLQuery<Movie> movieQuery = new CypherDSLQuery<>(qMovie);
+		CypherDSLQuery<Movie> movieQuery = CypherDSLQuery.match(qMovie);
 
 		Statement statement = movieQuery.buildStatement();
 		assertThat(RENDERER.render(statement)).isEqualTo("MATCH (r:`Movie`) RETURN r");
+	}
+
+	@Nested
+	class Projections {
+
+		@Test
+		void properties() {
+
+			QMovie qMovie = new QMovie("Movie");
+			CypherDSLQuery<Tuple> movieQuery = CypherDSLQuery.match(qMovie)
+				.where(qMovie.title.eq("The Matrix"))
+				.returning(qMovie.title, qMovie.released);
+
+			Statement statement = movieQuery.buildStatement();
+			assertThat(RENDERER.render(statement))
+				.isEqualTo("MATCH (r:`Movie`) WHERE r.title = 'The Matrix' RETURN r.title, r.released");
+		}
 	}
 
 	@Nested
@@ -50,7 +69,7 @@ class QueryMoviesTest {
 		void eq() {
 
 			QMovie qMovie = new QMovie("Movie");
-			CypherDSLQuery<Movie> movieQuery = new CypherDSLQuery<>(qMovie)
+			CypherDSLQuery<Movie> movieQuery = CypherDSLQuery.match(qMovie)
 				.where(qMovie.title.eq("The Matrix"));
 
 			Statement statement = movieQuery.buildStatement();
@@ -62,7 +81,7 @@ class QueryMoviesTest {
 		void not() {
 
 			QMovie qMovie = new QMovie("Movie");
-			CypherDSLQuery<Movie> movieQuery = new CypherDSLQuery<>(qMovie)
+			CypherDSLQuery<Movie> movieQuery = CypherDSLQuery.match(qMovie)
 				.where(qMovie.title.eq("The Matrix").not());
 
 			Statement statement = movieQuery.buildStatement();
@@ -74,7 +93,7 @@ class QueryMoviesTest {
 		void ne() {
 
 			QMovie qMovie = new QMovie("Movie");
-			CypherDSLQuery<Movie> movieQuery = new CypherDSLQuery<>(qMovie)
+			CypherDSLQuery<Movie> movieQuery = CypherDSLQuery.match(qMovie)
 				.where(qMovie.title.ne("The Matrix"));
 
 			Statement statement = movieQuery.buildStatement();
@@ -86,7 +105,7 @@ class QueryMoviesTest {
 		void isFalse() {
 
 			QMovie qMovie = new QMovie("Movie");
-			CypherDSLQuery<Movie> movieQuery = new CypherDSLQuery<>(qMovie)
+			CypherDSLQuery<Movie> movieQuery = CypherDSLQuery.match(qMovie)
 				.where(qMovie.title.ne("The Matrix").isFalse());
 
 			Statement statement = movieQuery.buildStatement();
@@ -98,7 +117,7 @@ class QueryMoviesTest {
 		void isTrue() {
 
 			QMovie qMovie = new QMovie("Movie");
-			CypherDSLQuery<Movie> movieQuery = new CypherDSLQuery<>(qMovie)
+			CypherDSLQuery<Movie> movieQuery = CypherDSLQuery.match(qMovie)
 				.where(qMovie.title.ne("The Matrix").isTrue());
 
 			Statement statement = movieQuery.buildStatement();
@@ -110,7 +129,7 @@ class QueryMoviesTest {
 		void contains() {
 
 			QMovie qMovie = new QMovie("Movie");
-			CypherDSLQuery<Movie> movieQuery = new CypherDSLQuery<>(qMovie)
+			CypherDSLQuery<Movie> movieQuery = CypherDSLQuery.match(qMovie)
 				.where(qMovie.title.contains("Matrix"));
 
 			Statement statement = movieQuery.buildStatement();
@@ -122,7 +141,7 @@ class QueryMoviesTest {
 		void containsIC() {
 
 			QMovie qMovie = new QMovie("Movie");
-			CypherDSLQuery<Movie> movieQuery = new CypherDSLQuery<>(qMovie)
+			CypherDSLQuery<Movie> movieQuery = CypherDSLQuery.match(qMovie)
 				.where(qMovie.title.containsIgnoreCase("Matrix"));
 
 			Statement statement = movieQuery.buildStatement();
@@ -138,7 +157,7 @@ class QueryMoviesTest {
 		void and() {
 
 			QMovie qMovie = new QMovie("Movie");
-			CypherDSLQuery<Movie> movieQuery = new CypherDSLQuery<>(qMovie)
+			CypherDSLQuery<Movie> movieQuery = CypherDSLQuery.match(qMovie)
 				.where(qMovie.title.eq("The Matrix").and(qMovie.released.eq(1999L)));
 
 			Statement statement = movieQuery.buildStatement();
@@ -150,7 +169,7 @@ class QueryMoviesTest {
 		void or() {
 
 			QMovie qMovie = new QMovie("Movie");
-			CypherDSLQuery<Movie> movieQuery = new CypherDSLQuery<>(qMovie)
+			CypherDSLQuery<Movie> movieQuery = CypherDSLQuery.match(qMovie)
 				.where(qMovie.title.eq("The Matrix").or(qMovie.released.eq(2003L)));
 
 			Statement statement = movieQuery.buildStatement();
@@ -162,7 +181,7 @@ class QueryMoviesTest {
 		void multiple() {
 
 			QMovie qMovie = new QMovie("Movie");
-			CypherDSLQuery<Movie> movieQuery = new CypherDSLQuery<>(qMovie)
+			CypherDSLQuery<Movie> movieQuery = CypherDSLQuery.match(qMovie)
 				.where(
 					qMovie.title.contains("The Matrix").and(qMovie.released.eq(1999L).or(qMovie.released.eq(2003L))));
 
@@ -180,7 +199,7 @@ class QueryMoviesTest {
 		void limit() {
 
 			QMovie qMovie = new QMovie("Movie");
-			CypherDSLQuery<Movie> movieQuery = new CypherDSLQuery<>(qMovie).limit(23);
+			CypherDSLQuery<Movie> movieQuery = CypherDSLQuery.match(qMovie).limit(23);
 
 			Statement statement = movieQuery.buildStatement();
 			assertThat(RENDERER.render(statement)).isEqualTo("MATCH (r:`Movie`) RETURN r LIMIT 23");
@@ -190,7 +209,7 @@ class QueryMoviesTest {
 		void offset() {
 
 			QMovie qMovie = new QMovie("Movie");
-			CypherDSLQuery<Movie> movieQuery = new CypherDSLQuery<>(qMovie).offset(23);
+			CypherDSLQuery<Movie> movieQuery = CypherDSLQuery.match(qMovie).offset(23);
 
 			Statement statement = movieQuery.buildStatement();
 			assertThat(RENDERER.render(statement)).isEqualTo("MATCH (r:`Movie`) RETURN r SKIP 23");
@@ -200,7 +219,7 @@ class QueryMoviesTest {
 		void offsetAndLimit() {
 
 			QMovie qMovie = new QMovie("Movie");
-			CypherDSLQuery<Movie> movieQuery = new CypherDSLQuery<>(qMovie).limit(42).offset(23);
+			CypherDSLQuery<Movie> movieQuery = CypherDSLQuery.match(qMovie).limit(42).offset(23);
 
 			Statement statement = movieQuery.buildStatement();
 			assertThat(RENDERER.render(statement)).isEqualTo("MATCH (r:`Movie`) RETURN r SKIP 23 LIMIT 42");

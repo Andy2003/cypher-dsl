@@ -21,9 +21,11 @@ package org.neo4j.cypherdsl.querydsl;
 import org.neo4j.cypherdsl.core.Condition;
 import org.neo4j.cypherdsl.core.Conditions;
 import org.neo4j.cypherdsl.core.Cypher;
+import org.neo4j.cypherdsl.core.Expression;
 import org.neo4j.cypherdsl.core.Node;
 import org.neo4j.cypherdsl.core.Statement;
 import org.neo4j.cypherdsl.core.StatementBuilder.OngoingReadingAndReturn;
+import org.neo4j.cypherdsl.core.StatementBuilder.OngoingReadingWithWhere;
 import org.neo4j.cypherdsl.core.StatementBuilder.OngoingReadingWithoutWhere;
 
 import com.querydsl.core.DefaultQueryMetadata;
@@ -32,19 +34,26 @@ import com.querydsl.core.QueryModifiers;
 import com.querydsl.core.SimpleQuery;
 import com.querydsl.core.support.QueryMixin;
 import com.querydsl.core.types.EntityPath;
+import com.querydsl.core.types.FactoryExpression;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.ParamExpression;
 import com.querydsl.core.types.Predicate;
 
 abstract class AbstractCypherDSLQuery<T, Q extends AbstractCypherDSLQuery<T, Q>> implements SimpleQuery<Q> {
 
-	private final EntityPath<T> rootEntity;
-	private final QueryMixin<Q> queryMixin;
+	protected final EntityPath<?> rootEntity;
+	protected final QueryMixin<Q> queryMixin;
 
 	AbstractCypherDSLQuery(EntityPath<T> rootEntity) {
 
 		this.rootEntity = rootEntity;
-		this.queryMixin = new QueryMixin<Q>((Q) this, new DefaultQueryMetadata(), false);
+		this.queryMixin = new QueryMixin<>((Q) this, new DefaultQueryMetadata(), false);
+	}
+
+	AbstractCypherDSLQuery(EntityPath<?> rootEntity, QueryMetadata queryMetadata) {
+
+		this.rootEntity = rootEntity;
+		this.queryMixin = new QueryMixin<>((Q) this, queryMetadata, false);
 	}
 
 	@Override public Q limit(long limit) {
@@ -56,11 +65,11 @@ abstract class AbstractCypherDSLQuery<T, Q extends AbstractCypherDSLQuery<T, Q>>
 	}
 
 	@Override public Q restrict(QueryModifiers modifiers) {
-		return null;
+		return queryMixin.restrict(modifiers);
 	}
 
 	@Override public Q orderBy(OrderSpecifier<?>... o) {
-		return null;
+		return queryMixin.orderBy(o);
 	}
 
 	@Override public <T> Q set(ParamExpression<T> param, T value) {
@@ -68,7 +77,7 @@ abstract class AbstractCypherDSLQuery<T, Q extends AbstractCypherDSLQuery<T, Q>>
 	}
 
 	@Override public Q distinct() {
-		return null;
+		return queryMixin.distinct();
 	}
 
 	@Override public Q where(Predicate... o) {
@@ -84,20 +93,30 @@ abstract class AbstractCypherDSLQuery<T, Q extends AbstractCypherDSLQuery<T, Q>>
 
 		Condition condition = Conditions.noCondition();
 		Predicate where = metadata.getWhere();
+		QueryToCypherDSLTransformer transformer = new QueryToCypherDSLTransformer();
+
 		if (where != null) {
-			condition = (Condition) where.accept(new QueryToCypherDSLTransformer(), rootNode);
+			condition = (Condition) where.accept(transformer, rootNode);
 		}
 
-		OngoingReadingAndReturn returning = match
-			.where(condition)
-			.returning(rootNode);
+		OngoingReadingWithWhere ongoingReadingWithWhere = match.where(condition);
+
+		OngoingReadingAndReturn returning;
+		if (metadata.getProjection() == null || !(metadata.getProjection() instanceof FactoryExpression)) {
+			returning = ongoingReadingWithWhere.returning(rootNode);
+		} else {
+			FactoryExpression<?> projection = (FactoryExpression<?>) metadata.getProjection();
+			Expression[] returnedExpressions = projection.getArgs().stream()
+				.map(e -> e.accept(transformer, rootNode)).toArray(
+					Expression[]::new);
+			returning = ongoingReadingWithWhere.returning(returnedExpressions);
+		}
 
 		if (metadata.getModifiers().isRestricting()) {
 			returning = (OngoingReadingAndReturn) returning.skip(metadata.getModifiers().getOffset())
 				.limit(metadata.getModifiers().getLimit());
 		}
 
-		return returning
-			.build();
+		return returning.build();
 	}
 }

@@ -23,7 +23,7 @@ import com.querydsl.core.annotations.QueryEntity;
 /**
  * @author Michael J. Simons
  */
-@QueryEntity()
+@QueryEntity
 public class Movie {
 
 	private String title;

@@ -24,20 +24,30 @@ import static org.neo4j.cypherdsl.core.Cypher.*;
 import java.util.EnumSet;
 
 import org.neo4j.cypherdsl.core.Condition;
+import org.neo4j.cypherdsl.core.Conditions;
 import org.neo4j.cypherdsl.core.Expression;
 import org.neo4j.cypherdsl.core.Functions;
 import org.neo4j.cypherdsl.core.PropertyContainer;
 
 import com.querydsl.core.types.*;
 
-final class QueryToCypherDSLTransformer implements Visitor<Object, Object> {
+/**
+ * This class takes QueryDSL expressions and transform them into expressions of the Cypher-DSL.
+ * It is used for example to build the {@literal where} clause.
+ *
+ * @author Michael J. Simons
+ */
+final class QueryToCypherDSLTransformer implements Visitor<Expression, Object> {
 
-	@Override public Object visit(Constant<?> expr, Object context) {
+	@Override
+	public Expression visit(Constant<?> expr, Object context) {
 
 		return literalOf(expr.getConstant());
 	}
 
-	@Override public Object visit(FactoryExpression<?> expr, Object context) {
+	@Override
+	public Expression visit(FactoryExpression<?> expr, Object context) {
+
 		System.err.println("FactoryExpression " + expr);
 		return null;
 	}
@@ -47,7 +57,8 @@ final class QueryToCypherDSLTransformer implements Visitor<Object, Object> {
 		return EnumSet.of(EQ_IGNORE_CASE, STRING_CONTAINS_IC).contains(operator);
 	}
 
-	@Override public Object visit(Operation<?> expr, Object context) {
+	@Override
+	public Expression visit(Operation<?> expr, Object context) {
 		System.err.println("Operation " + expr);
 
 		Operator op = expr.getOperator();
@@ -57,10 +68,30 @@ final class QueryToCypherDSLTransformer implements Visitor<Object, Object> {
 		if (op instanceof Ops) {
 
 			switch (((Ops) op)) {
+				case LT:
+					return toCypherExpression(expr.getArg(0), context, ignoreCase)
+						.lt(toCypherExpression(expr.getArg(1), context, ignoreCase)).not();
+
+				case LOE:
+					return toCypherExpression(expr.getArg(0), context, ignoreCase)
+						.lte(toCypherExpression(expr.getArg(1), context, ignoreCase)).not();
+
 				case EQ:
 				case EQ_IGNORE_CASE:
 					return toCypherExpression(expr.getArg(0), context, ignoreCase)
 						.isEqualTo(toCypherExpression(expr.getArg(1), context, ignoreCase));
+
+				case NE:
+					return toCypherExpression(expr.getArg(0), context, ignoreCase)
+						.isNotEqualTo(toCypherExpression(expr.getArg(1), context, ignoreCase));
+
+				case GT:
+					return toCypherExpression(expr.getArg(0), context, ignoreCase)
+						.gt(toCypherExpression(expr.getArg(1), context, ignoreCase)).not();
+
+				case GOE:
+					return toCypherExpression(expr.getArg(0), context, ignoreCase)
+						.gte(toCypherExpression(expr.getArg(1), context, ignoreCase)).not();
 
 				case STRING_CONTAINS:
 				case STRING_CONTAINS_IC:
@@ -75,30 +106,68 @@ final class QueryToCypherDSLTransformer implements Visitor<Object, Object> {
 					return ((Condition) expr.getArg(0).accept(this, context))
 						.or((Condition) expr.getArg(1).accept(this, context));
 
+				case XOR:
+					return ((Condition) expr.getArg(0).accept(this, context))
+						.xor((Condition) expr.getArg(1).accept(this, context));
+
+				case IN:
+					return toCypherExpression(expr.getArg(0), context, ignoreCase)
+						.in(toCypherExpression(expr.getArg(1), context, ignoreCase));
+
+				case NOT_IN:
+					return toCypherExpression(expr.getArg(0), context, ignoreCase)
+						.in(toCypherExpression(expr.getArg(1), context, ignoreCase)).not();
+
+				case NOT:
+					return Conditions.not((Condition) toCypherExpression(expr.getArg(0), context, ignoreCase));
+
+				case ADD:
+					return toCypherExpression(expr.getArg(0), context, ignoreCase)
+						.add(toCypherExpression(expr.getArg(1), context, ignoreCase));
+
+				case DIV:
+					return toCypherExpression(expr.getArg(0), context, ignoreCase)
+						.divide(toCypherExpression(expr.getArg(1), context, ignoreCase));
+
+				case MULT:
+					return toCypherExpression(expr.getArg(0), context, ignoreCase)
+						.multiply(toCypherExpression(expr.getArg(1), context, ignoreCase));
+
+				case SUB:
+					return toCypherExpression(expr.getArg(0), context, ignoreCase)
+						.subtract(toCypherExpression(expr.getArg(1), context, ignoreCase));
+
+				case MOD:
+					return toCypherExpression(expr.getArg(0), context, ignoreCase)
+						.remainder(toCypherExpression(expr.getArg(1), context, ignoreCase));
+
 				default:
 					throw new UnsupportedOperationException("Unsupported operator " + op);
 			}
 		}
+
 		throw new UnsupportedOperationException("Unsupported operator " + op);
 	}
 
 	Expression toCypherExpression(
 		com.querydsl.core.types.Expression<?> queryDslExpress, Object context, boolean addToLower
 	) {
-		Expression expression = (Expression) queryDslExpress.accept(this, context);
+		Expression expression = queryDslExpress.accept(this, context);
 		if (addToLower) {
 			expression = Functions.toLower(expression);
 		}
 		return expression;
 	}
 
-	@Override public Object visit(ParamExpression<?> expr, Object context) {
+	@Override
+	public Expression visit(ParamExpression<?> expr, Object context) {
 
 		System.err.println("ParamExpression " + expr);
 		return null;
 	}
 
-	@Override public Object visit(Path<?> expr, Object context) {
+	@Override
+	public Expression visit(Path<?> expr, Object context) {
 
 		if (!(context instanceof PropertyContainer)) {
 			throw new IllegalStateException();
@@ -108,13 +177,15 @@ final class QueryToCypherDSLTransformer implements Visitor<Object, Object> {
 		return container.property(expr.getMetadata().getName());
 	}
 
-	@Override public Object visit(SubQueryExpression<?> expr, Object context) {
+	@Override
+	public Expression visit(SubQueryExpression<?> expr, Object context) {
 
 		System.err.println("SubQueryExpression " + expr);
 		return null;
 	}
 
-	@Override public Object visit(TemplateExpression<?> expr, Object context) {
+	@Override
+	public Expression visit(TemplateExpression<?> expr, Object context) {
 
 		System.err.println("TemplateExpression " + expr);
 		return null;

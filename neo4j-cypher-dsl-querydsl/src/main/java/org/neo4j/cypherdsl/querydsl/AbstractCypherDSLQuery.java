@@ -18,6 +18,9 @@
  */
 package org.neo4j.cypherdsl.querydsl;
 
+import java.util.List;
+import java.util.function.Function;
+
 import org.neo4j.cypherdsl.core.Condition;
 import org.neo4j.cypherdsl.core.Conditions;
 import org.neo4j.cypherdsl.core.Cypher;
@@ -49,50 +52,64 @@ abstract class AbstractCypherDSLQuery<T, Q extends AbstractCypherDSLQuery<T, Q>>
 
 	protected final EntityPath<?> rootEntity;
 	protected final QueryMixin<Q> queryMixin;
+	protected final Function<EntityPath<?>, List<String>> labelProvider;
 
 	AbstractCypherDSLQuery(EntityPath<T> rootEntity) {
+		this(rootEntity, new DefaultLabelProvider());
+	}
+
+	AbstractCypherDSLQuery(EntityPath<T> rootEntity, Function<EntityPath<?>, List<String>> labelProvider) {
 
 		this.rootEntity = rootEntity;
 		this.queryMixin = new QueryMixin<>((Q) this, new DefaultQueryMetadata(), false);
+		this.labelProvider = labelProvider;
 	}
 
-	AbstractCypherDSLQuery(EntityPath<?> rootEntity, QueryMetadata queryMetadata) {
+	AbstractCypherDSLQuery(EntityPath<?> rootEntity, QueryMetadata queryMetadata, Function<EntityPath<?>, List<String>> labelProvider) {
 
 		this.rootEntity = rootEntity;
 		this.queryMixin = new QueryMixin<>((Q) this, queryMetadata, false);
+		this.labelProvider = labelProvider;
 	}
 
-	@Override public Q limit(long limit) {
+	@Override
+	public Q limit(long limit) {
 		return queryMixin.limit(limit);
 	}
 
-	@Override public Q offset(long offset) {
+	@Override
+	public Q offset(long offset) {
 		return queryMixin.offset(offset);
 	}
 
-	@Override public Q restrict(QueryModifiers modifiers) {
+	@Override
+	public Q restrict(QueryModifiers modifiers) {
 		return queryMixin.restrict(modifiers);
 	}
 
-	@Override public Q orderBy(OrderSpecifier<?>... o) {
+	@Override
+	public Q orderBy(OrderSpecifier<?>... o) {
 		return queryMixin.orderBy(o);
 	}
 
-	@Override public <T> Q set(ParamExpression<T> param, T value) {
+	@Override
+	public <T> Q set(ParamExpression<T> param, T value) {
 		return null;
 	}
 
-	@Override public Q distinct() {
+	@Override
+	public Q distinct() {
 		return queryMixin.distinct();
 	}
 
-	@Override public Q where(Predicate... o) {
+	@Override
+	public Q where(Predicate... o) {
 		return queryMixin.where(o);
 	}
 
 	public Statement buildStatement() {
 
-		Node rootNode = Cypher.node(rootEntity.getMetadata().getName()).named("r");
+		Node rootNode = QueryDSLAdapter.toNode(rootEntity, this.labelProvider);
 		QueryMetadata metadata = this.queryMixin.getMetadata();
 
 		OngoingReadingWithoutWhere match = Cypher.match(rootNode);

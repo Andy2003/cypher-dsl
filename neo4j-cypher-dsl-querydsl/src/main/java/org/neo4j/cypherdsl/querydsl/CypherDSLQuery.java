@@ -18,6 +18,9 @@
  */
 package org.neo4j.cypherdsl.querydsl;
 
+import java.util.List;
+import java.util.function.Function;
+
 import com.querydsl.core.QueryMetadata;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.EntityPath;
@@ -27,8 +30,8 @@ import com.querydsl.core.types.Projections;
 /**
  * Proposed entry point to the QueryDSL integration.
  *
- * @author Michael J. Simons
  * @param <T> Type of the domain object being fetched.
+ * @author Michael J. Simons
  */
 public final class CypherDSLQuery<T> extends AbstractCypherDSLQuery<T, CypherDSLQuery<T>> {
 
@@ -40,8 +43,9 @@ public final class CypherDSLQuery<T> extends AbstractCypherDSLQuery<T, CypherDSL
 		super(rootEntity);
 	}
 
-	private CypherDSLQuery(EntityPath<?> rootEntity, QueryMetadata queryMetadata) {
-		super(rootEntity, queryMetadata);
+	private CypherDSLQuery(EntityPath<?> rootEntity, QueryMetadata queryMetadata,
+		Function<EntityPath<?>, List<String>> labelProvider) {
+		super(rootEntity, queryMetadata, labelProvider);
 	}
 
 	public CypherDSLQuery<Tuple> returning(Expression<?>... o) {
@@ -49,6 +53,6 @@ public final class CypherDSLQuery<T> extends AbstractCypherDSLQuery<T, CypherDSL
 		QueryMetadata queryMetadata = super.queryMixin.getMetadata().clone();
 		queryMetadata.setProjection(Projections.tuple(o));
 
-		return new CypherDSLQuery<>(super.rootEntity, queryMetadata);
+		return new CypherDSLQuery<>(super.rootEntity, queryMetadata, super.labelProvider);
 	}
 }

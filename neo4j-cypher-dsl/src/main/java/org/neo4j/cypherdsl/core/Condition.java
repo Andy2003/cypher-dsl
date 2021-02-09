@@ -29,7 +29,7 @@ import org.apiguardian.api.API;
  * @since 1.0
  */
 @API(status = EXPERIMENTAL, since = "1.0")
-public interface Condition extends Expression {
+public interface Condition extends Expression, ExposesLogicalOperators<Condition> {
 
 	/**
 	 * Adds a condition to this condition with an {@literal AND}.

@@ -188,6 +188,7 @@
 						<detectOfflineLinks>false</detectOfflineLinks>
 						<detectJavaApiLink>false</detectJavaApiLink>
 						<source>${java.version}</source>
+						<javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
 						<tags>
 							<tag>
 								<name>soundtrack</name>

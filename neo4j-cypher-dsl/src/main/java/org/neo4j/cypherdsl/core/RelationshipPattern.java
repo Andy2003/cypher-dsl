@@ -33,7 +33,7 @@ import org.apiguardian.api.API;
  * @since 1.0
  */
 @API(status = EXPERIMENTAL, since = "1.0")
-public interface RelationshipPattern extends PatternElement, ExposesRelationships<RelationshipChain> {
+public interface RelationshipPattern extends PatternElement, ExposesRelationships<RelationshipChain>, ExposesLogicalOperators<Condition> {
 
 	/**
 	 * Turns the pattern into a named chain of relationships.
@@ -42,4 +42,14 @@ public interface RelationshipPattern extends PatternElement, ExposesRelationship
 	 * @return A named relationship that can be chained with more relationship definitions.
 	 */
 	ExposesRelationships<RelationshipChain> named(String name);
+
+    @Override
+    default Condition and(Condition condition) {
+        return CompoundCondition.create(new RelationshipPatternCondition(this), Operator.AND, condition);
+    }
+
+    @Override
+    default Condition or(Condition condition) {
+        return CompoundCondition.create(new RelationshipPatternCondition(this), Operator.OR, condition);
+    }
 }

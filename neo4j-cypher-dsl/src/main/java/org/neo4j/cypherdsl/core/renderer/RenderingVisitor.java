@@ -99,14 +99,14 @@ import org.neo4j.cypherdsl.core.utils.Strings;
  * @author Gerrit Meier
  * @since 1.0
  */
-class RenderingVisitor extends ReflectiveVisitor {
+public class RenderingVisitor extends ReflectiveVisitor {
 
 	private static final Pattern LABEL_AND_TYPE_QUOTATION = Pattern.compile("`");
 
 	/**
 	 * Target of all rendering.
 	 */
-	private final StringBuilder builder = new StringBuilder();
+	protected final StringBuilder builder = new StringBuilder();
 
 	/**
 	 * This keeps track on which level of the tree a separator is needed.

@@ -727,7 +727,7 @@ public interface StatementBuilder
 		 * @since 2020.1.5
 		 */
 		default <T extends OngoingMatchAndUpdate & BuildableStatement> T mutate(Named variable, Expression properties) {
-			return mutate(variable.getRequiredSymbolicName(), properties);
+			return mutate((Expression) variable.getRequiredSymbolicName(), properties);
 		}
 
 		/**
@@ -875,7 +875,7 @@ public interface StatementBuilder
 		 * @since 2020.1.5
 		 */
 		default <T extends OngoingMatchAndUpdate & BuildableStatement & ExposesMergeAction> T mutate(Named variable, Expression properties) {
-			return mutate(variable.getRequiredSymbolicName(), properties);
+			return mutate((Expression) variable.getRequiredSymbolicName(), properties);
 		}
 
 		/**

@@ -4787,6 +4787,26 @@ class CypherIT {
 		}
 
 		@Test
+		void inQueryCall() {
+			Node a = Cypher.node("A").named("a");
+
+			Statement s = Cypher.match(a)
+					.with(a)
+					.call("someMethod")
+					.withoutResults()
+					.detachDelete(a)
+					.build();
+
+			assertThat(Renderer.getRenderer(Configuration.prettyPrinting()).render(s))
+					.isEqualTo("""
+						MATCH (a:A)
+						WITH a
+						CALL someMethod()
+						DETACH DELETE a"""
+					);
+		}
+
+		@Test
 		void multipleSubQueries() {
 			Node a = Cypher.node("A").named("a");
 			Node b = Cypher.node("B").named("b");

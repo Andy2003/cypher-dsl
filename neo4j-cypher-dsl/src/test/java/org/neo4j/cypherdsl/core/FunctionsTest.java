@@ -27,6 +27,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -86,7 +87,7 @@ class FunctionsTest {
 
 	@ParameterizedTest(name = "{index}: {0}")
 	@MethodSource("functionsToTest")
-	void preconditionsShouldBeAsserted(Method method) {
+	void preconditionsShouldBeAsserted(@NotNull Method method) {
 		assertThatIllegalArgumentException()
 			.isThrownBy(() -> TestUtils.invokeMethod(method, null, (Expression) null))
 			.withMessageMatching("The (expression|node|relationship|temporalAmount|temporalValue|variable|pattern|components) (?:for .* )?(?:is|are) required.");
@@ -94,7 +95,7 @@ class FunctionsTest {
 
 	@ParameterizedTest
 	@MethodSource("functionsToTest")
-	void functionInvocationsShouldBeCreated(Method method) {
+	void functionInvocationsShouldBeCreated(@NotNull Method method) {
 
 		var expectedValue = method.getName().replace("Distinct", "");
 		if (expectedValue.startsWith("graph")) {

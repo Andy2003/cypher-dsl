@@ -25,6 +25,7 @@ import reactor.core.publisher.Mono;
 import java.util.function.Function;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.Statement;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.reactivestreams.ReactiveQueryRunner;
@@ -44,7 +45,7 @@ class DefaultReactiveExecutableResultStatement extends DefaultReactiveExecutable
 	}
 
 	@Override
-	public final <T> Publisher<T> fetchWith(ReactiveQueryRunner queryRunner, Function<Record, T> mappingFunction) {
+	public final <T> @NotNull Publisher<T> fetchWith(@NotNull ReactiveQueryRunner queryRunner, @NotNull Function<Record, T> mappingFunction) {
 
 		return Mono.fromCallable(this::createQuery)
 			.flatMap(q -> Mono.fromDirect(queryRunner.run(q)))

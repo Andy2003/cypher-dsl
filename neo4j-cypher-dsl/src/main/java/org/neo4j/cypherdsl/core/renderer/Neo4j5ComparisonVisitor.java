@@ -21,6 +21,7 @@ package org.neo4j.cypherdsl.core.renderer;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.build.annotations.RegisterForReflection;
 import org.neo4j.cypherdsl.core.Comparison;
 import org.neo4j.cypherdsl.core.Operator;
@@ -48,7 +49,7 @@ final class Neo4j5ComparisonVisitor extends VisitorWithResult {
 	}
 
 	@Override
-	public EnterResult enterWithResult(Visitable segment) {
+	public @NotNull EnterResult enterWithResult(Visitable segment) {
 
 		Comparison comparison = (Comparison) segment;
 		AtomicReference<Operator> capture = new AtomicReference<>();
@@ -56,7 +57,7 @@ final class Neo4j5ComparisonVisitor extends VisitorWithResult {
 		AtomicReference<Visitable> nPropExists = new AtomicReference<>();
 		comparison.accept(new VisitorWithResult() {
 			@Override
-			public EnterResult enterWithResult(Visitable visitable) {
+			public @NotNull EnterResult enterWithResult(Visitable visitable) {
 				boolean isOneLevelBelow = level.getAndIncrement() == 1;
 				if (isOneLevelBelow) {
 					if (visitable instanceof Operator operator) {

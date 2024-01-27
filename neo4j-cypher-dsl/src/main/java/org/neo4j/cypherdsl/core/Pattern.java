@@ -26,6 +26,8 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.neo4j.cypherdsl.core.ast.TypedSubtree;
 
 /**
@@ -40,7 +42,7 @@ import org.neo4j.cypherdsl.core.ast.TypedSubtree;
 @API(status = INTERNAL, since = "1.0")
 final class Pattern extends TypedSubtree<PatternElement> {
 
-	static Pattern of(PatternElement requiredPattern, PatternElement... patternElement) {
+	static @NotNull Pattern of(@NotNull PatternElement requiredPattern, PatternElement @Nullable ... patternElement) {
 		List<PatternElement> elements;
 		if (patternElement == null || patternElement.length == 0) {
 			elements = List.of(requiredPattern);
@@ -52,11 +54,11 @@ final class Pattern extends TypedSubtree<PatternElement> {
 		return Pattern.of(elements);
 	}
 
-	static Pattern of(Collection<? extends PatternElement> elements) {
+	static @NotNull Pattern of(@NotNull Collection<? extends PatternElement> elements) {
 		return new Pattern(elements.stream().map(PatternElement.class::cast).toList());
 	}
 
-	private Pattern(List<PatternElement> patternElements) {
+	private Pattern(@NotNull List<PatternElement> patternElements) {
 		super(patternElements);
 	}
 

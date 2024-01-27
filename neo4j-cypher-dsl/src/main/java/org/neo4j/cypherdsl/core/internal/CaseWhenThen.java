@@ -21,6 +21,7 @@ package org.neo4j.cypherdsl.core.internal;
 import static org.apiguardian.api.API.Status.INTERNAL;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.Expression;
 import org.neo4j.cypherdsl.core.ast.Visitable;
 import org.neo4j.cypherdsl.core.ast.Visitor;
@@ -48,7 +49,7 @@ public final class CaseWhenThen implements Visitable {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 		visitor.enter(this);
 		whenExpression.accept(visitor);
 		visitor.leave(this);

@@ -40,7 +40,7 @@ import org.neo4j.cypherdsl.core.internal.UsingPeriodicCommit;
 @API(status = INTERNAL, since = "2021.3.0")
 class ClausesBasedStatement extends AbstractStatement {
 
-	private final UsingPeriodicCommit optionalPeriodicCommit;
+	private final @Nullable UsingPeriodicCommit optionalPeriodicCommit;
 
 	private final List<Clause> clauses;
 
@@ -50,7 +50,7 @@ class ClausesBasedStatement extends AbstractStatement {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 		Visitable.visitIfNotNull(optionalPeriodicCommit, visitor);

@@ -20,6 +20,7 @@ package org.neo4j.cypherdsl.core.renderer;
 
 import java.util.function.BiConsumer;
 
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.build.annotations.RegisterForReflection;
 import org.neo4j.cypherdsl.core.Condition;
 import org.neo4j.cypherdsl.core.Create;
@@ -53,7 +54,7 @@ import org.neo4j.cypherdsl.core.renderer.Configuration.IndentStyle;
 @RegisterForReflection
 class PrettyPrintingVisitor extends DefaultVisitor {
 
-	private final BiConsumer<StringBuilder, Integer> indentionProvider;
+	private final @NotNull BiConsumer<StringBuilder, Integer> indentionProvider;
 
 	/**
 	 * In contrast to the current level in the {@link DefaultVisitor} that contains the level of elements in the tree.
@@ -61,11 +62,11 @@ class PrettyPrintingVisitor extends DefaultVisitor {
 	private int indentationLevel;
 	private boolean passedFirstReadingOrUpdatingClause;
 
-	PrettyPrintingVisitor(StatementContext statementContext, Configuration configuration) {
+	PrettyPrintingVisitor(StatementContext statementContext, @NotNull Configuration configuration) {
 		this(statementContext, false, configuration);
 	}
 
-	PrettyPrintingVisitor(StatementContext statementContext, boolean renderConstantsAsParameters, Configuration configuration) {
+	PrettyPrintingVisitor(StatementContext statementContext, boolean renderConstantsAsParameters, @NotNull Configuration configuration) {
 		super(statementContext, renderConstantsAsParameters, configuration);
 
 		IndentStyle indentStyle = configuration.getIndentStyle();
@@ -94,7 +95,7 @@ class PrettyPrintingVisitor extends DefaultVisitor {
 	}
 
 	@Override
-	void enter(Return returning) {
+	void enter(@NotNull Return returning) {
 		trimNewline();
 		indent(indentationLevel);
 		super.enter(returning);
@@ -127,7 +128,7 @@ class PrettyPrintingVisitor extends DefaultVisitor {
 	}
 
 	@Override
-	void enter(Match match) {
+	void enter(@NotNull Match match) {
 		if (passedFirstReadingOrUpdatingClause) {
 			trimNewline();
 			indent(indentationLevel);
@@ -147,7 +148,7 @@ class PrettyPrintingVisitor extends DefaultVisitor {
 	}
 
 	@Override
-	void enter(PropertyLookup propertyLookup) {
+	void enter(@NotNull PropertyLookup propertyLookup) {
 		if (currentVisitedElements.stream().skip(1).limit(1)
 				.anyMatch(MapExpression.class::isInstance)) {
 			trimNewline();
@@ -157,7 +158,7 @@ class PrettyPrintingVisitor extends DefaultVisitor {
 	}
 
 	@Override
-	void enter(KeyValueMapEntry map) {
+	void enter(@NotNull KeyValueMapEntry map) {
 		if (indentationLevel > 0) {
 			trimNewline();
 			indent(indentationLevel);
@@ -184,7 +185,7 @@ class PrettyPrintingVisitor extends DefaultVisitor {
 	}
 
 	@Override
-	void enter(Operator operator) {
+	void enter(@NotNull Operator operator) {
 		Operator.Type type = operator.getType();
 		if (type == Operator.Type.LABEL) {
 			return;
@@ -227,7 +228,7 @@ class PrettyPrintingVisitor extends DefaultVisitor {
 	}
 
 	@Override
-	void enter(MergeAction onCreateOrMatchEvent) {
+	void enter(@NotNull MergeAction onCreateOrMatchEvent) {
 		trimNewline();
 		indent(1);
 		super.enter(onCreateOrMatchEvent);
@@ -267,7 +268,7 @@ class PrettyPrintingVisitor extends DefaultVisitor {
 	}
 
 	@Override
-	void enter(Use use) {
+	void enter(@NotNull Use use) {
 		trimNewline();
 		indent(indentationLevel);
 		super.enter(use);
@@ -296,7 +297,7 @@ class PrettyPrintingVisitor extends DefaultVisitor {
 	}
 
 	@Override
-	void enter(Parameter<?> parameter) {
+	void enter(@NotNull Parameter<?> parameter) {
 
 		Object value = parameter.getValue();
 		if (value instanceof ConstantParameterHolder constantParameterHolder) {

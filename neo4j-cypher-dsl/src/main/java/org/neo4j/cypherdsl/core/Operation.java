@@ -48,7 +48,7 @@ public final class Operation implements Expression {
 		.complementOf(EnumSet.of(Operator.Type.PROPERTY, Operator.Type.LABEL));
 	private static final EnumSet<Operator> DONT_GROUP = EnumSet.of(Operator.EXPONENTIATION, Operator.PIPE, Operator.UNARY_MINUS, Operator.UNARY_PLUS);
 
-	static Operation create(@NotNull Operator operator, @NotNull Expression expression) {
+	static @NotNull Operation create(@NotNull Operator operator, @NotNull Expression expression) {
 
 		Assertions.notNull(operator, "Operator must not be null.");
 		Assertions.isTrue(operator.isUnary(), "Operator must be unary.");
@@ -61,7 +61,7 @@ public final class Operation implements Expression {
 		};
 	}
 
-	static Operation create(Expression op1, Operator operator, Expression op2) {
+	static @NotNull Operation create(@NotNull Expression op1, @NotNull Operator operator, @NotNull Expression op2) {
 
 		Assertions.notNull(op1, "The first operand must not be null.");
 		Assertions.notNull(operator, "Operator must not be null.");
@@ -70,7 +70,7 @@ public final class Operation implements Expression {
 		return new Operation(op1, operator, op2);
 	}
 
-	static Operation create(Node op1, Operator operator, String... nodeLabels) {
+	static @NotNull Operation create(@NotNull Node op1, Operator operator, String @NotNull ... nodeLabels) {
 
 		Assertions.notNull(op1, "The first operand must not be null.");
 		Assertions.isTrue(op1.getSymbolicName().isPresent(), "The node must have a name.");
@@ -102,7 +102,7 @@ public final class Operation implements Expression {
 
 	@Override
 	@SuppressWarnings("deprecation")
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 		if (left != null) {

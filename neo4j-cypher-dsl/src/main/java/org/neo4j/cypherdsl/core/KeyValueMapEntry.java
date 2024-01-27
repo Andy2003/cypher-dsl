@@ -81,7 +81,7 @@ public final class KeyValueMapEntry implements Expression {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 		value.accept(visitor);

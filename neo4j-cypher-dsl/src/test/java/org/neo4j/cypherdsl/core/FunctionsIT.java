@@ -27,6 +27,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 import java.util.stream.Stream;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -136,7 +137,7 @@ class FunctionsIT {
 
 	@ParameterizedTest
 	@EnumSource(BuiltInFunctions.MathematicalFunctions.class)
-	void mathFunctionsShouldBeRenderedAsExpected(BuiltInFunctions.MathematicalFunctions function)
+	void mathFunctionsShouldBeRenderedAsExpected(BuiltInFunctions.@NotNull MathematicalFunctions function)
 		throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 
 		if (function.getMinArgs() != function.getMaxArgs()) {
@@ -204,7 +205,7 @@ class FunctionsIT {
 		assertThatIllegalArgumentException().isThrownBy(() -> Cypher.substring(literalExpression, null, null)).withMessage("start is required");
 	}
 
-	private static Stream<Arguments> neo5jSpecificFunctions() {
+	private static @NotNull Stream<Arguments> neo5jSpecificFunctions() {
 		Node n = Cypher.node("Node").named("n");
 		Node m = Cypher.node("Node2").named("m");
 		Relationship r = n.relationshipTo(m).named("r");
@@ -215,7 +216,7 @@ class FunctionsIT {
 		);
 	}
 
-	private static Stream<Arguments> functionsToTest() {
+	private static @NotNull Stream<Arguments> functionsToTest() {
 		Node n = Cypher.node("Node").named("n");
 		Node m = Cypher.node("Node2").named("m");
 		Relationship r = n.relationshipTo(m).named("r");

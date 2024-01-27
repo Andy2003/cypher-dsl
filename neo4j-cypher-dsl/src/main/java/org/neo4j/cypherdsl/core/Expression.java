@@ -104,7 +104,7 @@ public interface Expression extends Visitable, HasProperties {
 	 */
 	@NotNull @Contract(pure = true)
 	@SuppressWarnings("deprecation")
-	default Condition hasSize(Expression expectedSize) {
+	default Condition hasSize(@NotNull Expression expectedSize) {
 
 		return Functions.size(this).isEqualTo(expectedSize);
 	}
@@ -117,7 +117,7 @@ public interface Expression extends Visitable, HasProperties {
 	 * @since 2021.0.2
 	 */
 	@NotNull @Contract(pure = true)
-	default AliasedExpression as(SymbolicName alias) {
+	default AliasedExpression as(@NotNull SymbolicName alias) {
 
 		Assertions.notNull(alias, "The alias may not be null.");
 		return as(alias.getValue());
@@ -142,7 +142,7 @@ public interface Expression extends Visitable, HasProperties {
 	 */
 	@NotNull @Contract(pure = true)
 	@SuppressWarnings("deprecation")
-	default Condition isEqualTo(Expression rhs) {
+	default Condition isEqualTo(@NotNull Expression rhs) {
 		return Conditions.isEqualTo(this, rhs);
 	}
 
@@ -153,7 +153,7 @@ public interface Expression extends Visitable, HasProperties {
 	 * @return A new condition
 	 */
 	@NotNull @Contract(pure = true)
-	default Condition eq(Expression rhs) {
+	default Condition eq(@NotNull Expression rhs) {
 		return isEqualTo(rhs);
 	}
 
@@ -165,7 +165,7 @@ public interface Expression extends Visitable, HasProperties {
 	 */
 	@NotNull @Contract(pure = true)
 	@SuppressWarnings("deprecation")
-	default Condition isNotEqualTo(Expression rhs) {
+	default Condition isNotEqualTo(@NotNull Expression rhs) {
 		return Conditions.isNotEqualTo(this, rhs);
 	}
 
@@ -176,7 +176,7 @@ public interface Expression extends Visitable, HasProperties {
 	 * @return A new condition
 	 */
 	@NotNull @Contract(pure = true)
-	default Condition ne(Expression rhs) {
+	default Condition ne(@NotNull Expression rhs) {
 		return isNotEqualTo(rhs);
 	}
 
@@ -188,7 +188,7 @@ public interface Expression extends Visitable, HasProperties {
 	 */
 	@NotNull @Contract(pure = true)
 	@SuppressWarnings("deprecation")
-	default Condition lt(Expression rhs) {
+	default Condition lt(@NotNull Expression rhs) {
 		return Conditions.lt(this, rhs);
 	}
 
@@ -200,7 +200,7 @@ public interface Expression extends Visitable, HasProperties {
 	 */
 	@NotNull @Contract(pure = true)
 	@SuppressWarnings("deprecation")
-	default Condition lte(Expression rhs) {
+	default Condition lte(@NotNull Expression rhs) {
 		return Conditions.lte(this, rhs);
 	}
 
@@ -212,7 +212,7 @@ public interface Expression extends Visitable, HasProperties {
 	 */
 	@NotNull @Contract(pure = true)
 	@SuppressWarnings("deprecation")
-	default Condition gt(Expression rhs) {
+	default Condition gt(@NotNull Expression rhs) {
 		return Conditions.gt(this, rhs);
 	}
 
@@ -224,7 +224,7 @@ public interface Expression extends Visitable, HasProperties {
 	 */
 	@NotNull @Contract(pure = true)
 	@SuppressWarnings("deprecation")
-	default Condition gte(Expression rhs) {
+	default Condition gte(@NotNull Expression rhs) {
 		return Conditions.gte(this, rhs);
 	}
 
@@ -258,7 +258,7 @@ public interface Expression extends Visitable, HasProperties {
 	 */
 	@NotNull @Contract(pure = true)
 	@SuppressWarnings("deprecation")
-	default Condition matches(Expression expression) {
+	default Condition matches(@NotNull Expression expression) {
 		return Conditions.matches(this, expression);
 	}
 
@@ -282,7 +282,7 @@ public interface Expression extends Visitable, HasProperties {
 	 */
 	@NotNull @Contract(pure = true)
 	@SuppressWarnings("deprecation")
-	default Condition startsWith(Expression expression) {
+	default Condition startsWith(@NotNull Expression expression) {
 		return Conditions.startsWith(this, expression);
 	}
 
@@ -294,7 +294,7 @@ public interface Expression extends Visitable, HasProperties {
 	 */
 	@NotNull @Contract(pure = true)
 	@SuppressWarnings("deprecation")
-	default Condition contains(Expression expression) {
+	default Condition contains(@NotNull Expression expression) {
 		return Conditions.contains(this, expression);
 	}
 
@@ -306,7 +306,7 @@ public interface Expression extends Visitable, HasProperties {
 	 */
 	@NotNull @Contract(pure = true)
 	@SuppressWarnings("deprecation")
-	default Condition endsWith(Expression expression) {
+	default Condition endsWith(@NotNull Expression expression) {
 		return Conditions.endsWith(this, expression);
 	}
 
@@ -318,7 +318,7 @@ public interface Expression extends Visitable, HasProperties {
 	 */
 	@NotNull @Contract(pure = true)
 	@SuppressWarnings("deprecation")
-	default Operation concat(Expression expression) {
+	default Operation concat(@NotNull Expression expression) {
 		return Operations.concat(this, expression);
 	}
 
@@ -331,7 +331,7 @@ public interface Expression extends Visitable, HasProperties {
 	 */
 	@NotNull @Contract(pure = true)
 	@SuppressWarnings("deprecation")
-	default Operation add(Expression addend) {
+	default Operation add(@NotNull Expression addend) {
 		return Operations.add(this, addend);
 	}
 
@@ -344,7 +344,7 @@ public interface Expression extends Visitable, HasProperties {
 	 */
 	@NotNull @Contract(pure = true)
 	@SuppressWarnings("deprecation")
-	default Operation subtract(Expression subtrahend) {
+	default Operation subtract(@NotNull Expression subtrahend) {
 		return Operations.subtract(this, subtrahend);
 	}
 
@@ -357,7 +357,7 @@ public interface Expression extends Visitable, HasProperties {
 	 */
 	@NotNull @Contract(pure = true)
 	@SuppressWarnings("deprecation")
-	default Operation multiply(Expression multiplicand) {
+	default Operation multiply(@NotNull Expression multiplicand) {
 		return Operations.multiply(this, multiplicand);
 	}
 
@@ -370,7 +370,7 @@ public interface Expression extends Visitable, HasProperties {
 	 */
 	@NotNull @Contract(pure = true)
 	@SuppressWarnings("deprecation")
-	default Operation divide(Expression dividend) {
+	default Operation divide(@NotNull Expression dividend) {
 		return Operations.divide(this, dividend);
 	}
 
@@ -382,7 +382,7 @@ public interface Expression extends Visitable, HasProperties {
 	 */
 	@NotNull @Contract(pure = true)
 	@SuppressWarnings("deprecation")
-	default Operation remainder(Expression dividend) {
+	default Operation remainder(@NotNull Expression dividend) {
 		return Operations.remainder(this, dividend);
 	}
 
@@ -394,7 +394,7 @@ public interface Expression extends Visitable, HasProperties {
 	 */
 	@NotNull @Contract(pure = true)
 	@SuppressWarnings("deprecation")
-	default Operation pow(Expression n) {
+	default Operation pow(@NotNull Expression n) {
 
 		return Operations.pow(this, n);
 	}
@@ -431,7 +431,7 @@ public interface Expression extends Visitable, HasProperties {
 	 * @return A new condition.
 	 */
 	@NotNull @Contract(pure = true)
-	default Condition in(Expression haystack) {
+	default Condition in(@NotNull Expression haystack) {
 		return Comparison.create(this, Operator.IN, haystack);
 	}
 

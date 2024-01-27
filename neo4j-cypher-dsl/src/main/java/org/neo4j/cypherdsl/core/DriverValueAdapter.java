@@ -72,7 +72,7 @@ class DriverValueAdapter implements ForeignAdapter<Value> {
 		return asExpression0(value);
 	}
 
-	private static Expression asExpression0(Value value) {
+	private static @NotNull Expression asExpression0(@NotNull Value value) {
 		var typeSystem = TypeSystem.getDefault();
 		if (value.hasType(typeSystem.NODE())) {
 			throw new IllegalArgumentException("Node values can only be adapted with asNode");
@@ -109,7 +109,7 @@ class DriverValueAdapter implements ForeignAdapter<Value> {
 	}
 
 	@SuppressWarnings("squid:S1872") // See below error checking, it's a bug in the Neo4j Java driver not exporting that exception in the module path
-	private static Literal<Object> asFloatOrDouble(Value value) {
+	private static @NotNull Literal<Object> asFloatOrDouble(@NotNull Value value) {
 		Number number;
 		try {
 			number = value.asFloat();

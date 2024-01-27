@@ -25,6 +25,7 @@ import java.util.Arrays;
 import org.apiguardian.api.API;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.neo4j.cypherdsl.core.annotations.CheckReturnValue;
 
 /**
@@ -104,7 +105,7 @@ public interface ExposesCall<T> {
 		 * @return The ongoing standalone call to be configured.
 		 */
 		@NotNull @CheckReturnValue
-		default T yield(String... yieldedItems) {
+		default T yield(String @Nullable ... yieldedItems) {
 
 			SymbolicName[] names = new SymbolicName[0];
 			if (yieldedItems != null) {
@@ -122,7 +123,7 @@ public interface ExposesCall<T> {
 		 * @since 2020.1.4
 		 */
 		@NotNull @CheckReturnValue
-		default T yield(Named... yieldedItems) {
+		default T yield(Named @Nullable ... yieldedItems) {
 
 			SymbolicName[] names = new SymbolicName[0];
 			if (yieldedItems != null) {

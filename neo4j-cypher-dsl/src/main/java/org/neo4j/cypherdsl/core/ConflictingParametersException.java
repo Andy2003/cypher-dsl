@@ -47,9 +47,9 @@ public final class ConflictingParametersException extends RuntimeException {
 	@Serial
 	private static final long serialVersionUID = -45456411835790492L;
 
-	private final transient Map<String, Set<Object>> erroneousParameters;
+	private final transient @NotNull Map<String, Set<Object>> erroneousParameters;
 
-	ConflictingParametersException(Map<String, Set<Object>> erroneousParameters) {
+	ConflictingParametersException(@NotNull Map<String, Set<Object>> erroneousParameters) {
 		super(createMessage(erroneousParameters));
 		this.erroneousParameters = new HashMap<>(erroneousParameters.size());
 		erroneousParameters.forEach((k, v) -> this.erroneousParameters.put(k, new HashSet<>(v)));
@@ -63,7 +63,7 @@ public final class ConflictingParametersException extends RuntimeException {
 		return Collections.unmodifiableMap(erroneousParameters);
 	}
 
-	private static String createMessage(Map<String, Set<Object>> errors) {
+	private static @NotNull String createMessage(@NotNull Map<String, Set<Object>> errors) {
 		StringBuilder sb = new StringBuilder();
 		String prefix;
 		if (errors.size() > 1) {

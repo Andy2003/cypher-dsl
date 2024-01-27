@@ -23,6 +23,7 @@ import static org.apiguardian.api.API.Status.STABLE;
 import java.util.List;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.ast.TypedSubtree;
 
 /**
@@ -35,7 +36,7 @@ import org.neo4j.cypherdsl.core.ast.TypedSubtree;
 @API(status = STABLE, since = "1.0")
 public final class Order extends TypedSubtree<SortItem> {
 
-	Order(List<SortItem> sortItems) {
+	Order(@NotNull List<SortItem> sortItems) {
 		super(sortItems);
 	}
 }

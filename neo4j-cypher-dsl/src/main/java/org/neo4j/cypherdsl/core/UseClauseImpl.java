@@ -18,6 +18,7 @@
  */
 package org.neo4j.cypherdsl.core;
 
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.ast.Visitor;
 import org.neo4j.cypherdsl.core.internal.SchemaNamesBridge;
 
@@ -29,7 +30,7 @@ import org.neo4j.cypherdsl.core.internal.SchemaNamesBridge;
  */
 record UseClauseImpl(Expression target, boolean dynamic) implements Use {
 
-	static Use of(String target) {
+	static @NotNull Use of(@NotNull String target) {
 		var components = target.split("\\.");
 		Expression targetExpression;
 		if (components.length == 1) {
@@ -43,12 +44,12 @@ record UseClauseImpl(Expression target, boolean dynamic) implements Use {
 		return new UseClauseImpl(targetExpression, false);
 	}
 
-	static Use of(Expression target) {
+	static @NotNull Use of(Expression target) {
 		return new UseClauseImpl(target, !(target instanceof FunctionInvocation fi) || !"graph.byName".equals(fi.getFunctionName()));
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 		visitor.enter(this);
 		target.accept(visitor);
 		visitor.leave(this);

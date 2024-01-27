@@ -26,6 +26,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.BiFunction;
 
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.Statement;
 import org.neo4j.cypherdsl.core.internal.DefaultStatementContext;
 import org.neo4j.cypherdsl.core.ast.Visitable;
@@ -48,7 +49,7 @@ final class ConfigurableRenderer implements GeneralizedRenderer, Renderer {
 	 * @param configuration The configuration for the render
 	 * @return A new renderer
 	 */
-	static ConfigurableRenderer create(Configuration configuration) {
+	static @NotNull ConfigurableRenderer create(Configuration configuration) {
 		return CONFIGURATIONS.computeIfAbsent(configuration, ConfigurableRenderer::new);
 	}
 
@@ -112,7 +113,7 @@ final class ConfigurableRenderer implements GeneralizedRenderer, Renderer {
 		}
 	}
 
-	private RenderingVisitor createVisitor(StatementContext statementContext, boolean renderConstantsAsParameters) {
+	private @NotNull RenderingVisitor createVisitor(StatementContext statementContext, boolean renderConstantsAsParameters) {
 
 		if (!this.configuration.isPrettyPrint()) {
 			return new DefaultVisitor(statementContext, renderConstantsAsParameters, this.configuration);

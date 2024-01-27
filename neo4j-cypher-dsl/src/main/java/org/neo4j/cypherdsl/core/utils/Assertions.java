@@ -22,6 +22,8 @@ import java.util.Arrays;
 import java.util.Objects;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Assertions used throughout the Cypher-DSL. Mostly copied over from {@literal org.springframework.util.Assert}. Thanks
@@ -71,7 +73,7 @@ public final class Assertions {
 	 * @param message the exception message to use if the assertion fails
 	 * @throws IllegalArgumentException if the object is {@code null}
 	 */
-	public static void notNull(Object object, String message) {
+	public static void notNull(@NotNull Object object, String message) {
 		if (object == null) {
 			throw new IllegalArgumentException(message);
 		}
@@ -86,7 +88,7 @@ public final class Assertions {
 	 * @param message the exception message to use if the assertion fails
 	 * @throws IllegalArgumentException if the object is not an instance of type
 	 */
-	public static void isInstanceOf(Class<?> type, Object obj, String message) {
+	public static void isInstanceOf(@NotNull Class<?> type, Object obj, String message) {
 		notNull(type, "Type to check against must not be null");
 		if (!type.isInstance(obj)) {
 			throw new IllegalArgumentException(message);
@@ -108,7 +110,7 @@ public final class Assertions {
 		}
 	}
 
-	private static boolean isEmpty(Object[] array) {
+	private static boolean isEmpty(Object @Nullable [] array) {
 		return array == null || array.length == 0 || Arrays.stream(array).allMatch(Objects::isNull);
 	}
 

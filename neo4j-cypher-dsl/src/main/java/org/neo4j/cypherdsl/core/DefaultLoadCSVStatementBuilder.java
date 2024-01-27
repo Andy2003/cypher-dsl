@@ -39,8 +39,8 @@ final class DefaultLoadCSVStatementBuilder extends DefaultStatementBuilder imple
 
 	static final class PrepareLoadCSVStatementImpl implements ExposesLoadCSV, OngoingLoadCSV {
 
-		private final UsingPeriodicCommit usingPeriodicCommit;
-		private final DefaultStatementBuilder source;
+		private final @Nullable UsingPeriodicCommit usingPeriodicCommit;
+		private final @Nullable DefaultStatementBuilder source;
 
 		private URI uri;
 
@@ -83,7 +83,7 @@ final class DefaultLoadCSVStatementBuilder extends DefaultStatementBuilder imple
 		}
 	}
 
-	static DefaultLoadCSVStatementBuilder create(PrepareLoadCSVStatementImpl config, String alias,
+	static @NotNull DefaultLoadCSVStatementBuilder create(@NotNull PrepareLoadCSVStatementImpl config, String alias,
 		@Nullable DefaultStatementBuilder source) {
 
 		// It should be reasonable safe to keep that immutable object around
@@ -104,7 +104,7 @@ final class DefaultLoadCSVStatementBuilder extends DefaultStatementBuilder imple
 	}
 
 	private DefaultLoadCSVStatementBuilder(
-		DefaultStatementBuilder source, UsingPeriodicCommit usingPeriodicCommit, LoadCSV loadCSV) {
+		@NotNull DefaultStatementBuilder source, UsingPeriodicCommit usingPeriodicCommit, LoadCSV loadCSV) {
 		super(source, usingPeriodicCommit, loadCSV);
 		this.usingPeriodicCommit = usingPeriodicCommit;
 		this.loadCSV = loadCSV;

@@ -32,6 +32,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.neo4j.cypherdsl.build.annotations.RegisterForReflection;
 import org.neo4j.cypherdsl.core.AliasedExpression;
 import org.neo4j.cypherdsl.core.Case;
@@ -140,7 +142,7 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 	/**
 	 * Keeps track of scoped, named variables.
 	 */
-	private final ScopingStrategy scopingStrategy;
+	private final @NotNull ScopingStrategy scopingStrategy;
 
 	/**
 	 * A set of aliased expressions that already have been seen and for which an alias must be used on each following
@@ -158,7 +160,7 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 	 */
 	private final Map<Class<? extends Visitor>, Visitor> delegateCache = new ConcurrentHashMap<>();
 
-	private final NameResolvingStrategy nameResolvingStrategy;
+	private final @NotNull NameResolvingStrategy nameResolvingStrategy;
 
 	private final boolean enforceSchema;
 
@@ -199,12 +201,12 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 
 	private final boolean alwaysEscapeNames;
 
-	private final Dialect dialect;
+	private final @NotNull Dialect dialect;
 
 	private boolean inEntity;
 	private boolean inPropertyLookup;
 
-	private Relationship.Direction directionOverride;
+	private Relationship.@Nullable Direction directionOverride;
 
 	DefaultVisitor(StatementContext statementContext) {
 		this(statementContext, false);
@@ -215,7 +217,7 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 	}
 
 	DefaultVisitor(StatementContext statementContext, boolean renderConstantsAsParameters,
-		Configuration configuration) {
+		@NotNull Configuration configuration) {
 		this.nameResolvingStrategy = configuration.isUseGeneratedNames() ?
 			NameResolvingStrategy.useGeneratedNames(statementContext, configuration.getGeneratedNames()) :
 			NameResolvingStrategy.useGivenNames(statementContext);
@@ -232,7 +234,7 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 		this.relationshipDefinitions = configuration.getRelationshipDefinitions();
 	}
 
-	private void enableSeparator(int level, boolean on, Supplier<String> supplier) {
+	private void enableSeparator(int level, boolean on, @Nullable Supplier<String> supplier) {
 		if (on) {
 			separatorOnLevel.put(level,
 				new SeparatorAndSupplier(new AtomicReference<>(""), supplier == null ? () -> "" : supplier));
@@ -241,7 +243,7 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 		}
 	}
 
-	private Optional<SeparatorAndSupplier> separatorOnCurrentLevel() {
+	private @NotNull Optional<SeparatorAndSupplier> separatorOnCurrentLevel() {
 
 		return Optional.ofNullable(separatorOnLevel.get(currentLevel));
 	}
@@ -291,7 +293,7 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 		return PreEnterResult.doEnter();
 	}
 
-	private Visitor newHandler(Class<? extends Visitor> handlerType) {
+	private @NotNull Visitor newHandler(@NotNull Class<? extends Visitor> handlerType) {
 		try {
 			Constructor<? extends Visitor> ctor = handlerType.getDeclaredConstructor(DefaultVisitor.class);
 			return ctor.newInstance(this);
@@ -335,7 +337,7 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 		this.builder.append(suffix);
 	}
 
-	void enter(Match match) {
+	void enter(@NotNull Match match) {
 		if (match.isOptional()) {
 			builder.append("OPTIONAL ");
 		}
@@ -363,13 +365,13 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 		builder.append("MERGE ");
 	}
 
-	void leave(Merge merge) {
+	void leave(@NotNull Merge merge) {
 		if (!merge.hasEvents()) { // The last SET will include this
 			builder.append(" ");
 		}
 	}
 
-	void enter(MergeAction onCreateOrMatchEvent) {
+	void enter(@NotNull MergeAction onCreateOrMatchEvent) {
 		switch (onCreateOrMatchEvent.getType()) {
 			case ON_CREATE -> builder.append("ON CREATE");
 			case ON_MATCH -> builder.append("ON MATCH");
@@ -391,7 +393,7 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 
 	boolean inReturn;
 
-	void enter(Return returning) {
+	void enter(@NotNull Return returning) {
 
 		inReturn = true;
 		if (!returning.isRaw()) {
@@ -411,7 +413,7 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 		builder.append(" ");
 	}
 
-	void enter(Delete delete) {
+	void enter(@NotNull Delete delete) {
 
 		if (delete.isDetach()) {
 			builder.append("DETACH ");
@@ -462,13 +464,13 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 		builder.append(" LIMIT ");
 	}
 
-	void enter(SortItem.Direction direction) {
+	void enter(SortItem.@NotNull Direction direction) {
 		builder
 			.append(" ")
 			.append(direction.getSymbol());
 	}
 
-	void enter(PropertyLookup propertyLookup) {
+	void enter(@NotNull PropertyLookup propertyLookup) {
 
 		inPropertyLookup = true;
 		if (propertyLookup.isDynamicLookup()) {
@@ -478,7 +480,7 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 		}
 	}
 
-	void leave(PropertyLookup propertyLookup) {
+	void leave(@NotNull PropertyLookup propertyLookup) {
 
 		inPropertyLookup = false;
 		if (propertyLookup.isDynamicLookup()) {
@@ -486,7 +488,7 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 		}
 	}
 
-	void enter(FunctionInvocation functionInvocation) {
+	void enter(@NotNull FunctionInvocation functionInvocation) {
 		String functionName = functionInvocation.getFunctionName();
 		if ("elementId".equals(functionName)) {
 			functionName = "toString(id";
@@ -496,7 +498,7 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 			.append("(");
 	}
 
-	void leave(FunctionInvocation functionInvocation) {
+	void leave(@NotNull FunctionInvocation functionInvocation) {
 		String functionName = functionInvocation.getFunctionName();
 		if ("elementId".equals(functionName)) {
 			builder.append(")");
@@ -504,14 +506,14 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 		builder.append(")");
 	}
 
-	void enter(Operation operation) {
+	void enter(@NotNull Operation operation) {
 
 		if (operation.needsGrouping()) {
 			builder.append("(");
 		}
 	}
 
-	void enter(Operator operator) {
+	void enter(@NotNull Operator operator) {
 
 		Operator.Type type = operator.getType();
 		if (type == Operator.Type.LABEL) {
@@ -528,18 +530,18 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 		}
 	}
 
-	void leave(Operation operation) {
+	void leave(@NotNull Operation operation) {
 
 		if (operation.needsGrouping()) {
 			builder.append(")");
 		}
 	}
 
-	void enter(Literal<?> expression) {
+	void enter(@NotNull Literal<?> expression) {
 		builder.append(expression.asString());
 	}
 
-	void enter(Node node) {
+	void enter(@NotNull Node node) {
 
 		builder.append("(");
 
@@ -565,7 +567,7 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 		inEntity = false;
 	}
 
-	void enter(NodeLabel nodeLabel) {
+	void enter(@NotNull NodeLabel nodeLabel) {
 
 		escapeName(nodeLabel.getValue()).ifPresent(label -> builder.append(Symbols.NODE_LABEL_START).append(label));
 	}
@@ -576,7 +578,7 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 	}
 
 	@SuppressWarnings("squid:S3776")
-	void renderLabelExpression(LabelExpression l, LabelExpression.Type parent) {
+	void renderLabelExpression(@Nullable LabelExpression l, LabelExpression.@Nullable Type parent) {
 		if (l == null) {
 			return;
 		}
@@ -620,7 +622,7 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 	}
 
 
-	void enter(Relationship relationship) {
+	void enter(@NotNull Relationship relationship) {
 		skipRelationshipContent = scopingStrategy.hasVisitedBefore(relationship);
 		if (enforceSchema && relationship.getDetails().getDirection() != Relationship.Direction.UNI) {
 			directionOverride = computeDirectionOverride(relationship);
@@ -633,7 +635,7 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 	 * @param node the node
 	 * @return A set of labels
 	 */
-	private java.util.Set<String> getLabels(Node node) {
+	private java.util.@NotNull Set<String> getLabels(@NotNull Node node) {
 		var nl = node.getLabels();
 		if (nl.isEmpty()) {
 			var patternElement = scopingStrategy.lookup(node);
@@ -649,7 +651,7 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 	 * @param relationship the relationship to potentially override
 	 * @return A new direction
 	 */
-	Relationship.Direction computeDirectionOverride(Relationship relationship) {
+	Relationship.@NotNull Direction computeDirectionOverride(@NotNull Relationship relationship) {
 		var sourceLabels = getLabels(relationship.getLeft());
 		var targetLabels = getLabels(relationship.getRight());
 		var details = relationship.getDetails();
@@ -698,7 +700,7 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 		return details.getDirection();
 	}
 
-	void enter(Relationship.Details details) {
+	void enter(Relationship.@NotNull Details details) {
 
 		Relationship.Direction direction = Optional.ofNullable(directionOverride).orElseGet(details::getDirection);
 		builder.append(direction.getSymbolLeft());
@@ -710,7 +712,7 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 		inEntity = true;
 	}
 
-	void enter(RelationshipTypes types) {
+	void enter(@NotNull RelationshipTypes types) {
 
 		if (skipRelationshipContent) {
 			return;
@@ -723,7 +725,7 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 				.collect(Collectors.joining(Symbols.REL_TYP_SEPARATOR, Symbols.REL_TYPE_START, "")));
 	}
 
-	void enter(RelationshipLength length) {
+	void enter(@NotNull RelationshipLength length) {
 
 		if (skipRelationshipContent) {
 			return;
@@ -751,7 +753,7 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 		}
 	}
 
-	void leave(Relationship.Details details) {
+	void leave(Relationship.@NotNull Details details) {
 
 		Relationship.Direction direction = Optional.ofNullable(directionOverride).orElseGet(details::getDirection);
 		if (details.hasContent()) {
@@ -769,7 +771,7 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 		directionOverride = null;
 	}
 
-	void enter(Parameter<?> parameter) {
+	void enter(@NotNull Parameter<?> parameter) {
 
 		Object value = parameter.getValue();
 		if (value instanceof ConstantParameterHolder constantParameterHolder && !renderConstantsAsParameters) {
@@ -784,7 +786,7 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 		builder.append("{");
 	}
 
-	void enter(KeyValueMapEntry map) {
+	void enter(@NotNull KeyValueMapEntry map) {
 
 		builder.append(escapeIfNecessary(map.getKey())).append(": ");
 	}
@@ -815,7 +817,7 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 			.append(" ");
 	}
 
-	void enter(UnionPart unionPart) {
+	void enter(@NotNull UnionPart unionPart) {
 
 		builder.append(" UNION ");
 		if (unionPart.isAll()) {
@@ -891,7 +893,7 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 		builder.append(".");
 	}
 
-	void leave(ProcedureName procedureName) {
+	void leave(@NotNull ProcedureName procedureName) {
 
 		builder.append(procedureName.getValue());
 	}
@@ -906,7 +908,7 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 		builder.append(" ");
 	}
 
-	void enter(Enum<?> anEnum) {
+	void enter(@NotNull Enum<?> anEnum) {
 
 		builder.append(anEnum.name().replace("_", " ")).append(" ");
 	}
@@ -918,7 +920,7 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 		builder.append("CALL {");
 	}
 
-	void leave(Subquery subquery) {
+	void leave(@NotNull Subquery subquery) {
 
 		this.inSubquery = false;
 		int l = builder.length() - 1;
@@ -929,7 +931,7 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 		}
 	}
 
-	void leave(InTransactions inTransactions) {
+	void leave(@NotNull InTransactions inTransactions) {
 
 		int l = builder.length() - 1;
 		if (builder.charAt(l) != ' ') {
@@ -979,7 +981,7 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 		builder.append(" USING ");
 	}
 
-	void enter(LoadCSV loadCSV) {
+	void enter(@NotNull LoadCSV loadCSV) {
 
 		builder.append("LOAD CSV");
 		if (loadCSV.isWithHeaders()) {
@@ -998,7 +1000,7 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 		builder.append(" ");
 	}
 
-	void enter(UsingPeriodicCommit usingPeriodicCommit) {
+	void enter(@NotNull UsingPeriodicCommit usingPeriodicCommit) {
 
 		builder.append("USING PERIODIC COMMIT ");
 		if (usingPeriodicCommit.rate() != null) {
@@ -1006,14 +1008,14 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 		}
 	}
 
-	void enter(Use use) {
+	void enter(@NotNull Use use) {
 		builder.append("USE ");
 		if (use.dynamic()) {
 			builder.append("graph.byName(");
 		}
 	}
 
-	void leave(Use use) {
+	void leave(@NotNull Use use) {
 		if (use.dynamic()) {
 			builder.append(")");
 		}
@@ -1028,13 +1030,13 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 		builder.append(")");
 	}
 
-	void enter(QuantifiedPathPattern.Quantifier quantifier) {
+	void enter(QuantifiedPathPattern.@NotNull Quantifier quantifier) {
 
 		builder.append(quantifier.toString());
 	}
 
 	@Override
-	public String getRenderedContent() {
+	public @NotNull String getRenderedContent() {
 		return this.builder.toString();
 	}
 
@@ -1050,7 +1052,7 @@ class DefaultVisitor extends ReflectiveVisitor implements RenderingVisitor {
 		return SchemaNamesBridge.sanitize(unescapedName, alwaysEscapeNames);
 	}
 
-	protected final String escapeIfNecessary(String potentiallyNonIdentifier) {
+	protected final @Nullable String escapeIfNecessary(String potentiallyNonIdentifier) {
 
 		return SchemaNamesBridge.sanitize(potentiallyNonIdentifier, false).orElse(null);
 	}

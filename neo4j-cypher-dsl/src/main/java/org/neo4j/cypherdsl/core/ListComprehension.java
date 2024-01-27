@@ -61,7 +61,7 @@ public final class ListComprehension implements Expression {
 	 */
 	private final Expression listDefinition;
 
-	static OngoingDefinitionWithVariable with(SymbolicName variable) {
+	static @NotNull OngoingDefinitionWithVariable with(@NotNull SymbolicName variable) {
 
 		Assertions.notNull(variable, "A variable is required");
 		return new Builder(variable);
@@ -109,7 +109,7 @@ public final class ListComprehension implements Expression {
 		 */
 		@NotNull @Contract(pure = true)
 		@SuppressWarnings("deprecation")
-		default ListComprehension returning(Named... variables) {
+		default ListComprehension returning(Named @NotNull ... variables) {
 			return returning(Expressions.createSymbolicNames(variables));
 		}
 
@@ -178,7 +178,7 @@ public final class ListComprehension implements Expression {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 		visitor.enter(this);
 		this.variable.accept(visitor);
 		Operator.IN.accept(visitor);

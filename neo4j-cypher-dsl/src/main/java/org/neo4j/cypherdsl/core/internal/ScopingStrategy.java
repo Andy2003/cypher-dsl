@@ -39,6 +39,7 @@ import java.util.stream.Collectors;
 
 import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.neo4j.cypherdsl.core.Aliased;
 import org.neo4j.cypherdsl.core.AliasedExpression;
 import org.neo4j.cypherdsl.core.Cypher;
@@ -76,7 +77,7 @@ public final class ScopingStrategy {
 	/**
 	 * @return an empty scoping strategy, for internal use only.
 	 */
-	public static ScopingStrategy create() {
+	public static @NotNull ScopingStrategy create() {
 		return new ScopingStrategy();
 	}
 
@@ -85,7 +86,7 @@ public final class ScopingStrategy {
 	 * @param onScopeLeft    Event handlers to b called after leaving local or implicit scope
 	 * @return an empty scoping strategy, for internal use only.
 	 */
-	public static ScopingStrategy create(List<BiConsumer<Visitable, Collection<IdentifiableElement>>> onScopeEntered, List<BiConsumer<Visitable, Collection<IdentifiableElement>>> onScopeLeft) {
+	public static @NotNull ScopingStrategy create(@NotNull List<BiConsumer<Visitable, Collection<IdentifiableElement>>> onScopeEntered, @NotNull List<BiConsumer<Visitable, Collection<IdentifiableElement>>> onScopeLeft) {
 		var strategy = create();
 		strategy.onScopeEntered.addAll(onScopeEntered);
 		strategy.onScopeLeft.addAll(onScopeLeft);
@@ -102,9 +103,9 @@ public final class ScopingStrategy {
 	 */
 	private final Deque<Set<IdentifiableElement>> implicitScope = new ArrayDeque<>();
 
-	private Set<IdentifiableElement> afterStatement = Collections.emptySet();
+	private @NotNull Set<IdentifiableElement> afterStatement = Collections.emptySet();
 
-	private Visitable previous;
+	private @Nullable Visitable previous;
 
 	private boolean inOrder = false;
 
@@ -197,7 +198,7 @@ public final class ScopingStrategy {
 	 * @param namedItem An item that might have been visited in the current scope
 	 * @return {@literal true} if the named item has been visited in the current scope before
 	 */
-	public boolean hasVisitedBefore(Named namedItem) {
+	public boolean hasVisitedBefore(@NotNull Named namedItem) {
 
 		if (!hasScope()) {
 			return false;
@@ -316,7 +317,7 @@ public final class ScopingStrategy {
 		return !this.dequeOfVisitedNamed.isEmpty();
 	}
 
-	private boolean hasVisitedInScope(Collection<IdentifiableElement> visited, Named needle) {
+	private boolean hasVisitedInScope(@NotNull Collection<IdentifiableElement> visited, @NotNull Named needle) {
 
 		return visited.contains(needle) || needle.getSymbolicName().isPresent() && visited.stream()
 			.filter(byHasAName())
@@ -338,7 +339,7 @@ public final class ScopingStrategy {
 	 * @param i The identifiable element
 	 * @return The identifier
 	 */
-	private static String extractIdentifier(IdentifiableElement i) {
+	private static @Nullable String extractIdentifier(IdentifiableElement i) {
 		String value;
 		if (i instanceof Named named) {
 			value = named.getSymbolicName().map(SymbolicName::getValue).orElse(null);
@@ -353,7 +354,7 @@ public final class ScopingStrategy {
 	}
 
 	@NotNull
-	private Predicate<String> identifiedBy(Named needle) {
+	private Predicate<String> identifiedBy(@NotNull Named needle) {
 		return i -> {
 			boolean result = i.equals(needle.getRequiredSymbolicName().getValue());
 			if (result && inSubquery) {
@@ -380,7 +381,7 @@ public final class ScopingStrategy {
 		}
 	}
 
-	private void clearPreviouslyVisitedAfterWith(With with) {
+	private void clearPreviouslyVisitedAfterWith(@NotNull With with) {
 
 		// We need to clear the named cache after defining a with.
 		// Everything not taken into the next step has to go.
@@ -409,7 +410,7 @@ public final class ScopingStrategy {
 		visitedNamed.retainAll(retain);
 	}
 
-	private void clearPreviouslyVisitedAfterReturnish(Visitable returnish) {
+	private void clearPreviouslyVisitedAfterReturnish(@NotNull Visitable returnish) {
 
 		// Everything not returned has to go.
 		Set<IdentifiableElement> retain = new HashSet<>();
@@ -418,7 +419,7 @@ public final class ScopingStrategy {
 
 			int level = 0;
 
-			Visitable entranceLevel1;
+			@Nullable Visitable entranceLevel1;
 
 			@Override
 			public void enter(Visitable segment) {
@@ -478,7 +479,7 @@ public final class ScopingStrategy {
 			.collect(Collectors.collectingAndThen(Collectors.toCollection(LinkedHashSet::new), Collections::unmodifiableSet));
 	}
 
-	public PatternElement lookup(Named node) {
+	public @Nullable PatternElement lookup(@NotNull Named node) {
 
 		if (!hasScope() || node.getSymbolicName().isEmpty()) {
 			return null;
@@ -501,7 +502,7 @@ public final class ScopingStrategy {
 	/**
 	 * @return The set of current imports
 	 */
-	public Set<SymbolicName> getCurrentImports() {
+	public @NotNull Set<SymbolicName> getCurrentImports() {
 		return Optional.ofNullable(this.currentImports.get()).stream().flatMap(v -> v.stream().map(Cypher::name)).collect(Collectors.toSet());
 	}
 }

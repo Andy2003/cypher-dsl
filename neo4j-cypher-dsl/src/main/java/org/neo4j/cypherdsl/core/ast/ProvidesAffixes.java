@@ -20,6 +20,8 @@ package org.neo4j.cypherdsl.core.ast;
 
 import java.util.Optional;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * @author Michael J. Simons
  */
@@ -28,14 +30,14 @@ public interface ProvidesAffixes {
 	/**
 	 * @return A prefix for this visitable.
 	 */
-	default Optional<String> getPrefix() {
+	default @NotNull Optional<String> getPrefix() {
 		return Optional.empty();
 	}
 
 	/**
 	 * @return A suffix for this visitable.
 	 */
-	default Optional<String> getSuffix() {
+	default @NotNull Optional<String> getSuffix() {
 		return Optional.empty();
 	}
 }

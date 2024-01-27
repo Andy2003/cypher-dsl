@@ -23,6 +23,7 @@ import static org.apiguardian.api.API.Status.STABLE;
 import java.util.List;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.neo4j.cypherdsl.core.ast.Visitable;
 import org.neo4j.cypherdsl.core.ast.Visitor;
@@ -40,44 +41,44 @@ import org.neo4j.cypherdsl.core.ast.Visitor;
 @Neo4jVersion(minimum = "4.0.0")
 public final class ExistentialSubquery implements SubqueryExpression, Condition {
 
-	static ExistentialSubquery exists(Match fragment) {
+	static @NotNull ExistentialSubquery exists(@NotNull Match fragment) {
 
 		return new ExistentialSubquery(fragment);
 	}
 
-	static Condition exists(Statement statement, IdentifiableElement... imports) {
+	static @NotNull Condition exists(@NotNull Statement statement, IdentifiableElement... imports) {
 		return new ExistentialSubquery(statement, imports);
 	}
 
-	static Condition exists(List<PatternElement> patternElements, @Nullable Where innerWhere) {
+	static @NotNull Condition exists(@NotNull List<PatternElement> patternElements, @Nullable Where innerWhere) {
 		return new ExistentialSubquery(patternElements, innerWhere);
 	}
 
-	private final ImportingWith importingWith;
+	private final @Nullable ImportingWith importingWith;
 	private final List<Visitable> fragments;
 	@Nullable
 	private  final Where innerWhere;
 
-	ExistentialSubquery(List<PatternElement> fragments, @Nullable Where innerWhere) {
+	ExistentialSubquery(@NotNull List<PatternElement> fragments, @Nullable Where innerWhere) {
 		this.fragments = List.copyOf(fragments);
 		this.importingWith = new ImportingWith();
 		this.innerWhere = innerWhere;
 	}
 
-	ExistentialSubquery(Match fragment) {
+	ExistentialSubquery(@NotNull Match fragment) {
 		this.fragments = List.of(fragment);
 		this.importingWith = new ImportingWith();
 		this.innerWhere = null;
 	}
 
-	ExistentialSubquery(Statement statement, IdentifiableElement... imports) {
+	ExistentialSubquery(@NotNull Statement statement, IdentifiableElement... imports) {
 		this.fragments = List.of(statement);
 		this.importingWith = ImportingWith.of(imports);
 		this.innerWhere = null;
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 		importingWith.accept(visitor);

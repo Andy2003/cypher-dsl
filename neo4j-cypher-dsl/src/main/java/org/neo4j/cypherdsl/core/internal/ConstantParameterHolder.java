@@ -21,6 +21,7 @@ package org.neo4j.cypherdsl.core.internal;
 import static org.apiguardian.api.API.Status.INTERNAL;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.Cypher;
 
 /**
@@ -33,7 +34,7 @@ public final class ConstantParameterHolder {
 
 	private final Object value;
 
-	private final String literalValue;
+	private final @NotNull String literalValue;
 
 	/**
 	 * New instance for a reference to a constant parameter. An additional literal for the parameter will be generated.
@@ -55,7 +56,7 @@ public final class ConstantParameterHolder {
 	/**
 	 * @return the value, but as a Cypher literal
 	 */
-	public String asString() {
+	public @NotNull String asString() {
 		return literalValue;
 	}
 }

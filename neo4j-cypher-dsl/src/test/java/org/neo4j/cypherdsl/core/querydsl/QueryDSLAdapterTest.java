@@ -46,6 +46,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import org.assertj.core.api.Assertions;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -80,7 +81,7 @@ import com.querydsl.core.types.dsl.Param;
  */
 class QueryDSLAdapterTest {
 
-	static Map<String, Object> expected(Object... args) {
+	static @NotNull Map<String, Object> expected(Object @NotNull ... args) {
 		Map<String, Object> result = new HashMap<>();
 		for (int i = 0; i < args.length; i++) {
 			result.put(String.format("pcdsl%02d", i + 1), args[i]);
@@ -212,7 +213,7 @@ class QueryDSLAdapterTest {
 
 	@MethodSource("supportedOpsArgs")
 	@ParameterizedTest(name = "{index} {0}")
-	void supportedOpsWithParameters(String expectedFragment, Predicate predicate, Map<String, Object> expectedParameters) {
+	void supportedOpsWithParameters(String expectedFragment, @NotNull Predicate predicate, Map<String, Object> expectedParameters) {
 
 		Statement statement = Cypher.with(Cypher.literalOf(1).as("e"))
 			.where(Cypher.adapt(predicate).asCondition())
@@ -227,7 +228,7 @@ class QueryDSLAdapterTest {
 
 	@MethodSource("supportedOpsArgs")
 	@ParameterizedTest(name = "{index} {0}")
-	void supportedOpsWithLiterals(String expectedFragment, Predicate predicate, Map<String, Object> expectedParameters) {
+	void supportedOpsWithLiterals(String expectedFragment, @NotNull Predicate predicate, @NotNull Map<String, Object> expectedParameters) {
 
 		Statement statement = Cypher.with(Cypher.literalOf(1).as("e"))
 			.where(Cypher.adapt(predicate).asCondition())
@@ -262,7 +263,7 @@ class QueryDSLAdapterTest {
 
 	@MethodSource("unsupportedOpsShouldBeRecognizedBeforeHandArgs")
 	@ParameterizedTest
-	void unsupportedOpsShouldBeRecognizedBeforeHand(Predicate predicate) {
+	void unsupportedOpsShouldBeRecognizedBeforeHand(@NotNull Predicate predicate) {
 
 		Assertions.assertThatIllegalArgumentException().isThrownBy(() -> Cypher.adapt(predicate).asCondition());
 	}

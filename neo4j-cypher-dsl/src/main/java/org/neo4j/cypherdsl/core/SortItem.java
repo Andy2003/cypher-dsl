@@ -42,7 +42,7 @@ public final class SortItem implements Visitable {
 	private final Expression expression;
 	private final Direction direction;
 
-	static SortItem create(Expression expression, Direction direction) {
+	static @NotNull SortItem create(@NotNull Expression expression, Direction direction) {
 
 		Assertions.notNull(expression, "Expression to sort must not be null.");
 		return new SortItem(expression, Optional.ofNullable(direction).orElse(SortItem.Direction.UNDEFINED));
@@ -73,7 +73,7 @@ public final class SortItem implements Visitable {
 
 	@Override
 	@SuppressWarnings("deprecation")
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 		Expressions.nameOrExpression(this.expression).accept(visitor);

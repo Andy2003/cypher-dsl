@@ -23,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.time.Duration;
 import java.util.stream.Stream;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -32,7 +33,7 @@ import org.junit.jupiter.params.provider.MethodSource;
  */
 class DurationLiteralTest {
 
-	static Stream<Arguments> asStringShouldWork() {
+	static @NotNull Stream<Arguments> asStringShouldWork() {
 		return Stream.of(
 			Arguments.of(Duration.ofDays(1), "duration('P1D')"),
 			Arguments.of(Duration.ofHours(1), "duration('PT1H')"),

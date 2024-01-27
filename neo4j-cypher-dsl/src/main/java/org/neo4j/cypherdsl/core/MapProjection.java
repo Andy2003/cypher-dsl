@@ -52,7 +52,7 @@ public final class MapProjection implements Expression {
 	 * @since 2021.2.3
 	 */
 	@API(status = INTERNAL, since = "2023.9.0")
-	public static MapProjection create(SymbolicName name, Object... content) {
+	public static @NotNull MapProjection create(SymbolicName name, Object... content) {
 
 		return new MapProjection(name, MapExpression.withEntries(createNewContent(content)));
 	}
@@ -74,7 +74,7 @@ public final class MapProjection implements Expression {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 		visitor.enter(this);
 		this.name.accept(visitor);
 		this.map.accept(visitor);
@@ -82,7 +82,7 @@ public final class MapProjection implements Expression {
 	}
 
 	@SuppressWarnings("deprecation")
-	private static Object contentAt(Object[] content, int i) {
+	private static Object contentAt(Object @NotNull [] content, int i) {
 
 		Object currentObject = content[i];
 		if (currentObject instanceof Expression expression) {
@@ -93,7 +93,7 @@ public final class MapProjection implements Expression {
 		return currentObject;
 	}
 
-	private static List<Expression> createNewContent(Object... content) {
+	private static @NotNull List<Expression> createNewContent(Object @NotNull ... content) {
 		final List<Expression> newContent = new ArrayList<>(content.length);
 		final Set<String> knownKeys = new HashSet<>();
 

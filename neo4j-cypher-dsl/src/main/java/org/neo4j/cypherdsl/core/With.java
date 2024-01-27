@@ -21,6 +21,8 @@ package org.neo4j.cypherdsl.core;
 import static org.apiguardian.api.API.Status.STABLE;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.neo4j.cypherdsl.core.ast.Visitable;
 import org.neo4j.cypherdsl.core.ast.Visitor;
 import org.neo4j.cypherdsl.core.internal.Distinct;
@@ -35,13 +37,13 @@ import org.neo4j.cypherdsl.core.internal.Distinct;
 @API(status = STABLE, since = "1.0")
 public final class With implements Visitable, Clause {
 
-	private final Distinct distinct;
+	private final @Nullable Distinct distinct;
 
-	private final ReturnBody body;
+	private final @NotNull ReturnBody body;
 
 	private final Where where;
 
-	With(Return returnClause, Where where) {
+	With(@NotNull Return returnClause, Where where) {
 		this.distinct = returnClause.getDistinct();
 		this.body = returnClause.getBody();
 		this.where = where;
@@ -54,7 +56,7 @@ public final class With implements Visitable, Clause {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 		Visitable.visitIfNotNull(this.distinct, visitor);

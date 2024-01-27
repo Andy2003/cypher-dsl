@@ -66,7 +66,7 @@ public final class AliasedExpression implements Aliased, Expression, Identifiabl
 
 	@Override
 	@SuppressWarnings("deprecation")
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 		Expressions.nameOrExpression(this.delegate).accept(visitor);

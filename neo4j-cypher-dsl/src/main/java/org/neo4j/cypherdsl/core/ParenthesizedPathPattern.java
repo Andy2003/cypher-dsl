@@ -18,6 +18,7 @@
  */
 package org.neo4j.cypherdsl.core;
 
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.ast.Visitor;
 
 /**
@@ -35,7 +36,7 @@ public final class ParenthesizedPathPattern implements PatternElement {
 	 * @return A new patter element
 	 */
 	@Deprecated(forRemoval = true, since = "2023.9.0")
-	public static ParenthesizedPathPattern of(PatternElement patternElement) {
+	public static @NotNull ParenthesizedPathPattern of(PatternElement patternElement) {
 		return new ParenthesizedPathPattern(patternElement);
 	}
 
@@ -46,7 +47,7 @@ public final class ParenthesizedPathPattern implements PatternElement {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 		this.delegate.accept(visitor);

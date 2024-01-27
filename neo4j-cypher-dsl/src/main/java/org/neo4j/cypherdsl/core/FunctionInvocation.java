@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.ast.TypedSubtree;
 import org.neo4j.cypherdsl.core.ast.Visitor;
 import org.neo4j.cypherdsl.core.utils.Assertions;
@@ -76,7 +77,7 @@ public final class FunctionInvocation implements Expression {
 	 * @return The invocation (a valid expression)
 	 * @since 2021.2.3
 	 */
-	public static FunctionInvocation create(FunctionDefinition definition) {
+	public static @NotNull FunctionInvocation create(@NotNull FunctionDefinition definition) {
 
 		return new FunctionInvocation(definition.getImplementationName());
 	}
@@ -89,7 +90,7 @@ public final class FunctionInvocation implements Expression {
 	 * @return The invocation (a valid expression)
 	 * @since 2021.2.3
 	 */
-	public static FunctionInvocation create(FunctionDefinition definition, Expression... expressions) {
+	public static @NotNull FunctionInvocation create(@NotNull FunctionDefinition definition, Expression... expressions) {
 
 		String message = MESSAGE_FMT_EXP_REQUIRED.format(new Object[] { definition.getImplementationName() });
 
@@ -108,7 +109,7 @@ public final class FunctionInvocation implements Expression {
 	 * @return The invocation (a valid expression)
 	 * @since 2021.2.3
 	 */
-	public static FunctionInvocation createDistinct(FunctionDefinition definition, Expression... expressions) {
+	public static @NotNull FunctionInvocation createDistinct(@NotNull FunctionDefinition definition, Expression @NotNull ... expressions) {
 
 		Assertions
 			.isTrue(definition.isAggregate(), Cypher.MESSAGES.getString(MessageKeys.ASSERTIONS_CORRECT_USAGE_OF_DISTINCT));
@@ -133,7 +134,7 @@ public final class FunctionInvocation implements Expression {
 	 * @return A function invocation
 	 * @since 2021.2.3
 	 */
-	public static FunctionInvocation create(FunctionDefinition definition, PatternElement pattern) {
+	public static @NotNull FunctionInvocation create(@NotNull FunctionDefinition definition, @NotNull PatternElement pattern) {
 
 		String message = MESSAGE_FMT_PATTERN_REQUIRED.format(new Object[] { definition.getImplementationName() });
 		Assertions.notNull(pattern, message);
@@ -142,7 +143,7 @@ public final class FunctionInvocation implements Expression {
 			Pattern.of(List.of(pattern)));
 	}
 
-	static FunctionInvocation create(FunctionDefinition definition, TypedSubtree<?> arguments) {
+	static @NotNull FunctionInvocation create(@NotNull FunctionDefinition definition, @NotNull TypedSubtree<?> arguments) {
 
 		Assertions.notNull(arguments,
 			MESSAGE_FMT_ARG_REQUIRED.format(new Object[] { definition.getImplementationName() }));
@@ -175,7 +176,7 @@ public final class FunctionInvocation implements Expression {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 		visitor.enter(this);
 		this.arguments.accept(visitor);
 		visitor.leave(this);

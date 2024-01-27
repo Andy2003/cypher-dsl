@@ -20,6 +20,8 @@ package org.neo4j.cypherdsl.core.renderer;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.neo4j.cypherdsl.build.annotations.RegisterForReflection;
 import org.neo4j.cypherdsl.core.FunctionInvocation;
 import org.neo4j.cypherdsl.core.NestedExpression;
@@ -80,7 +82,7 @@ import org.neo4j.cypherdsl.core.ast.VisitorWithResult;
 			AtomicReference<Visitable> capture = new AtomicReference<>();
 			visitable.accept(new VisitorWithResult() {
 				@Override
-				public EnterResult enterWithResult(Visitable segment) {
+				public @NotNull EnterResult enterWithResult(Visitable segment) {
 					if (segment instanceof NestedExpression) { // The same object
 						return EnterResult.CONTINUE;
 					}
@@ -108,7 +110,7 @@ import org.neo4j.cypherdsl.core.ast.VisitorWithResult;
 
 		boolean insideArguments;
 		int level = 0;
-		T singleArg;
+		@Nullable T singleArg;
 
 		SingleArgExtractor(Class<T> expectedType) {
 			this.expectedType = expectedType;
@@ -116,7 +118,7 @@ import org.neo4j.cypherdsl.core.ast.VisitorWithResult;
 
 		@SuppressWarnings("unchecked")
 		@Override
-		public EnterResult enterWithResult(Visitable segment) {
+		public @NotNull EnterResult enterWithResult(Visitable segment) {
 			if (segment instanceof NestedExpression) {
 				return EnterResult.CONTINUE;
 			}

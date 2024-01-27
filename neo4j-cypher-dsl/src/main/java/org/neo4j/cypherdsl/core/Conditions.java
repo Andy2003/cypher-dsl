@@ -48,7 +48,7 @@ public final class Conditions {
 	 * @return An "includesAll" comparison
 	 * @since 2022.7.0
 	 */
-	static Condition includesAll(Expression lhs, Expression rhs) {
+	static @NotNull Condition includesAll(@NotNull Expression lhs, Expression rhs) {
 		SymbolicName x = SymbolicName.of("x");
 		return Predicates.all(x).in(rhs).where(x.in(lhs));
 	}
@@ -60,7 +60,7 @@ public final class Conditions {
 	 * @return A "not_includes" comparison
 	 * @since 2022.7.0
 	 */
-	static Condition includesAny(Expression lhs, Expression rhs) {
+	static @NotNull Condition includesAny(@NotNull Expression lhs, Expression rhs) {
 		SymbolicName x = SymbolicName.of("x");
 		return Predicates.any(x).in(rhs).where(x.in(lhs));
 	}
@@ -69,7 +69,7 @@ public final class Conditions {
 	 * @param relationshipPattern The pattern being evaluated in a condition
 	 * @return A new condition matching the given pattern
 	 */
-	public static Condition matching(RelationshipPattern relationshipPattern) {
+	public static @NotNull Condition matching(RelationshipPattern relationshipPattern) {
 		return RelationshipPatternCondition.of(relationshipPattern);
 	}
 
@@ -81,7 +81,7 @@ public final class Conditions {
 	 * @param rhs The right hand side of the comparison
 	 * @return A "matches" comparison
 	 */
-	static Condition matches(Expression lhs, Expression rhs) {
+	static @NotNull Condition matches(@NotNull Expression lhs, @NotNull Expression rhs) {
 		return Comparison.create(lhs, Operator.MATCHES, rhs);
 	}
 
@@ -92,7 +92,7 @@ public final class Conditions {
 	 * @param rhs The right hand side of the comparison
 	 * @return An "equals" comparison
 	 */
-	static Condition isEqualTo(Expression lhs, Expression rhs) {
+	static @NotNull Condition isEqualTo(@NotNull Expression lhs, @NotNull Expression rhs) {
 		return Comparison.create(lhs, Operator.EQUALITY, rhs);
 	}
 
@@ -103,7 +103,7 @@ public final class Conditions {
 	 * @param rhs The right hand side of the comparison
 	 * @return An "not equals" comparison
 	 */
-	static Condition isNotEqualTo(Expression lhs, Expression rhs) {
+	static @NotNull Condition isNotEqualTo(@NotNull Expression lhs, @NotNull Expression rhs) {
 		return Comparison.create(lhs, Operator.INEQUALITY, rhs);
 	}
 
@@ -114,7 +114,7 @@ public final class Conditions {
 	 * @param rhs The right hand side of the comparison
 	 * @return An "less than" comparison
 	 */
-	static Condition lt(Expression lhs, Expression rhs) {
+	static @NotNull Condition lt(@NotNull Expression lhs, @NotNull Expression rhs) {
 		return Comparison.create(lhs, Operator.LESS_THAN, rhs);
 	}
 
@@ -125,7 +125,7 @@ public final class Conditions {
 	 * @param rhs The right hand side of the comparison
 	 * @return An "less than or equal" comparison
 	 */
-	static Condition lte(Expression lhs, Expression rhs) {
+	static @NotNull Condition lte(@NotNull Expression lhs, @NotNull Expression rhs) {
 		return Comparison.create(lhs, Operator.LESS_THAN_OR_EQUAL_TO, rhs);
 	}
 
@@ -136,7 +136,7 @@ public final class Conditions {
 	 * @param rhs The right hand side of the comparison
 	 * @return An "greater than or equal" comparison
 	 */
-	static Condition gte(Expression lhs, Expression rhs) {
+	static @NotNull Condition gte(@NotNull Expression lhs, @NotNull Expression rhs) {
 		return Comparison.create(lhs, Operator.GREATER_THAN_OR_EQUAL_TO, rhs);
 	}
 
@@ -147,7 +147,7 @@ public final class Conditions {
 	 * @param rhs The right hand side of the comparison
 	 * @return An "greater than" comparison
 	 */
-	static Condition gt(Expression lhs, Expression rhs) {
+	static @NotNull Condition gt(@NotNull Expression lhs, @NotNull Expression rhs) {
 		return Comparison.create(lhs, Operator.GREATER_THAN, rhs);
 	}
 
@@ -183,7 +183,7 @@ public final class Conditions {
 	 * @param rhs The right hand side of the comparison
 	 * @return A new condition.
 	 */
-	static Condition startsWith(Expression lhs, Expression rhs) {
+	static @NotNull Condition startsWith(@NotNull Expression lhs, @NotNull Expression rhs) {
 		return Comparison.create(lhs, Operator.STARTS_WITH, rhs);
 	}
 
@@ -194,7 +194,7 @@ public final class Conditions {
 	 * @param rhs The right hand side of the comparison
 	 * @return A new condition.
 	 */
-	static Condition contains(Expression lhs, Expression rhs) {
+	static @NotNull Condition contains(@NotNull Expression lhs, @NotNull Expression rhs) {
 		return Comparison.create(lhs, Operator.CONTAINS, rhs);
 	}
 
@@ -205,7 +205,7 @@ public final class Conditions {
 	 * @param rhs The right hand side of the comparison
 	 * @return A new condition.
 	 */
-	static Condition endsWith(Expression lhs, Expression rhs) {
+	static @NotNull Condition endsWith(@NotNull Expression lhs, @NotNull Expression rhs) {
 		return Comparison.create(lhs, Operator.ENDS_WITH, rhs);
 	}
 
@@ -227,7 +227,7 @@ public final class Conditions {
 	 * @param expression The expression to check for {@literal null}
 	 * @return A new condition.
 	 */
-	static Condition isNull(Expression expression) {
+	static @NotNull Condition isNull(@NotNull Expression expression) {
 
 		return Comparison.create(Operator.IS_NULL, expression);
 	}
@@ -238,7 +238,7 @@ public final class Conditions {
 	 * @param expression The expression to check for {@literal null}
 	 * @return A new condition.
 	 */
-	static Condition isNotNull(Expression expression) {
+	static @NotNull Condition isNotNull(@NotNull Expression expression) {
 
 		return Comparison.create(Operator.IS_NOT_NULL, expression);
 	}
@@ -251,7 +251,7 @@ public final class Conditions {
 	 * @deprecated since 2023.9.0, no replacement plan, use something like {@code Functions.size(exp).isEqualTo(Cypher.literalOf(0L))}
 	 */
 	@Deprecated(forRemoval = true)
-	static Condition isEmpty(Expression expression) {
+	static @NotNull Condition isEmpty(Expression expression) {
 
 		return Functions.size(expression).isEqualTo(Cypher.literalOf(0L));
 	}
@@ -259,7 +259,7 @@ public final class Conditions {
 	/**
 	 * @return a condition that is always true.
 	 */
-	public static Condition isTrue() {
+	public static @NotNull Condition isTrue() {
 
 		return ConstantCondition.TRUE;
 	}
@@ -267,7 +267,7 @@ public final class Conditions {
 	/**
 	 * @return a condition that is always false.
 	 */
-	public static Condition isFalse() {
+	public static @NotNull Condition isFalse() {
 
 		return ConstantCondition.FALSE;
 	}
@@ -278,7 +278,7 @@ public final class Conditions {
 	 * @return A condition that checks whether a node has a set of given labels or a relationship a set of given types.
 	 * @since 2021.3.0
 	 */
-	public static Condition hasLabelsOrType(SymbolicName symbolicName, String... labelsOrTypes) {
+	public static @NotNull Condition hasLabelsOrType(@NotNull SymbolicName symbolicName, String... labelsOrTypes) {
 
 		return HasLabelCondition.create(symbolicName, labelsOrTypes);
 	}

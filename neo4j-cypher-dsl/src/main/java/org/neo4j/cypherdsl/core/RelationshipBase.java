@@ -45,11 +45,11 @@ import org.neo4j.cypherdsl.core.utils.Assertions;
 public abstract class RelationshipBase<S extends NodeBase<?>, E extends NodeBase<?>, SELF extends RelationshipBase<S, E, SELF>>
 		extends AbstractPropertyContainer implements Relationship {
 
-	final Node left;
+	final @NotNull Node left;
 
-	final Node right;
+	final @NotNull Node right;
 
-	final Details details;
+	final @NotNull Details details;
 
 	@Nullable
 	final QuantifiedPathPattern.Quantifier quantifier;
@@ -67,12 +67,12 @@ public abstract class RelationshipBase<S extends NodeBase<?>, E extends NodeBase
 	 * @param type            type of the relationship
 	 * @param additionalTypes additional types to add to the relationship
 	 */
-	protected RelationshipBase(S start, String type, E end, String... additionalTypes) {
+	protected RelationshipBase(@NotNull S start, String type, @NotNull E end, String... additionalTypes) {
 
 		this(null, start, Direction.LTR, null, end, mergeTypesIfNecessary(type, additionalTypes));
 	}
 
-	private static String[] mergeTypesIfNecessary(String type, String... additionalTypes) {
+	private static String @NotNull [] mergeTypesIfNecessary(String type, String @Nullable ... additionalTypes) {
 
 		if (additionalTypes != null && additionalTypes.length > 0) {
 			String[] result = new String[1 + additionalTypes.length];
@@ -95,7 +95,7 @@ public abstract class RelationshipBase<S extends NodeBase<?>, E extends NodeBase
 	 *                        for querying, when used in a {@literal CREATE} or {@literal MERGE} clause the runtime will
 	 *                        throw an exception.
 	 */
-	protected RelationshipBase(SymbolicName symbolicName, Node start, String type, Properties properties, Node end,
+	protected RelationshipBase(SymbolicName symbolicName, @NotNull Node start, String type, Properties properties, @NotNull Node end,
 		String... additionalTypes) {
 
 		this(symbolicName, start, Direction.LTR, properties, null, end, mergeTypesIfNecessary(type, additionalTypes));
@@ -110,7 +110,7 @@ public abstract class RelationshipBase<S extends NodeBase<?>, E extends NodeBase
 	 * @param end          end node
 	 * @param type         type of the relationship
 	 */
-	protected RelationshipBase(SymbolicName symbolicName, String type, Node start, Properties properties, Node end) {
+	protected RelationshipBase(SymbolicName symbolicName, String type, @NotNull Node start, Properties properties, @NotNull Node end) {
 		this(symbolicName, start, Direction.LTR, properties, null, end, type);
 	}
 
@@ -133,7 +133,7 @@ public abstract class RelationshipBase<S extends NodeBase<?>, E extends NodeBase
 
 	@NotNull
 	@Override
-	public final SELF withProperties(Object... keysAndValues) {
+	public final SELF withProperties(Object @Nullable ... keysAndValues) {
 
 		MapExpression newProperties = null;
 		if (keysAndValues != null && keysAndValues.length != 0) {
@@ -144,7 +144,7 @@ public abstract class RelationshipBase<S extends NodeBase<?>, E extends NodeBase
 
 	@NotNull
 	@Override
-	public final SELF withProperties(Map<String, Object> newProperties) {
+	public final SELF withProperties(@NotNull Map<String, Object> newProperties) {
 
 		return withProperties(MapExpression.create(newProperties));
 	}
@@ -263,17 +263,17 @@ public abstract class RelationshipBase<S extends NodeBase<?>, E extends NodeBase
 	// Internal API.
 	// ------------------------------------------------------------------------
 
-	RelationshipBase(SymbolicName symbolicName, Node left, Direction direction, QuantifiedPathPattern.Quantifier quantifier, Node right, String... types) {
+	RelationshipBase(SymbolicName symbolicName, @NotNull Node left, Direction direction, QuantifiedPathPattern.Quantifier quantifier, @NotNull Node right, String... types) {
 
 		this(symbolicName, left, direction, null, quantifier, right, types);
 	}
 
-	RelationshipBase(SymbolicName symbolicName, Node left, Direction direction, Properties properties, QuantifiedPathPattern.Quantifier quantifier, Node right, String... types) {
+	RelationshipBase(SymbolicName symbolicName, @NotNull Node left, Direction direction, Properties properties, QuantifiedPathPattern.Quantifier quantifier, @NotNull Node right, String... types) {
 
 		this(left, Details.create(direction, symbolicName, types).with(properties), quantifier, right);
 	}
 
-	RelationshipBase(Node left, Details details, QuantifiedPathPattern.Quantifier quantifier, Node right) {
+	RelationshipBase(@NotNull Node left, @NotNull Details details, QuantifiedPathPattern.Quantifier quantifier, @NotNull Node right) {
 
 		Assertions.notNull(left, "Left node is required.");
 		Assertions.notNull(details, "Details are required.");
@@ -286,7 +286,7 @@ public abstract class RelationshipBase<S extends NodeBase<?>, E extends NodeBase
 	}
 
 	@Override
-	public final void accept(Visitor visitor) {
+	public final void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 

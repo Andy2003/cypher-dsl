@@ -21,6 +21,7 @@ package org.neo4j.cypherdsl.core;
 import static org.apiguardian.api.API.Status.STABLE;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.ast.Visitor;
 import org.neo4j.cypherdsl.core.utils.Assertions;
 
@@ -34,7 +35,7 @@ import org.neo4j.cypherdsl.core.utils.Assertions;
 @API(status = STABLE, since = "1.0")
 public final class ListExpression implements Expression {
 
-	static Expression listOrSingleExpression(Expression... expressions) {
+	static Expression listOrSingleExpression(Expression @NotNull ... expressions) {
 
 		Assertions.notNull(expressions, "Expressions are required.");
 		Assertions.notEmpty(expressions, "At least one expression is required.");
@@ -46,7 +47,7 @@ public final class ListExpression implements Expression {
 		}
 	}
 
-	static ListExpression create(Expression... expressions) {
+	static @NotNull ListExpression create(Expression... expressions) {
 
 		return new ListExpression(new ExpressionList(expressions));
 	}
@@ -58,7 +59,7 @@ public final class ListExpression implements Expression {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 		this.content.accept(visitor);

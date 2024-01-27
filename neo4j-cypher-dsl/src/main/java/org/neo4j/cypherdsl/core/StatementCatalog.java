@@ -29,6 +29,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.renderer.Configuration;
 
 /**
@@ -58,7 +59,7 @@ public sealed interface StatementCatalog permits StatementCatalogBuildingVisitor
 	 * @param label The label to be used
 	 * @return A new label token
 	 */
-	static Token label(String label) {
+	static @NotNull Token label(String label) {
 		return Token.label(label);
 	}
 
@@ -68,7 +69,7 @@ public sealed interface StatementCatalog permits StatementCatalogBuildingVisitor
 	 * @param type The type to be used
 	 * @return A new relationship type token
 	 */
-	static Token type(String type) {
+	static @NotNull Token type(String type) {
 		return Token.type(type);
 	}
 
@@ -78,7 +79,7 @@ public sealed interface StatementCatalog permits StatementCatalogBuildingVisitor
 	 * @param name The name of the property
 	 * @return A new property
 	 */
-	static Property property(String name) {
+	static @NotNull Property property(String name) {
 		return new Property(name);
 	}
 
@@ -89,7 +90,7 @@ public sealed interface StatementCatalog permits StatementCatalogBuildingVisitor
 	 * @param name  The name of the property
 	 * @return A new property
 	 */
-	static Property property(Set<Token> owner, String name) {
+	static @NotNull Property property(Set<Token> owner, String name) {
 		return new Property(owner, name);
 	}
 
@@ -105,7 +106,7 @@ public sealed interface StatementCatalog permits StatementCatalogBuildingVisitor
 	 *
 	 * @return A collection of all labels used
 	 */
-	default Collection<Token> getNodeLabels() {
+	default @NotNull Collection<Token> getNodeLabels() {
 		return getAllTokens().stream().filter(token -> token.type() == Token.Type.NODE_LABEL)
 			.collect(Collectors.toUnmodifiableSet());
 	}
@@ -115,7 +116,7 @@ public sealed interface StatementCatalog permits StatementCatalogBuildingVisitor
 	 *
 	 * @return A collection of all types used
 	 */
-	default Collection<Token> getRelationshipTypes() {
+	default @NotNull Collection<Token> getRelationshipTypes() {
 		return getAllTokens().stream().filter(token -> token.type() == Token.Type.RELATIONSHIP_TYPE)
 			.collect(Collectors.toUnmodifiableSet());
 	}
@@ -185,7 +186,7 @@ public sealed interface StatementCatalog permits StatementCatalogBuildingVisitor
 	 *
 	 * @return A map of all filters.
 	 */
-	default Collection<Filter> getAllFilters() {
+	default @NotNull Collection<Filter> getAllFilters() {
 		Set<Filter> result = new HashSet<>(this.getAllLabelFilters());
 		this.getAllPropertyFilters().forEach((p, f) -> result.addAll(f));
 		return result;
@@ -276,7 +277,7 @@ public sealed interface StatementCatalog permits StatementCatalogBuildingVisitor
 		 * @param label A label, must not be {@literal null}.
 		 * @return A token
 		 */
-		public static Token label(NodeLabel label) {
+		public static @NotNull Token label(NodeLabel label) {
 			return new Token(Token.Type.NODE_LABEL, Objects.requireNonNull(label, "Label must not be null.").getValue());
 		}
 
@@ -286,7 +287,7 @@ public sealed interface StatementCatalog permits StatementCatalogBuildingVisitor
 		 * @param label A label, must not be {@literal null}.
 		 * @return A token
 		 */
-		public static Token label(String label) {
+		public static @NotNull Token label(String label) {
 			return new Token(Token.Type.NODE_LABEL, Objects.requireNonNull(label, "Label must not be null."));
 		}
 
@@ -296,12 +297,12 @@ public sealed interface StatementCatalog permits StatementCatalogBuildingVisitor
 		 * @param type A string representing a type, must not be {@literal null}.
 		 * @return A token
 		 */
-		public static Token type(String type) {
+		public static @NotNull Token type(String type) {
 			return new Token(Token.Type.RELATIONSHIP_TYPE, Objects.requireNonNull(type, "Type must not be null."));
 		}
 
 		@Override
-		public int compareTo(Token o) {
+		public int compareTo(@NotNull Token o) {
 			int result = this.type().compareTo(o.type());
 			if (result == 0) {
 				result = this.value().compareTo(o.value());
@@ -348,7 +349,7 @@ public sealed interface StatementCatalog permits StatementCatalogBuildingVisitor
 		 * @param owningToken The owning token
 		 * @param name        The name of the resolved property
 		 */
-		public Property(Token owningToken, String name) {
+		public Property(@NotNull Token owningToken, String name) {
 			this(Set.of(owningToken), name);
 		}
 
@@ -368,7 +369,7 @@ public sealed interface StatementCatalog permits StatementCatalogBuildingVisitor
 		/**
 		 * @return An optional, owning type.
 		 */
-		public Optional<Token.Type> owningType() {
+		public @NotNull Optional<Token.Type> owningType() {
 			return owningToken.stream().map(Token::type).distinct().findFirst();
 		}
 	}

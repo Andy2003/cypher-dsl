@@ -26,6 +26,8 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This class helps to group items of the same type on the same level of the tree into a list structure that can be
@@ -41,7 +43,7 @@ public abstract class TypedSubtree<T extends Visitable> implements Visitable {
 	/**
 	 * The content of this typed subtree.
 	 */
-	protected final List<T> children;
+	protected final @NotNull List<T> children;
 
 	/**
 	 * Creates a new typed subtree with the given content.
@@ -60,13 +62,13 @@ public abstract class TypedSubtree<T extends Visitable> implements Visitable {
 	 *
 	 * @param children The content of this subtree.
 	 */
-	protected TypedSubtree(Collection<T> children) {
+	protected TypedSubtree(@NotNull Collection<T> children) {
 
 		this.children = new ArrayList<>(children);
 	}
 
 	@Override
-	public final void accept(Visitor visitor) {
+	public final void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 		this.children.forEach(child -> prepareVisit(child).accept(visitor));
@@ -79,7 +81,7 @@ public abstract class TypedSubtree<T extends Visitable> implements Visitable {
 	 * @param child The current child element
 	 * @return The visitable that has been prepared
 	 */
-	protected Visitable prepareVisit(T child) {
+	protected @Nullable Visitable prepareVisit(T child) {
 		return child;
 	}
 

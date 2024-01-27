@@ -101,7 +101,7 @@ public interface Relationship extends RelationshipPattern, PropertyContainer, Ex
 		/**
 		 * The direction between the nodes of the relationship.
 		 */
-		private final Direction direction;
+		private final @NotNull Direction direction;
 
 		@SuppressWarnings("squid:S3077") // Symbolic name is unmodifiable
 		private volatile SymbolicName symbolicName;
@@ -114,7 +114,7 @@ public interface Relationship extends RelationshipPattern, PropertyContainer, Ex
 
 		private final Where innerPredicate;
 
-		static Details create(Direction direction, SymbolicName symbolicName, String... types) {
+		static @NotNull Details create(Direction direction, SymbolicName symbolicName, String @NotNull ... types) {
 
 			List<String> listOfTypes = Arrays.stream(types)
 				.filter(type -> !(type == null || type.isEmpty())).toList();
@@ -122,7 +122,7 @@ public interface Relationship extends RelationshipPattern, PropertyContainer, Ex
 			return create(direction, symbolicName, 	listOfTypes.isEmpty()  ? null : RelationshipTypes.of(types));
 		}
 
-		static Details create(Direction direction, SymbolicName symbolicName, RelationshipTypes types) {
+		static @NotNull Details create(Direction direction, SymbolicName symbolicName, RelationshipTypes types) {
 
 			return new Details(direction, symbolicName, types, null, null, null);
 		}
@@ -152,23 +152,23 @@ public interface Relationship extends RelationshipPattern, PropertyContainer, Ex
 			return this.symbolicName != null || this.types != null || this.length != null || this.properties != null;
 		}
 
-		Details named(SymbolicName newSymbolicName) {
+		@NotNull Details named(@NotNull SymbolicName newSymbolicName) {
 
 			Assertions.notNull(newSymbolicName, "Symbolic name is required.");
 			return new Details(this.direction, newSymbolicName, this.types, this.length, this.properties, this.innerPredicate);
 		}
 
-		Details with(Properties newProperties) {
+		@NotNull Details with(Properties newProperties) {
 
 			return new Details(this.direction, this.symbolicName, this.types, this.length, newProperties, this.innerPredicate);
 		}
 
-		Details unbounded() {
+		@NotNull Details unbounded() {
 
 			return new Details(this.direction, this.symbolicName, this.types, RelationshipLength.unbounded(), this.properties, this.innerPredicate);
 		}
 
-		Details inverse() {
+		@NotNull Details inverse() {
 
 			if (this.direction == Direction.UNI) {
 				return this;
@@ -176,11 +176,11 @@ public interface Relationship extends RelationshipPattern, PropertyContainer, Ex
 			return new Details(this.direction == Direction.LTR ? Direction.RTL : Direction.LTR, null, this.types, this.length, this.properties, this.innerPredicate);
 		}
 
-		Details where(Expression predicate) {
+		@NotNull Details where(Expression predicate) {
 			return new Details(this.direction, this.symbolicName, this.types, this.length, this.properties, Where.from(predicate));
 		}
 
-		Details min(Integer minimum) {
+		@NotNull Details min(@Nullable Integer minimum) {
 
 			if (minimum == null && (this.length == null || this.length.getMinimum() == null)) {
 				return this;
@@ -193,7 +193,7 @@ public interface Relationship extends RelationshipPattern, PropertyContainer, Ex
 			return new Details(this.direction, this.symbolicName, this.types, newLength, properties, this.innerPredicate);
 		}
 
-		Details max(Integer maximum) {
+		@NotNull Details max(@Nullable Integer maximum) {
 
 			if (maximum == null && (this.length == null || this.length.getMaximum() == null)) {
 				return this;
@@ -210,11 +210,11 @@ public interface Relationship extends RelationshipPattern, PropertyContainer, Ex
 		 * @return The direction of the relationship.
 		 */
 		@API(status = INTERNAL)
-		public Direction getDirection() {
+		public @NotNull Direction getDirection() {
 			return direction;
 		}
 
-		Optional<SymbolicName> getSymbolicName() {
+		@NotNull Optional<SymbolicName> getSymbolicName() {
 			return Optional.ofNullable(symbolicName);
 		}
 
@@ -250,7 +250,7 @@ public interface Relationship extends RelationshipPattern, PropertyContainer, Ex
 		}
 
 		@Override
-		public void accept(Visitor visitor) {
+		public void accept(@NotNull Visitor visitor) {
 
 			visitor.enter(this);
 			Visitable.visitIfNotNull(this.symbolicName, visitor);

@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.Statement.SingleQuery;
 import org.neo4j.cypherdsl.core.ast.Visitable;
 import org.neo4j.cypherdsl.core.ast.Visitor;
@@ -38,7 +39,7 @@ import org.neo4j.cypherdsl.core.utils.Assertions;
 @API(status = INTERNAL, since = "1.0")
 class SinglePartQuery extends AbstractStatement implements SingleQuery {
 
-	static SinglePartQuery create(List<Visitable> precedingClauses, Return aReturn) {
+	static @NotNull SinglePartQuery create(@NotNull List<Visitable> precedingClauses, @NotNull Return aReturn) {
 
 		if (precedingClauses.isEmpty() || precedingClauses.get(precedingClauses.size() - 1) instanceof Match) {
 			Assertions.notNull(aReturn, "A return clause is required.");
@@ -51,15 +52,15 @@ class SinglePartQuery extends AbstractStatement implements SingleQuery {
 		}
 	}
 
-	private final List<Visitable> precedingClauses;
+	private final @NotNull List<Visitable> precedingClauses;
 
-	private SinglePartQuery(List<Visitable> precedingClauses) {
+	private SinglePartQuery(@NotNull List<Visitable> precedingClauses) {
 
 		this.precedingClauses = new ArrayList<>(precedingClauses);
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 		precedingClauses.forEach(c -> c.accept(visitor));
@@ -70,14 +71,14 @@ class SinglePartQuery extends AbstractStatement implements SingleQuery {
 
 		private final Return aReturn;
 
-		private SinglePartQueryWithResult(List<Visitable> precedingClauses, Return aReturn) {
+		private SinglePartQueryWithResult(@NotNull List<Visitable> precedingClauses, Return aReturn) {
 			super(precedingClauses);
 
 			this.aReturn = aReturn;
 		}
 
 		@Override
-		public void accept(Visitor visitor) {
+		public void accept(@NotNull Visitor visitor) {
 			visitor.enter(this);
 			super.precedingClauses.forEach(c -> c.accept(visitor));
 			aReturn.accept(visitor);

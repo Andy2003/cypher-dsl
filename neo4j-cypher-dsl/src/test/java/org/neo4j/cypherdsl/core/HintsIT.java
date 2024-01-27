@@ -23,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 import org.assertj.core.api.Assertions;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.neo4j.cypherdsl.core.renderer.Renderer;
@@ -35,10 +36,10 @@ class HintsIT {
 
 	private static final Renderer cypherRenderer = Renderer.getDefaultRenderer();
 
-	private Node liskov = Cypher.node("Scientist").named("liskov").withProperties("name", Cypher.literalOf("Liskov"));
-	private Node wing = Cypher.node("Scientist").named("wing");
-	private Node conway = Cypher.node("Scientist").named("conway").withProperties("name", Cypher.literalOf("Conway"));
-	private Node cs = Cypher.node("Science").named("cs").withProperties("name", Cypher.literalOf("Computer Science"));
+	private @NotNull Node liskov = Cypher.node("Scientist").named("liskov").withProperties("name", Cypher.literalOf("Liskov"));
+	private @NotNull Node wing = Cypher.node("Scientist").named("wing");
+	private @NotNull Node conway = Cypher.node("Scientist").named("conway").withProperties("name", Cypher.literalOf("Conway"));
+	private @NotNull Node cs = Cypher.node("Science").named("cs").withProperties("name", Cypher.literalOf("Computer Science"));
 
 	@Nested
 	class IndexHints {

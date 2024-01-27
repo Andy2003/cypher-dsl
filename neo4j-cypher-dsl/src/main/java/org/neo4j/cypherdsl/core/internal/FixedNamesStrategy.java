@@ -18,6 +18,7 @@
  */
 package org.neo4j.cypherdsl.core.internal;
 
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.AliasedExpression;
 import org.neo4j.cypherdsl.core.Parameter;
 import org.neo4j.cypherdsl.core.StatementContext;
@@ -41,7 +42,7 @@ final class FixedNamesStrategy implements NameResolvingStrategy {
 	}
 
 	@Override
-	public String resolve(AliasedExpression aliasedExpression, boolean isNew, boolean inLastReturn) {
+	public @NotNull String resolve(@NotNull AliasedExpression aliasedExpression, boolean isNew, boolean inLastReturn) {
 		return aliasedExpression.getAlias();
 	}
 

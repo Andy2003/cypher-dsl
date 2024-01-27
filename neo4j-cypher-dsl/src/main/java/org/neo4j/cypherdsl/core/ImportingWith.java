@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.neo4j.cypherdsl.core.ast.Visitable;
 import org.neo4j.cypherdsl.core.ast.Visitor;
@@ -46,7 +47,7 @@ record ImportingWith(@Nullable With imports, @Nullable With renames) implements 
 	}
 
 	@Nullable
-	static ImportingWith of(IdentifiableElement... imports) {
+	static ImportingWith of(IdentifiableElement @NotNull ... imports) {
 
 		With optionalImports;
 		With optionalRenames;
@@ -79,7 +80,7 @@ record ImportingWith(@Nullable With imports, @Nullable With renames) implements 
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 		Visitable.visitIfNotNull(this.imports, visitor);
 		Visitable.visitIfNotNull(this.renames, visitor);
 	}

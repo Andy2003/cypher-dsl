@@ -22,6 +22,8 @@ import static org.apiguardian.api.API.Status.STABLE;
 
 import org.apiguardian.api.API;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.neo4j.cypherdsl.core.ast.Visitable;
 import org.neo4j.cypherdsl.core.ast.Visitor;
 
@@ -44,7 +46,7 @@ public final class Properties implements Visitable {
 	 * @return A properties expression
 	 */
 	@Contract(pure = true)
-	public static Properties create(MapExpression expression) {
+	public static @Nullable Properties create(@Nullable MapExpression expression) {
 
 		return expression == null ? null : new Properties(expression);
 	}
@@ -54,7 +56,7 @@ public final class Properties implements Visitable {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 		this.value.accept(visitor);

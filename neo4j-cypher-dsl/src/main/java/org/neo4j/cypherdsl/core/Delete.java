@@ -26,6 +26,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.neo4j.cypherdsl.core.ast.Visitor;
 
 /**
@@ -45,7 +47,7 @@ public final class Delete extends AbstractClause implements UpdatingClause {
 	 * @return A {@link Delete} clause
 	 * @since 2023.4.0
 	 */
-	static Delete delete(Expression toBeDeleted, Expression... more) {
+	static @NotNull Delete delete(@NotNull Expression toBeDeleted, Expression... more) {
 		return delete(false, toBeDeleted, more);
 	}
 
@@ -58,7 +60,7 @@ public final class Delete extends AbstractClause implements UpdatingClause {
 	 * @return A {@link Delete} clause
 	 * @since 2023.4.0
 	 */
-	static Delete delete(boolean detach, Expression toBeDeleted, Expression... more) {
+	static @NotNull Delete delete(boolean detach, @NotNull Expression toBeDeleted, Expression @Nullable ... more) {
 		if (more == null || more.length == 0) {
 			return new Delete(new ExpressionList(List.of(toBeDeleted)), detach);
 		}
@@ -78,7 +80,7 @@ public final class Delete extends AbstractClause implements UpdatingClause {
 	 * @return A {@link Delete} clause
 	 * @since 2023.4.0
 	 */
-	static Delete detachDelete(Expression toBeDeleted, Expression... more) {
+	static @NotNull Delete detachDelete(@NotNull Expression toBeDeleted, Expression... more) {
 		return delete(true, toBeDeleted, more);
 	}
 
@@ -100,7 +102,7 @@ public final class Delete extends AbstractClause implements UpdatingClause {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 		visitor.enter(this);
 		deleteItems.accept(visitor);
 		visitor.leave(this);

@@ -21,6 +21,7 @@ package org.neo4j.cypherdsl.core;
 import static org.apiguardian.api.API.Status.STABLE;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.ast.Visitor;
 
 /**
@@ -33,7 +34,7 @@ import org.neo4j.cypherdsl.core.ast.Visitor;
 @API(status = STABLE, since = "1.0")
 public final class Unwind extends AbstractClause implements ReadingClause {
 
-	private final Expression expressionToUnwind;
+	private final @NotNull Expression expressionToUnwind;
 
 	Unwind(Expression expressionToUnwind, String variable) {
 
@@ -41,7 +42,7 @@ public final class Unwind extends AbstractClause implements ReadingClause {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 		visitor.enter(this);
 		expressionToUnwind.accept(visitor);
 		visitor.leave(this);

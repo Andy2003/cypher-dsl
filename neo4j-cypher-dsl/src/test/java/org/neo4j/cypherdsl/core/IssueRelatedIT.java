@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Stream;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -1139,7 +1140,7 @@ class IssueRelatedIT {
 				+ " RETURN [this0{.title}] AS data");
 	}
 
-	public static Statement createSomewhatComplexStatement() {
+	public static @NotNull Statement createSomewhatComplexStatement() {
 		Node this0 = Cypher.node("Movie").named("this0");
 
 		Condition validationCondition = Cypher.any("r")
@@ -1217,7 +1218,7 @@ class IssueRelatedIT {
 			"RETURN datetime({year: 2022, month: 6, day: 19, hour: 15, minute: 47, second: 38, nanosecond: 590917308, timezone: 'UTC'})");
 	}
 
-	static MapExpression toMap(ZonedDateTime value) {
+	static @NotNull MapExpression toMap(@NotNull ZonedDateTime value) {
 		return Cypher.mapOf(
 			"year", Cypher.literalOf(value.getYear()),
 			"month", Cypher.literalOf(value.getMonthValue()),
@@ -1563,7 +1564,7 @@ class IssueRelatedIT {
 		assertThat(cypher).isEqualTo(expected);
 	}
 
-	static Stream<Arguments> conditionExpressionShouldWorkInReturn() {
+	static @NotNull Stream<Arguments> conditionExpressionShouldWorkInReturn() {
 		return Stream.of(
 			Arguments.of(Cypher.returning(Cypher.literalOf(1), Cypher.literalTrue().asCondition()).build(), "RETURN 1, true"),
 			Arguments.of(Cypher.returning(Cypher.literalOf(1), Cypher.literalTrue().asCondition().and(Cypher.literalFalse().asCondition())).build(), "RETURN 1, (true AND false)"),
@@ -1573,7 +1574,7 @@ class IssueRelatedIT {
 
 	@ParameterizedTest(name = "{1}") // GH-605
 	@MethodSource
-	void conditionExpressionShouldWorkInReturn(Statement statement, String expected) {
+	void conditionExpressionShouldWorkInReturn(@NotNull Statement statement, String expected) {
 		String cypher = statement.getCypher();
 		assertThat(cypher).isEqualTo(expected);
 	}

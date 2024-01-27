@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.ast.Visitor;
 import org.neo4j.cypherdsl.core.utils.Assertions;
 
@@ -39,7 +40,7 @@ public final class HasLabelCondition implements Condition {
 	private final SymbolicName nodeName;
 	private final List<NodeLabel> nodeLabels;
 
-	static HasLabelCondition create(SymbolicName nodeName, String... labels) {
+	static @NotNull HasLabelCondition create(@NotNull SymbolicName nodeName, String @NotNull ... labels) {
 
 		Assertions.notNull(nodeName, "A symbolic name for the node is required.");
 		Assertions.notNull(labels, "Labels to query are required.");
@@ -59,7 +60,7 @@ public final class HasLabelCondition implements Condition {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 		nodeName.accept(visitor);

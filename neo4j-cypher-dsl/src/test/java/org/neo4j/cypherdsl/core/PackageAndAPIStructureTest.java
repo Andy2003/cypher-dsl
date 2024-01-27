@@ -29,6 +29,7 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.fields;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -84,7 +85,7 @@ class PackageAndAPIStructureTest {
 			.and(not(modifier(JavaModifier.ABSTRACT)))
 			.and(new DescribedPredicate<>("Is internal API") {
 				@Override
-				public boolean test(JavaClass input) {
+				public boolean test(@NotNull JavaClass input) {
 					API.Status status = input.getAnnotationOfType(API.class).status();
 					return "INTERNAL".equals(status.name());
 				}

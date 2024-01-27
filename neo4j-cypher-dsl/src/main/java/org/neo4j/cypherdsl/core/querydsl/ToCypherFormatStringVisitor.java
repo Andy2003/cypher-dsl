@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.Cypher;
 
 import com.querydsl.core.types.Constant;
@@ -61,7 +62,7 @@ public final class ToCypherFormatStringVisitor implements Visitor<String, Cypher
 	}
 
 	@Override
-	public String visit(FactoryExpression<?> e, CypherContext context) {
+	public @NotNull String visit(@NotNull FactoryExpression<?> e, CypherContext context) {
 
 		final StringBuilder builder = new StringBuilder();
 		builder.append("new ").append(e.getType().getSimpleName()).append("(");
@@ -78,7 +79,7 @@ public final class ToCypherFormatStringVisitor implements Visitor<String, Cypher
 	}
 
 	@Override
-	public String visit(Operation<?> o, CypherContext context) {
+	public @NotNull String visit(@NotNull Operation<?> o, @NotNull CypherContext context) {
 
 		final Template template = context.getTemplate(o.getOperator());
 		if (template != null) {
@@ -106,14 +107,14 @@ public final class ToCypherFormatStringVisitor implements Visitor<String, Cypher
 	}
 
 	@Override
-	public String visit(ParamExpression<?> param, CypherContext context) {
+	public @NotNull String visit(@NotNull ParamExpression<?> param, @NotNull CypherContext context) {
 
 		context.add(Cypher.parameter(param.getName()));
 		return "$E";
 	}
 
 	@Override
-	public String visit(Path<?> p, CypherContext context) {
+	public String visit(@NotNull Path<?> p, @NotNull CypherContext context) {
 
 		final Path<?> parent = p.getMetadata().getParent();
 		final Object elem = p.getMetadata().getElement();
@@ -140,12 +141,12 @@ public final class ToCypherFormatStringVisitor implements Visitor<String, Cypher
 	}
 
 	@Override
-	public String visit(SubQueryExpression<?> expr, CypherContext context) {
+	public String visit(@NotNull SubQueryExpression<?> expr, CypherContext context) {
 		return expr.getMetadata().toString();
 	}
 
 	@Override
-	public String visit(TemplateExpression<?> expr, CypherContext context) {
+	public @NotNull String visit(@NotNull TemplateExpression<?> expr, CypherContext context) {
 
 		final StringBuilder builder = new StringBuilder();
 		for (Template.Element element : expr.getTemplate().getElements()) {
@@ -160,7 +161,7 @@ public final class ToCypherFormatStringVisitor implements Visitor<String, Cypher
 	}
 
 	@Override
-	public String visit(Constant<?> expr, CypherContext context) {
+	public @NotNull String visit(@NotNull Constant<?> expr, @NotNull CypherContext context) {
 
 		Object constantValue = expr.getConstant();
 		if (constantValue == null) {

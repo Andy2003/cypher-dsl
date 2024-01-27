@@ -53,7 +53,7 @@ public final class Clauses {
 	 * @since 2022.0.0
 	 */
 	@NotNull
-	public static Clause match(boolean optional, List<PatternElement> patternElements,
+	public static Clause match(boolean optional, @NotNull List<PatternElement> patternElements,
 		@Nullable Where optionalWhere,
 		@Nullable List<Hint> optionalHints) {
 
@@ -68,7 +68,7 @@ public final class Clauses {
 	 * @return an immutable delete clause
 	 */
 	@NotNull
-	public static Clause delete(boolean detach, List<Expression> expressions) {
+	public static Clause delete(boolean detach, @NotNull List<Expression> expressions) {
 
 		return new Delete(new ExpressionList(expressions), detach);
 	}
@@ -84,7 +84,7 @@ public final class Clauses {
 	 * @return an immutable return clause
 	 */
 	@NotNull
-	public static Return returning(boolean distinct, List<Expression> expressions,
+	public static Return returning(boolean distinct, @NotNull List<Expression> expressions,
 		@Nullable List<SortItem> optionalSortItems,
 		@Nullable Expression optionalSkip, @Nullable Expression optionalLimit) {
 
@@ -102,7 +102,7 @@ public final class Clauses {
 	 * @return an immutable create clause
 	 */
 	@NotNull
-	public static Clause create(List<PatternElement> patternElements) {
+	public static Clause create(@NotNull List<PatternElement> patternElements) {
 
 		return new Create(Pattern.of(patternElements));
 	}
@@ -115,7 +115,7 @@ public final class Clauses {
 	 * @return an immutable merge clause
 	 */
 	@NotNull
-	public static Clause merge(List<PatternElement> patternElements, @Nullable List<MergeAction> mergeActions) {
+	public static Clause merge(@NotNull List<PatternElement> patternElements, @Nullable List<MergeAction> mergeActions) {
 
 		return new Merge(Pattern.of(patternElements), mergeActions == null ? Collections.emptyList() : mergeActions);
 	}
@@ -129,7 +129,7 @@ public final class Clauses {
 	 * @return an immutable with clause
 	 * @since 2022.0.0
 	 */
-	public static Clause with(Return returnClause, @Nullable Where optionalWhere) {
+	public static @NotNull Clause with(@NotNull Return returnClause, @Nullable Where optionalWhere) {
 
 		return new With(returnClause, optionalWhere);
 	}
@@ -140,7 +140,7 @@ public final class Clauses {
 	 * @param expressions Expressions pointing to a list of properties or labels that shall be removed
 	 * @return an immutable remove clause
 	 */
-	public static Clause remove(List<Expression> expressions) {
+	public static @NotNull Clause remove(@NotNull List<Expression> expressions) {
 
 		return new Remove(new ExpressionList(expressions));
 	}
@@ -151,7 +151,7 @@ public final class Clauses {
 	 * @param expressions Expressions pointing to a list of properties or labels that shall be set
 	 * @return an immutable set clause
 	 */
-	public static Clause set(List<Expression> expressions) {
+	public static @NotNull Clause set(@NotNull List<Expression> expressions) {
 
 		return new Set(new ExpressionList(expressions));
 	}
@@ -163,7 +163,7 @@ public final class Clauses {
 	 * @param name       The name on which to unwind
 	 * @return an immutable unwind clause
 	 */
-	public static Clause unwind(Expression expression, SymbolicName name) {
+	public static @NotNull Clause unwind(Expression expression, @NotNull SymbolicName name) {
 
 		return new Unwind(expression, name.getValue());
 	}
@@ -177,7 +177,7 @@ public final class Clauses {
 	 * @param fieldTerminator the field terminator
 	 * @return an immutable clause
 	 */
-	public static Clause loadCSV(boolean withHeaders, StringLiteral uri, SymbolicName alias,
+	public static @NotNull Clause loadCSV(boolean withHeaders, @NotNull StringLiteral uri, @NotNull SymbolicName alias,
 		@Nullable String fieldTerminator) {
 
 		return new LoadCSV(URI.create(uri.getContent().toString()), withHeaders, alias.getValue())
@@ -195,7 +195,7 @@ public final class Clauses {
 	 * @return An immutable clause
 	 * @since 2022.0.0
 	 */
-	public static Clause callClause(List<String> namespace, String name, @Nullable List<Expression> arguments,
+	public static @NotNull Clause callClause(@NotNull List<String> namespace, String name, @Nullable List<Expression> arguments,
 		@Nullable List<Expression> resultItems, @Nullable Where optionalWhere) {
 
 		return ProcedureCallImpl.create(ProcedureName.from(namespace, name),
@@ -212,7 +212,7 @@ public final class Clauses {
 	 * @param statement A statement to be used inside the sub-query.
 	 * @return An immutable sub-query clause.
 	 */
-	public static Clause callClause(Statement statement) {
+	public static @NotNull Clause callClause(Statement statement) {
 
 		return Subquery.call(statement);
 	}
@@ -225,7 +225,7 @@ public final class Clauses {
 	 * @param updatingClauses The updating clauses
 	 * @return An immutable foreach clause
 	 */
-	public static Clause forEach(SymbolicName v, Expression list, List<Clause> updatingClauses) {
+	public static @NotNull Clause forEach(SymbolicName v, Expression list, @NotNull List<Clause> updatingClauses) {
 
 		Assertions.isTrue(updatingClauses.stream().allMatch(UpdatingClause.class::isInstance),
 			"Only updating clauses SET, REMOVE, CREATE, MERGE, DELETE, and FOREACH are allowed as clauses applied inside FOREACH.");

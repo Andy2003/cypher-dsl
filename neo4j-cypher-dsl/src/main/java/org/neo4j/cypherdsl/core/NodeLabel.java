@@ -21,6 +21,7 @@ package org.neo4j.cypherdsl.core;
 import static org.apiguardian.api.API.Status.STABLE;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.ast.Visitable;
 
 /**
@@ -47,7 +48,7 @@ public final class NodeLabel implements Visitable {
 	}
 
 	@Override
-	public String toString() {
+	public @NotNull String toString() {
 		return "NodeLabel{" +
 			"value='" + value + '\'' +
 			'}';

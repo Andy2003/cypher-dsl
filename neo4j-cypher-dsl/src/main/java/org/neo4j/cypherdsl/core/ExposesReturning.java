@@ -22,6 +22,7 @@ import static org.apiguardian.api.API.Status.STABLE;
 
 import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.neo4j.cypherdsl.core.annotations.CheckReturnValue;
 
 import java.util.Arrays;
@@ -45,7 +46,7 @@ public interface ExposesReturning {
 	 */
 	@NotNull @CheckReturnValue
 	@SuppressWarnings("deprecation")
-	default StatementBuilder.OngoingReadingAndReturn returning(String... variables) {
+	default StatementBuilder.OngoingReadingAndReturn returning(String @NotNull ... variables) {
 		return returning(Expressions.createSymbolicNames(variables));
 	}
 
@@ -57,7 +58,7 @@ public interface ExposesReturning {
 	 */
 	@NotNull @CheckReturnValue
 	@SuppressWarnings("deprecation")
-	default StatementBuilder.OngoingReadingAndReturn returning(Named... variables) {
+	default StatementBuilder.OngoingReadingAndReturn returning(Named @NotNull ... variables) {
 		return returning(Expressions.createSymbolicNames(variables));
 	}
 
@@ -68,7 +69,7 @@ public interface ExposesReturning {
 	 * @return A match that can be build now
 	 */
 	@NotNull @CheckReturnValue
-	default StatementBuilder.OngoingReadingAndReturn returning(Expression... expressions) {
+	default StatementBuilder.OngoingReadingAndReturn returning(Expression @Nullable ... expressions) {
 		return returning(expressions == null ? null : Arrays.asList(expressions));
 	}
 
@@ -91,7 +92,7 @@ public interface ExposesReturning {
 	 */
 	@NotNull @CheckReturnValue
 	@SuppressWarnings("deprecation")
-	default StatementBuilder.OngoingReadingAndReturn returningDistinct(String... variables) {
+	default StatementBuilder.OngoingReadingAndReturn returningDistinct(String @NotNull ... variables) {
 		return returningDistinct(Expressions.createSymbolicNames(variables));
 	}
 
@@ -103,7 +104,7 @@ public interface ExposesReturning {
 	 */
 	@NotNull @CheckReturnValue
 	@SuppressWarnings("deprecation")
-	default StatementBuilder.OngoingReadingAndReturn returningDistinct(Named... variables) {
+	default StatementBuilder.OngoingReadingAndReturn returningDistinct(Named @NotNull ... variables) {
 		return returningDistinct(Expressions.createSymbolicNames(variables));
 	}
 
@@ -114,7 +115,7 @@ public interface ExposesReturning {
 	 * @return A match that can be build now
 	 */
 	@NotNull @CheckReturnValue
-	default StatementBuilder.OngoingReadingAndReturn returningDistinct(Expression... expressions) {
+	default StatementBuilder.OngoingReadingAndReturn returningDistinct(Expression @Nullable ... expressions) {
 		return returningDistinct(expressions == null ? null : Arrays.asList(expressions));
 	}
 

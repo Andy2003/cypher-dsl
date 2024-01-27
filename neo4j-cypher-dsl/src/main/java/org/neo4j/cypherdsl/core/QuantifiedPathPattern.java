@@ -46,7 +46,7 @@ public final class QuantifiedPathPattern implements PatternElement {
 	 * @param upperBound upper bound, must be greater than or equal to the lower bound
 	 * @return a quantifier
 	 */
-	public static Quantifier interval(Integer lowerBound, Integer upperBound) {
+	public static @NotNull Quantifier interval(Integer lowerBound, Integer upperBound) {
 
 		return new IntervalQuantifier(lowerBound, upperBound);
 	}
@@ -54,7 +54,7 @@ public final class QuantifiedPathPattern implements PatternElement {
 	/**
 	 * {@return the <code>+</code> quantifier}
 	 */
-	public static Quantifier plus() {
+	public static @NotNull Quantifier plus() {
 
 		return PlusQuantifier.INSTANCE;
 	}
@@ -62,7 +62,7 @@ public final class QuantifiedPathPattern implements PatternElement {
 	/**
 	 * {@return the <code>*</code> quantifier}
 	 */
-	public static Quantifier star() {
+	public static @NotNull Quantifier star() {
 
 		return StarQuantifier.INSTANCE;
 	}
@@ -71,7 +71,7 @@ public final class QuantifiedPathPattern implements PatternElement {
 
 	private final Quantifier quantifier;
 
-	static QuantifiedPathPattern of(PatternElement patternElement, @Nullable Quantifier quantifier) {
+	static @NotNull QuantifiedPathPattern of(PatternElement patternElement, @Nullable Quantifier quantifier) {
 
 		var delegate = patternElement instanceof TargetPattern ppp ? ppp : new TargetPattern(patternElement, null);
 
@@ -84,7 +84,7 @@ public final class QuantifiedPathPattern implements PatternElement {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 		visitor.enter(this);
 		this.delegate.accept(visitor);
 		Visitable.visitIfNotNull(quantifier, visitor);
@@ -116,7 +116,7 @@ public final class QuantifiedPathPattern implements PatternElement {
 		}
 
 		@Override
-		public void accept(Visitor visitor) {
+		public void accept(@NotNull Visitor visitor) {
 
 			visitor.enter(this);
 			this.delegate.accept(visitor);
@@ -154,7 +154,7 @@ public final class QuantifiedPathPattern implements PatternElement {
 		}
 
 		@Override
-		public String toString() {
+		public @NotNull String toString() {
 			var result = "{";
 			result += (lowerBound() == null ? "0" : lowerBound());
 			result += ",";
@@ -174,7 +174,7 @@ public final class QuantifiedPathPattern implements PatternElement {
 		INSTANCE;
 
 		@Override
-		public String toString() {
+		public @NotNull String toString() {
 			return "+";
 		}
 	}
@@ -187,7 +187,7 @@ public final class QuantifiedPathPattern implements PatternElement {
 		INSTANCE;
 
 		@Override
-		public String toString() {
+		public @NotNull String toString() {
 			return "*";
 		}
 	}

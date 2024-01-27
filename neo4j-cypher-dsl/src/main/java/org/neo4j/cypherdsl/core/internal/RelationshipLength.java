@@ -21,6 +21,8 @@ package org.neo4j.cypherdsl.core.internal;
 import static org.apiguardian.api.API.Status.INTERNAL;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.neo4j.cypherdsl.core.ast.Visitable;
 
 /**
@@ -32,9 +34,9 @@ import org.neo4j.cypherdsl.core.ast.Visitable;
 @API(status = INTERNAL, since = "1.0")
 public final class RelationshipLength implements Visitable {
 
-	private final Integer minimum;
+	private final @Nullable Integer minimum;
 
-	private final Integer maximum;
+	private final @Nullable Integer maximum;
 
 	private final boolean unbounded;
 
@@ -43,7 +45,7 @@ public final class RelationshipLength implements Visitable {
 	 *
 	 * @return The new length definition
 	 */
-	public static RelationshipLength unbounded() {
+	public static @NotNull RelationshipLength unbounded() {
 		return new RelationshipLength(null, null);
 	}
 
@@ -54,11 +56,11 @@ public final class RelationshipLength implements Visitable {
 	 * @param maximum Maximum length
 	 * @return The new length definition
 	 */
-	public static RelationshipLength of(Integer minimum, Integer maximum) {
+	public static @NotNull RelationshipLength of(Integer minimum, Integer maximum) {
 		return new RelationshipLength(minimum, maximum);
 	}
 
-	private RelationshipLength(Integer minimum, Integer maximum) {
+	private RelationshipLength(@Nullable Integer minimum, @Nullable Integer maximum) {
 		this.minimum = minimum;
 		this.maximum = maximum;
 		this.unbounded = minimum == null && maximum == null;
@@ -68,7 +70,7 @@ public final class RelationshipLength implements Visitable {
 	 * @return Minimum number of hops to match.
 	 */
 	@API(status = INTERNAL)
-	public Integer getMinimum() {
+	public @Nullable Integer getMinimum() {
 		return minimum;
 	}
 
@@ -76,7 +78,7 @@ public final class RelationshipLength implements Visitable {
 	 * @return Maximum number of hops to match.
 	 */
 	@API(status = INTERNAL)
-	public Integer getMaximum() {
+	public @Nullable Integer getMaximum() {
 		return maximum;
 	}
 

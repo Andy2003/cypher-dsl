@@ -71,7 +71,7 @@ public interface LoadCSVStatementBuilder extends StatementBuilder {
 		 * @return A statement builder supporting all available clauses plus an option to configure the field terminator
 		 */
 		@NotNull @Contract(pure = true)
-		default LoadCSVStatementBuilder as(SymbolicName alias) {
+		default LoadCSVStatementBuilder as(@NotNull SymbolicName alias) {
 			return as(alias.getValue());
 		}
 

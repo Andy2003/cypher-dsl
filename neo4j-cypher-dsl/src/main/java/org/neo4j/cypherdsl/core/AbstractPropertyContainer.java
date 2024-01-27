@@ -52,41 +52,41 @@ abstract class AbstractPropertyContainer implements PropertyContainer {
 		return InternalPropertyImpl.create(this, lookup);
 	}
 
-	static IllegalStateException noNameException() {
+	static @NotNull IllegalStateException noNameException() {
 		return new IllegalStateException(Cypher.MESSAGES.getString(MessageKeys.ASSERTIONS_REQUIRES_NAME_FOR_MUTATION));
 	}
 
 	@NotNull
 	@Override
 	@SuppressWarnings("deprecation")
-	public final Operation mutate(Parameter<?> parameter) {
+	public final Operation mutate(@NotNull Parameter<?> parameter) {
 		return Operations.mutate(this.getSymbolicName().orElseThrow(AbstractPropertyContainer::noNameException), parameter);
 	}
 
 	@NotNull
 	@Override
 	@SuppressWarnings("deprecation")
-	public final Operation mutate(MapExpression properties) {
+	public final Operation mutate(@NotNull MapExpression properties) {
 		return Operations.mutate(this.getSymbolicName().orElseThrow(AbstractPropertyContainer::noNameException), properties);
 	}
 
 	@NotNull
 	@Override
 	@SuppressWarnings("deprecation")
-	public final Operation set(Parameter<?> parameter) {
+	public final Operation set(@NotNull Parameter<?> parameter) {
 		return Operations.set(this.getSymbolicName().orElseThrow(AbstractPropertyContainer::noNameException), parameter);
 	}
 
 	@NotNull
 	@Override
 	@SuppressWarnings("deprecation")
-	public final Operation set(MapExpression properties) {
+	public final Operation set(@NotNull MapExpression properties) {
 		return Operations.set(this.getSymbolicName().orElseThrow(AbstractPropertyContainer::noNameException), properties);
 	}
 
 	@NotNull
 	@Override
-	public final MapProjection project(List<Object> entries) {
+	public final MapProjection project(@NotNull List<Object> entries) {
 		return project(entries.toArray());
 	}
 

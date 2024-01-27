@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.ast.Visitable;
 import org.neo4j.cypherdsl.core.ast.Visitor;
 
@@ -39,9 +40,9 @@ import org.neo4j.cypherdsl.core.ast.Visitor;
 public final class Merge extends AbstractClause implements UpdatingClause {
 
 	private final Pattern pattern;
-	private final List<Visitable> onCreateOrMatchEvents;
+	private final @NotNull List<Visitable> onCreateOrMatchEvents;
 
-	Merge(Pattern pattern, List<MergeAction> mergeActions) {
+	Merge(Pattern pattern, @NotNull List<MergeAction> mergeActions) {
 		this.pattern = pattern;
 
 		this.onCreateOrMatchEvents = new ArrayList<>();
@@ -58,7 +59,7 @@ public final class Merge extends AbstractClause implements UpdatingClause {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 		this.pattern.accept(visitor);

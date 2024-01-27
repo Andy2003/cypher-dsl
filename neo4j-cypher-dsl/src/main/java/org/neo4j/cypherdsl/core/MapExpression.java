@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.ast.TypedSubtree;
 import org.neo4j.cypherdsl.core.ast.Visitable;
 import org.neo4j.cypherdsl.core.utils.Assertions;
@@ -45,7 +46,7 @@ import org.neo4j.cypherdsl.core.utils.Assertions;
 @API(status = STABLE, since = "1.0")
 public final class MapExpression extends TypedSubtree<Expression> implements Expression {
 
-	static MapExpression create(Map<String, Object> map) {
+	static @NotNull MapExpression create(@NotNull Map<String, Object> map) {
 
 		Object[] args = new Object[map.size() * 2];
 		int i = 0;
@@ -57,7 +58,7 @@ public final class MapExpression extends TypedSubtree<Expression> implements Exp
 		return create(false, args);
 	}
 
-	static MapExpression create(boolean sort, Object... input) {
+	static @NotNull MapExpression create(boolean sort, Object @NotNull ... input) {
 
 		Assertions.isTrue(input.length % 2 == 0, "Need an even number of input parameters");
 		List<Expression> newContent = new ArrayList<>(input.length / 2);
@@ -91,15 +92,15 @@ public final class MapExpression extends TypedSubtree<Expression> implements Exp
 		return new MapExpression(newContent);
 	}
 
-	static MapExpression withEntries(List<Expression> entries) {
+	static @NotNull MapExpression withEntries(@NotNull List<Expression> entries) {
 		return new MapExpression(entries);
 	}
 
-	private MapExpression(List<Expression> children) {
+	private MapExpression(@NotNull List<Expression> children) {
 		super(children);
 	}
 
-	MapExpression addEntries(List<Expression> entries) {
+	@NotNull MapExpression addEntries(@NotNull List<Expression> entries) {
 		List<Expression> newContent = new ArrayList<>(super.children.size() + entries.size());
 		newContent.addAll(super.children);
 		newContent.addAll(entries);

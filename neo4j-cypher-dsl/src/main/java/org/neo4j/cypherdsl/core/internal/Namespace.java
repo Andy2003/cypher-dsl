@@ -40,7 +40,7 @@ public final class Namespace implements Literal<String[]> {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 		visitor.leave(this);

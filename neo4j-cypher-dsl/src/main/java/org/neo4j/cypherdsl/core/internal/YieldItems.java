@@ -21,6 +21,7 @@ package org.neo4j.cypherdsl.core.internal;
 import static org.apiguardian.api.API.Status.INTERNAL;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.Expression;
 import org.neo4j.cypherdsl.core.ast.TypedSubtree;
 
@@ -40,7 +41,7 @@ public final class YieldItems extends TypedSubtree<Expression> {
 	 * @param c The elements to yield
 	 * @return The new expression
 	 */
-	public static YieldItems yieldAllOf(Expression... c) {
+	public static @NotNull YieldItems yieldAllOf(Expression @NotNull ... c) {
 
 		if (c == null || c.length == 0) {
 			throw new IllegalArgumentException("Cannot yield an empty list of items.");

@@ -64,7 +64,7 @@ public final class Predicates {
 	 * @return A function call for {@code exists()} for one pattern
 	 */
 	@NotNull @Contract(pure = true)
-	public static Condition exists(RelationshipPattern pattern) {
+	public static Condition exists(@NotNull RelationshipPattern pattern) {
 
 		return new BooleanFunctionCondition(FunctionInvocation.create(BuiltInFunctions.Predicates.EXISTS, pattern));
 	}
@@ -81,7 +81,7 @@ public final class Predicates {
 	 * @return An existential sub-query.
 	 * @since 2023.1.0
 	 */
-	public static Condition exists(Statement statement, IdentifiableElement... imports) {
+	public static @NotNull Condition exists(@NotNull Statement statement, IdentifiableElement... imports) {
 
 		return ExistentialSubquery.exists(statement, imports);
 	}
@@ -96,7 +96,7 @@ public final class Predicates {
 	 * @return An existential sub-query.
 	 * @since 2023.9.0
 	 */
-	public static Condition exists(PatternElement pattern) {
+	public static @NotNull Condition exists(@NotNull PatternElement pattern) {
 
 		return ExistentialSubquery.exists(List.of(pattern), null);
 	}
@@ -111,7 +111,7 @@ public final class Predicates {
 	 * @return An existential sub-query.
 	 * @since 2023.9.0
 	 */
-	public static Condition exists(List<PatternElement> pattern) {
+	public static @NotNull Condition exists(@NotNull List<PatternElement> pattern) {
 
 		return ExistentialSubquery.exists(pattern, null);
 	}
@@ -127,7 +127,7 @@ public final class Predicates {
 	 * @return An existential sub-query.
 	 * @since 2023.9.0
 	 */
-	public static Condition exists(List<PatternElement> pattern, @Nullable Where where) {
+	public static @NotNull Condition exists(@NotNull List<PatternElement> pattern, @Nullable Where where) {
 
 		return ExistentialSubquery.exists(pattern, where);
 	}
@@ -153,7 +153,7 @@ public final class Predicates {
 	 * @since 1.1
 	 */
 	@NotNull @Contract(pure = true)
-	public static OngoingListBasedPredicateFunction all(SymbolicName variable) {
+	public static OngoingListBasedPredicateFunction all(@NotNull SymbolicName variable) {
 
 		return new Builder(BuiltInFunctions.Predicates.ALL, variable);
 	}
@@ -179,7 +179,7 @@ public final class Predicates {
 	 * @since 1.1
 	 */
 	@NotNull @Contract(pure = true)
-	public static OngoingListBasedPredicateFunction any(SymbolicName variable) {
+	public static OngoingListBasedPredicateFunction any(@NotNull SymbolicName variable) {
 
 		return new Builder(BuiltInFunctions.Predicates.ANY, variable);
 	}
@@ -205,7 +205,7 @@ public final class Predicates {
 	 * @since 1.1
 	 */
 	@NotNull @Contract(pure = true)
-	public static OngoingListBasedPredicateFunction none(SymbolicName variable) {
+	public static OngoingListBasedPredicateFunction none(@NotNull SymbolicName variable) {
 
 		return new Builder(BuiltInFunctions.Predicates.NONE, variable);
 	}
@@ -231,7 +231,7 @@ public final class Predicates {
 	 * @since 1.1
 	 */
 	@NotNull @Contract(pure = true)
-	public static OngoingListBasedPredicateFunction single(SymbolicName variable) {
+	public static OngoingListBasedPredicateFunction single(@NotNull SymbolicName variable) {
 
 		return new Builder(BuiltInFunctions.Predicates.SINGLE, variable);
 	}
@@ -246,7 +246,7 @@ public final class Predicates {
 	 * @return A function call for {@code isEmpty()} for a list
 	 * @since 2023.6.1
 	 */
-	public static Condition isEmpty(Expression e) {
+	public static @NotNull Condition isEmpty(Expression e) {
 
 		return new BooleanFunctionCondition(FunctionInvocation.create(BuiltInFunctions.Predicates.IS_EMPTY, e));
 	}
@@ -280,11 +280,11 @@ public final class Predicates {
 	private static class Builder implements OngoingListBasedPredicateFunction,
 		OngoingListBasedPredicateFunctionWithList {
 
-		private final BuiltInFunctions.Predicates predicate;
-		private final SymbolicName name;
+		private final BuiltInFunctions.@NotNull Predicates predicate;
+		private final @NotNull SymbolicName name;
 		private Expression listExpression;
 
-		Builder(BuiltInFunctions.Predicates predicate, SymbolicName name) {
+		Builder(BuiltInFunctions.@NotNull Predicates predicate, @NotNull SymbolicName name) {
 
 			Assertions.notNull(predicate, "The predicate is required");
 			Assertions.notNull(name, "The name is required");
@@ -293,7 +293,7 @@ public final class Predicates {
 		}
 
 		@Override
-		public OngoingListBasedPredicateFunctionWithList in(Expression list) {
+		public @NotNull OngoingListBasedPredicateFunctionWithList in(@NotNull Expression list) {
 
 			Assertions.notNull(list, "The list expression is required");
 			this.listExpression = list;
@@ -301,7 +301,7 @@ public final class Predicates {
 		}
 
 		@Override
-		public Condition where(Condition condition) {
+		public @NotNull Condition where(@NotNull Condition condition) {
 
 			Assertions.notNull(condition, "The condition is required");
 			return new BooleanFunctionCondition(

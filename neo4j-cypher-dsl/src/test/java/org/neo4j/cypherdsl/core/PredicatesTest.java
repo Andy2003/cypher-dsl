@@ -25,6 +25,7 @@ import static org.mockito.Mockito.mock;
 import java.lang.reflect.Method;
 import java.util.stream.Stream;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -36,7 +37,7 @@ class PredicatesTest {
 
 	private static final String FUNCTION_NAME_FIELD = "functionName";
 
-	private static Stream<Arguments> predicatesToTest() {
+	private static @NotNull Stream<Arguments> predicatesToTest() {
 		return Stream.of(
 			Arguments.of("exists", Property.class),
 			Arguments.of("exists", RelationshipPattern.class)
@@ -45,7 +46,7 @@ class PredicatesTest {
 
 	@ParameterizedTest
 	@MethodSource("predicatesToTest")
-	void preconditionsShouldBeAsserted(String predicateName, Class<?> argumentType) {
+	void preconditionsShouldBeAsserted(@NotNull String predicateName, Class<?> argumentType) {
 
 		@SuppressWarnings("deprecation") Method method = TestUtils.findMethod(Predicates.class, predicateName, argumentType);
 		assertThatIllegalArgumentException()
@@ -55,7 +56,7 @@ class PredicatesTest {
 
 	@ParameterizedTest
 	@MethodSource("predicatesToTest")
-	void functionInvocationsShouldBeCreated(String functionName, Class<?> argumentType) {
+	void functionInvocationsShouldBeCreated(@NotNull String functionName, Class<?> argumentType) {
 
 		@SuppressWarnings("deprecation") Method method = TestUtils.findMethod(Predicates.class, functionName, argumentType);
 		BooleanFunctionCondition invocation = (BooleanFunctionCondition) TestUtils.invokeMethod(method, null, mock(argumentType));

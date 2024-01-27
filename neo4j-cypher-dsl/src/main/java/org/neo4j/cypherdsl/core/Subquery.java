@@ -22,6 +22,7 @@ import static org.apiguardian.api.API.Status.INTERNAL;
 import static org.apiguardian.api.API.Status.STABLE;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.ast.Visitor;
 
 /**
@@ -49,7 +50,7 @@ public final class Subquery extends AbstractClause implements Clause {
 	 * @param statement      The statement to wrap into a sub-query.
 	 * @return A sub-query.
 	 */
-	static Subquery call(Statement statement, IdentifiableElement... imports) {
+	static @NotNull Subquery call(Statement statement, IdentifiableElement... imports) {
 		return new Subquery(ImportingWith.of(imports), statement);
 	}
 
@@ -59,7 +60,7 @@ public final class Subquery extends AbstractClause implements Clause {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 		this.importingWith.accept(visitor);
@@ -67,7 +68,7 @@ public final class Subquery extends AbstractClause implements Clause {
 		visitor.leave(this);
 	}
 
-	@API(status = INTERNAL)
+	@API(status = INTERNAL) @NotNull
 	InTransactions inTransactionsOf(Integer rows) {
 		return new InTransactions(this, rows);
 	}

@@ -23,6 +23,8 @@ import static org.apiguardian.api.API.Status.INTERNAL;
 import java.util.Objects;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents a literal with an optional content.
@@ -39,7 +41,7 @@ abstract class LiteralBase<T> implements Literal<T> {
 	 */
 	static final Literal<String> BLANK = new LiteralBase<>(" ") {
 		@Override
-		public String asString() {
+		public @NotNull String asString() {
 			return content;
 		}
 	};
@@ -63,7 +65,7 @@ abstract class LiteralBase<T> implements Literal<T> {
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(@Nullable Object o) {
 		if (this == o) {
 			return true;
 		}

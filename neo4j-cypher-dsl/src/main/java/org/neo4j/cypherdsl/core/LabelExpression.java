@@ -20,6 +20,7 @@ package org.neo4j.cypherdsl.core;
 
 import java.util.List;
 
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.ast.Visitable;
 
 /**
@@ -59,7 +60,7 @@ public record LabelExpression(
 	 *
 	 * @param value the leaf value
 	 */
-	public LabelExpression(String value) {
+	public LabelExpression(@NotNull String value) {
 		this(Type.LEAF, false, List.of(value), null, null);
 	}
 
@@ -69,7 +70,7 @@ public record LabelExpression(
 	 * @param next the expression to add
 	 * @return a new expression
 	 */
-	public LabelExpression and(LabelExpression next) {
+	public @NotNull LabelExpression and(LabelExpression next) {
 		return new LabelExpression(Type.CONJUNCTION, false, null, this, next);
 	}
 
@@ -79,7 +80,7 @@ public record LabelExpression(
 	 * @param next the expression to add
 	 * @return a new expression
 	 */
-	public LabelExpression or(LabelExpression next) {
+	public @NotNull LabelExpression or(LabelExpression next) {
 		return new LabelExpression(Type.DISJUNCTION, false, null, this, next);
 	}
 
@@ -88,7 +89,7 @@ public record LabelExpression(
 	 *
 	 * @return a new expression
 	 */
-	public LabelExpression negate() {
+	public @NotNull LabelExpression negate() {
 		return new LabelExpression(this.type, !this.negated, this.value, this.lhs, this.rhs);
 	}
 

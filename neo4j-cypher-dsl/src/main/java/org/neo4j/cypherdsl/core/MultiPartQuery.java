@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.ast.Visitor;
 
 /**
@@ -36,7 +37,7 @@ import org.neo4j.cypherdsl.core.ast.Visitor;
 @API(status = INTERNAL, since = "1.0")
 class MultiPartQuery extends AbstractStatement implements Statement.SingleQuery {
 
-	static MultiPartQuery create(List<MultiPartElement> parts, SinglePartQuery remainder) {
+	static @NotNull MultiPartQuery create(@NotNull List<MultiPartElement> parts, SinglePartQuery remainder) {
 
 		if (remainder instanceof ResultStatement) {
 			return new MultiPartQueryWithResult(parts, remainder);
@@ -45,18 +46,18 @@ class MultiPartQuery extends AbstractStatement implements Statement.SingleQuery 
 		}
 	}
 
-	private final List<MultiPartElement> parts;
+	private final @NotNull List<MultiPartElement> parts;
 
 	private final SinglePartQuery remainder;
 
-	private MultiPartQuery(List<MultiPartElement> parts, SinglePartQuery remainder) {
+	private MultiPartQuery(@NotNull List<MultiPartElement> parts, SinglePartQuery remainder) {
 
 		this.parts = new ArrayList<>(parts);
 		this.remainder = remainder;
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		parts.forEach(p -> p.accept(visitor));
 		remainder.accept(visitor);
@@ -64,7 +65,7 @@ class MultiPartQuery extends AbstractStatement implements Statement.SingleQuery 
 
 	static final class MultiPartQueryWithResult extends MultiPartQuery implements ResultStatement {
 
-		private MultiPartQueryWithResult(List<MultiPartElement> parts, SinglePartQuery remainder) {
+		private MultiPartQueryWithResult(@NotNull List<MultiPartElement> parts, SinglePartQuery remainder) {
 			super(parts, remainder);
 		}
 	}

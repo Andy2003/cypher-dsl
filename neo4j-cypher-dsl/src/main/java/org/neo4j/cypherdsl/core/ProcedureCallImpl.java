@@ -21,6 +21,8 @@ package org.neo4j.cypherdsl.core;
 import static org.apiguardian.api.API.Status.INTERNAL;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.neo4j.cypherdsl.core.ast.Visitable;
 import org.neo4j.cypherdsl.core.ast.Visitor;
 import org.neo4j.cypherdsl.core.internal.ProcedureName;
@@ -36,7 +38,7 @@ import org.neo4j.cypherdsl.core.internal.YieldItems;
 @API(status = INTERNAL, since = "2021.2.1")
 class ProcedureCallImpl extends AbstractStatement implements ProcedureCall {
 
-	static ProcedureCall create(ProcedureName name, Arguments arguments, YieldItems yieldItems, Where optionalWhere) {
+	static @NotNull ProcedureCall create(ProcedureName name, Arguments arguments, @Nullable YieldItems yieldItems, Where optionalWhere) {
 
 		if (yieldItems != null) {
 			return new ProcedureCallImplWithResult(name, arguments, yieldItems, optionalWhere);
@@ -47,13 +49,13 @@ class ProcedureCallImpl extends AbstractStatement implements ProcedureCall {
 
 	private final ProcedureName name;
 
-	private final Arguments arguments;
+	private final @NotNull Arguments arguments;
 
 	private final YieldItems yieldItems;
 
 	private final Where optionalWhere;
 
-	private ProcedureCallImpl(ProcedureName name, Arguments arguments, YieldItems yieldItems, Where optionalWhere) {
+	private ProcedureCallImpl(ProcedureName name, @Nullable Arguments arguments, YieldItems yieldItems, Where optionalWhere) {
 
 		this.name = name;
 		this.arguments = arguments == null ? new Arguments() : arguments;
@@ -62,7 +64,7 @@ class ProcedureCallImpl extends AbstractStatement implements ProcedureCall {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 		this.name.accept(visitor);

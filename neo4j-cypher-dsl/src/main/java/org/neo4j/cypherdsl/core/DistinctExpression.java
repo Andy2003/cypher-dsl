@@ -18,6 +18,7 @@
  */
 package org.neo4j.cypherdsl.core;
 
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.internal.Distinct;
 import org.neo4j.cypherdsl.core.ast.Visitor;
 
@@ -36,7 +37,7 @@ final class DistinctExpression implements Expression {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 		Distinct.INSTANCE.accept(visitor);

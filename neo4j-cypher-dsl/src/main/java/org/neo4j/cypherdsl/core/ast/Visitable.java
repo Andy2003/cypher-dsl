@@ -18,6 +18,9 @@
  */
 package org.neo4j.cypherdsl.core.ast;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 /**
  * Interface for implementations that accepts {@link Visitor visitors}.
  *
@@ -34,7 +37,7 @@ public interface Visitable {
 	 * @param visitable The visitable to visit if not null
 	 * @param visitor   The visitor to use
 	 */
-	static void visitIfNotNull(Visitable visitable, Visitor visitor) {
+	static void visitIfNotNull(@Nullable Visitable visitable, @NotNull Visitor visitor) {
 
 		if (visitable != null) {
 			visitable.accept(visitor);
@@ -46,7 +49,7 @@ public interface Visitable {
 	 *
 	 * @param visitor the visitor to notify, must not be {@literal null}.
 	 */
-	default void accept(Visitor visitor) {
+	default void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 		visitor.leave(this);

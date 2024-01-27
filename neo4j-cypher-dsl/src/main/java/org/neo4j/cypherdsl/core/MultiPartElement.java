@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.neo4j.cypherdsl.core.ast.Visitable;
 import org.neo4j.cypherdsl.core.ast.Visitor;
 
@@ -31,11 +33,11 @@ import org.neo4j.cypherdsl.core.ast.Visitor;
  * @since 1.0
  */
 class MultiPartElement implements Visitable {
-	private final List<Visitable> precedingClauses;
+	private final @NotNull List<Visitable> precedingClauses;
 
 	private final With with;
 
-	MultiPartElement(List<Visitable> precedingClauses, With with) {
+	MultiPartElement(@Nullable List<Visitable> precedingClauses, With with) {
 
 		if (precedingClauses == null || precedingClauses.isEmpty()) {
 			this.precedingClauses = Collections.emptyList();
@@ -47,7 +49,7 @@ class MultiPartElement implements Visitable {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 		precedingClauses.forEach(c -> c.accept(visitor));

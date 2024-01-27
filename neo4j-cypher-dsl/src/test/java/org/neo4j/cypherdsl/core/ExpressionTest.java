@@ -24,6 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import org.assertj.core.api.Assertions;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -36,7 +37,7 @@ class ExpressionTest {
 
 	@ParameterizedTest
 	@MethodSource("mathematicalOperators")
-	void correctMathematicalOperatorsShouldBeUsed(Operation operation, Operator expectedOperator) {
+	void correctMathematicalOperatorsShouldBeUsed(@NotNull Operation operation, Operator expectedOperator) {
 
 		AtomicInteger counter = new AtomicInteger(0);
 
@@ -58,7 +59,7 @@ class ExpressionTest {
 
 	@ParameterizedTest
 	@MethodSource("stringOperators")
-	void correctStringOperatorsShouldBeUsed(Visitable visitable, Operator expectedOperator) {
+	void correctStringOperatorsShouldBeUsed(@NotNull Visitable visitable, Operator expectedOperator) {
 
 		AtomicInteger counter = new AtomicInteger(0);
 
@@ -87,7 +88,7 @@ class ExpressionTest {
 	}
 
 	@SuppressWarnings("unused")
-	private static Stream<Arguments> mathematicalOperators() {
+	private static @NotNull Stream<Arguments> mathematicalOperators() {
 		return Stream.of(
 			Arguments.of(Cypher.literalOf(1).add(Cypher.literalOf(2)), Operator.ADDITION),
 			Arguments.of(Cypher.literalOf(1).subtract(Cypher.literalOf(2)), Operator.SUBTRACTION),
@@ -99,7 +100,7 @@ class ExpressionTest {
 	}
 
 	@SuppressWarnings("unused")
-	private static Stream<Arguments> stringOperators() {
+	private static @NotNull Stream<Arguments> stringOperators() {
 		return Stream.of(
 			Arguments.of(Cypher.literalOf("a").concat(Cypher.literalOf("b")), Operator.CONCAT),
 			Arguments.of(Cypher.literalOf("a").matches(Cypher.literalOf("b")), Operator.MATCHES)

@@ -21,6 +21,8 @@ package org.neo4j.cypherdsl.core.utils;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * The usual, static class with helper methods centered around missing functionality in {@link String}.
@@ -37,7 +39,7 @@ public final class Strings {
 	 * @param str A string to be checked for text.
 	 * @return True, if the string is neither null nor empty nor blank.
 	 */
-	public static boolean hasText(String str) {
+	public static boolean hasText(@Nullable String str) {
 		return str != null && !str.isBlank();
 	}
 
@@ -45,7 +47,7 @@ public final class Strings {
 	 * @param length The length of the identifier to generate.
 	 * @return A random identifier that is a valid identifier
 	 */
-	public static String randomIdentifier(int length) {
+	public static @NotNull String randomIdentifier(int length) {
 
 		int leftLimit = 65; // letter 'A'
 		int rightLimit = 122; // letter 'z'

@@ -26,6 +26,7 @@ import java.util.List;
 import org.apiguardian.api.API;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A property. A property might belong to a container such as a {@link Node} or {@link Relationship}, but it's not uncommon
@@ -58,7 +59,7 @@ public non-sealed interface Property extends Expression, IdentifiableElement {
 	/**
 	 * @return The container "owning" this property.
 	 */
-	@Contract(pure = true)
+	@Contract(pure = true) @Nullable
 	Named getContainer();
 
 	/**

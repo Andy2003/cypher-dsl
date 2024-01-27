@@ -29,6 +29,7 @@ import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.neo4j.cypherdsl.core.utils.Assertions;
 import org.neo4j.cypherdsl.core.utils.LRUCache;
 
@@ -50,19 +51,19 @@ public final class SymbolicName implements Expression, IdentifiableElement {
 
 	private static final Map<String, SymbolicName> CACHE = Collections.synchronizedMap(new LRUCache<>(32));
 
-	static SymbolicName of(String name) {
+	static @NotNull SymbolicName of(String name) {
 
 		Assertions.hasText(name, "Name must not be empty.");
 		return CACHE.computeIfAbsent(name, SymbolicName::new);
 	}
 
-	static SymbolicName unsafe(String name) {
+	static @NotNull SymbolicName unsafe(String name) {
 
 		Assertions.hasText(name, "Name must not be empty.");
 		return new SymbolicName(name);
 	}
 
-	static SymbolicName unresolved() {
+	static @NotNull SymbolicName unresolved() {
 
 		return new SymbolicName(null);
 	}
@@ -89,7 +90,7 @@ public final class SymbolicName implements Expression, IdentifiableElement {
 	 * @return A new symbolic name
 	 */
 	@NotNull @Contract(pure = true)
-	public SymbolicName concat(String otherValue) {
+	public SymbolicName concat(@NotNull String otherValue) {
 
 		Assertions.notNull(otherValue, "Value to concat must not be null.");
 		if (otherValue.isEmpty()) {
@@ -107,7 +108,7 @@ public final class SymbolicName implements Expression, IdentifiableElement {
 	 * @since 2021.0.0
 	 */
 	@NotNull @Contract(pure = true)
-	public MapProjection project(List<Object> entries) {
+	public MapProjection project(@NotNull List<Object> entries) {
 		return project(entries.toArray());
 	}
 
@@ -132,7 +133,7 @@ public final class SymbolicName implements Expression, IdentifiableElement {
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(@Nullable Object o) {
 		if (this == o) {
 			return true;
 		}

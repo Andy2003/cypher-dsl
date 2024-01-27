@@ -30,6 +30,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This factory is meant to decouple the instantiating respectively concrete usage of classes on the provided path as
@@ -45,7 +47,7 @@ final class ForeignAdapterFactory {
 	private final Map<Class<?>, Constructor<ForeignAdapter<?>>> adapterCache = new HashMap<>();
 
 	@SuppressWarnings("unchecked") // We do check the type of expression
-	<FE> ForeignAdapter<FE> getAdapterFor(FE expression) {
+	<FE> @NotNull ForeignAdapter<FE> getAdapterFor(@NotNull FE expression) {
 
 		if (expression == null) {
 			throw new IllegalArgumentException("Cannot adapt literal NULL expressions.");
@@ -75,12 +77,12 @@ final class ForeignAdapterFactory {
 		}
 	}
 
-	private static IllegalArgumentException newCannotAdaptException(Class<?> k, Exception cause) {
+	private static @NotNull IllegalArgumentException newCannotAdaptException(@NotNull Class<?> k, Exception cause) {
 		var msg = "Cannot adapt expressions of type " + k.getName() + " to Cypher-DSL expressions.";
 		return new IllegalArgumentException(msg, cause);
 	}
 
-	private static Set<String> getInterfaces(Class<?> type) {
+	private static @NotNull Set<String> getInterfaces(@Nullable Class<?> type) {
 
 		if (type == null || type == Object.class) {
 			return Set.of();

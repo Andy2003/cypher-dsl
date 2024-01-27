@@ -58,7 +58,7 @@ public final class Expressions {
 	 * @since 2023.0.0
 	 */
 	@NotNull
-	public static CountExpression count(PatternElement requiredPattern, PatternElement... patternElement) {
+	public static CountExpression count(@NotNull PatternElement requiredPattern, PatternElement... patternElement) {
 		return CountExpression.count(Pattern.of(requiredPattern, patternElement));
 	}
 
@@ -70,7 +70,7 @@ public final class Expressions {
 	 * @since 2023.0.0
 	 */
 	@NotNull
-	public static CountExpression count(UnionQuery union) {
+	public static CountExpression count(@NotNull UnionQuery union) {
 		return CountExpression.count(union);
 	}
 
@@ -85,7 +85,7 @@ public final class Expressions {
 	 * @since 2023.1.0
 	 */
 	@NotNull
-	public static CountExpression count(Statement statement, IdentifiableElement... imports) {
+	public static CountExpression count(@NotNull Statement statement, IdentifiableElement... imports) {
 		return CountExpression.count(statement, imports);
 	}
 
@@ -97,7 +97,7 @@ public final class Expressions {
 	 * @return a count expression.
 	 * @since 2023.9.0
 	 */
-	public static CountExpression count(List<PatternElement> pattern, @Nullable Where where) {
+	public static @NotNull CountExpression count(@NotNull List<PatternElement> pattern, @Nullable Where where) {
 
 		return CountExpression.count(pattern, where);
 	}
@@ -111,7 +111,7 @@ public final class Expressions {
 	 * @deprecated use {@link Cypher#subqueryWith(String...)} instead.
 	 */
 	@Deprecated
-	public static SubqueryExpressionBuilder with(String... identifiableElements) {
+	public static @NotNull SubqueryExpressionBuilder with(String @NotNull ... identifiableElements) {
 
 		return with(Arrays.stream(identifiableElements).map(SymbolicName::of).toArray(SymbolicName[]::new));
 	}
@@ -125,24 +125,24 @@ public final class Expressions {
 	 * @deprecated use {@link Cypher#subqueryWith(IdentifiableElement...)} instead.
 	 */
 	@Deprecated
-	public static SubqueryExpressionBuilder with(IdentifiableElement... identifiableElements) {
+	public static @NotNull SubqueryExpressionBuilder with(IdentifiableElement @NotNull ... identifiableElements) {
 
 		var returnItems = new ExpressionList(
 			Arrays.stream(identifiableElements).map(IdentifiableElement::asExpression).toList());
 		var with = new With(false, returnItems, null, null, null, null);
 		return new SubqueryExpressionBuilder() {
 			@Override @NotNull
-			public CountExpression count(PatternElement requiredPattern, PatternElement... patternElement) {
+			public CountExpression count(@NotNull PatternElement requiredPattern, PatternElement... patternElement) {
 				return CountExpression.count(with, Pattern.of(requiredPattern, patternElement));
 			}
 
 			@Override @NotNull
-			public CountExpression count(UnionQuery union) {
+			public CountExpression count(@NotNull UnionQuery union) {
 				return CountExpression.count(with, union);
 			}
 
 			@Override
-			public CollectExpression collect(Statement statement) {
+			public @NotNull CollectExpression collect(Statement statement) {
 				return CollectExpression.collect(with, statement);
 			}
 		};
@@ -158,7 +158,7 @@ public final class Expressions {
 	 * @since 2023.8.0
 	 */
 	@NotNull
-	public static Expression collect(Statement statement) {
+	public static Expression collect(@NotNull Statement statement) {
 
 		if (!statement.doesReturnOrYield()) {
 			throw new IllegalArgumentException(
@@ -182,11 +182,11 @@ public final class Expressions {
 		}
 	}
 
-	static SymbolicName[] createSymbolicNames(String[] variables) {
+	static SymbolicName @NotNull [] createSymbolicNames(String @NotNull [] variables) {
 		return Arrays.stream(variables).map(SymbolicName::of).toArray(SymbolicName[]::new);
 	}
 
-	static SymbolicName[] createSymbolicNames(Named[] variables) {
+	static SymbolicName @NotNull [] createSymbolicNames(Named @NotNull [] variables) {
 		return Arrays.stream(variables).map(Named::getRequiredSymbolicName)
 			.toArray(SymbolicName[]::new);
 	}

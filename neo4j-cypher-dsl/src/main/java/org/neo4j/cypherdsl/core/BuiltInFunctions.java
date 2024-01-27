@@ -20,6 +20,7 @@ package org.neo4j.cypherdsl.core;
 
 import org.apiguardian.api.API;
 import org.apiguardian.api.API.Status;
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.FunctionInvocation.FunctionDefinition;
 
 /**
@@ -59,14 +60,14 @@ final class BuiltInFunctions {
 		PROPERTIES_BY_NAME("propertiesByName"),
 		BY_NAME("byName");
 
-		private final String implementationName;
+		private final @NotNull String implementationName;
 
 		Graph(String implementationName) {
 			this.implementationName = "graph." + implementationName;
 		}
 
 		@Override
-		public String getImplementationName() {
+		public @NotNull String getImplementationName() {
 			return implementationName;
 		}
 	}

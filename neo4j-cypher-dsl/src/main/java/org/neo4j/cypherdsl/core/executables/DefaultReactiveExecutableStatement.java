@@ -23,6 +23,7 @@ import static org.apiguardian.api.API.Status.INTERNAL;
 import reactor.core.publisher.Mono;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.Statement;
 import org.neo4j.driver.reactivestreams.ReactiveQueryRunner;
 import org.neo4j.driver.summary.ResultSummary;
@@ -41,7 +42,7 @@ class DefaultReactiveExecutableStatement extends DefaultExecutableStatement impl
 	}
 
 	@Override
-	public final Publisher<ResultSummary> executeWith(ReactiveQueryRunner queryRunner) {
+	public final @NotNull Publisher<ResultSummary> executeWith(@NotNull ReactiveQueryRunner queryRunner) {
 
 		return Mono.fromCallable(this::createQuery)
 			.flatMap(q -> Mono.fromDirect(queryRunner.run(q)))

@@ -57,7 +57,7 @@ public interface ExposesWhere<T> {
 	 * @since 1.0.1
 	 */
 	@NotNull @CheckReturnValue
-	default T where(RelationshipPattern pathPattern) {
+	default T where(@NotNull RelationshipPattern pathPattern) {
 
 		Assertions.notNull(pathPattern, "The path pattern must not be null.");
 		return this.where(RelationshipPatternCondition.of(pathPattern));

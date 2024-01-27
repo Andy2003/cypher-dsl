@@ -43,7 +43,7 @@ public final class RelationshipPatternCondition implements Condition {
 	 * @param pathPattern The pattern to be matched
 	 * @return A new condition
 	 */
-	public static RelationshipPatternCondition of(RelationshipPattern pathPattern) {
+	public static @NotNull RelationshipPatternCondition of(RelationshipPattern pathPattern) {
 		return new RelationshipPatternCondition(false, pathPattern);
 	}
 
@@ -53,7 +53,7 @@ public final class RelationshipPatternCondition implements Condition {
 	 * @param pathPattern The pattern to be matched
 	 * @return A new condition
 	 */
-	public static RelationshipPatternCondition not(RelationshipPattern pathPattern) {
+	public static @NotNull RelationshipPatternCondition not(RelationshipPattern pathPattern) {
 		return new RelationshipPatternCondition(true, pathPattern);
 	}
 
@@ -73,7 +73,7 @@ public final class RelationshipPatternCondition implements Condition {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 		if (not) {

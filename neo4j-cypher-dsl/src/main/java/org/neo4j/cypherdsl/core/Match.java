@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.neo4j.cypherdsl.core.ast.Visitable;
 import org.neo4j.cypherdsl.core.ast.Visitor;
@@ -46,9 +47,9 @@ public final class Match extends AbstractClause implements ReadingClause {
 	/**
 	 * A Neo4j extension to the match clause that allows to specify hints via the {@code USING} clause.
 	 */
-	private final List<Hint> hints;
+	private final @NotNull List<Hint> hints;
 
-	private final Where optionalWhere;
+	private final @Nullable Where optionalWhere;
 
 	Match(boolean optional, Pattern pattern, @Nullable Where optionalWhere, @Nullable List<Hint> optionalHints) {
 		this.optional = optional;
@@ -66,7 +67,7 @@ public final class Match extends AbstractClause implements ReadingClause {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 		this.pattern.accept(visitor);

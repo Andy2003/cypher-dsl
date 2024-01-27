@@ -21,6 +21,7 @@ package org.neo4j.cypherdsl.core;
 import static org.apiguardian.api.API.Status.STABLE;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.neo4j.cypherdsl.core.ast.Visitor;
 
@@ -40,16 +41,16 @@ public final class CollectExpression implements SubqueryExpression {
 	private final Statement resultStatement;
 
 
-	static CollectExpression collect(Statement statement, IdentifiableElement... imports) {
+	static @NotNull CollectExpression collect(Statement statement, IdentifiableElement... imports) {
 
 		return new CollectExpression(ImportingWith.of(imports), statement);
 	}
 
-	static CollectExpression collect(Statement resultStatement) {
+	static @NotNull CollectExpression collect(Statement resultStatement) {
 		return new CollectExpression(new ImportingWith(), resultStatement);
 	}
 
-	static CollectExpression collect(@Nullable With optionalWith, Statement resultStatement) {
+	static @NotNull CollectExpression collect(@Nullable With optionalWith, Statement resultStatement) {
 		return new CollectExpression(new ImportingWith(optionalWith, null), resultStatement);
 	}
 
@@ -60,7 +61,7 @@ public final class CollectExpression implements SubqueryExpression {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 		this.optionalWith.accept(visitor);

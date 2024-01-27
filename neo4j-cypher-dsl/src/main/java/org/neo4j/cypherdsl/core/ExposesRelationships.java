@@ -74,7 +74,7 @@ public interface ExposesRelationships<T extends RelationshipPattern & ExposesPat
 	 * @return An ongoing relationship definition, that can be used to specify details of the relationship
 	 * @since 2023.5.0
 	 */
-	default T relationshipWith(Node other, Relationship.Direction direction, String... types) {
+	default @NotNull T relationshipWith(Node other, Relationship.@NotNull Direction direction, String... types) {
 		return switch (direction) {
 			case LTR -> this.relationshipTo(other, types);
 			case RTL -> this.relationshipFrom(other, types);

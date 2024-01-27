@@ -131,7 +131,7 @@ public interface StatementBuilder
 		 * @since 2021.0.2
 		 */
 		@NotNull @CheckReturnValue
-		default OngoingReading as(SymbolicName variable) {
+		default OngoingReading as(@NotNull SymbolicName variable) {
 			return as(variable.getValue());
 		}
 	}
@@ -604,7 +604,7 @@ public interface StatementBuilder
 		 */
 		@NotNull @CheckReturnValue
 		@SuppressWarnings("deprecation")
-		default OngoingUpdate delete(String... variables) {
+		default OngoingUpdate delete(String @NotNull ... variables) {
 			return delete(Expressions.createSymbolicNames(variables));
 		}
 
@@ -617,7 +617,7 @@ public interface StatementBuilder
 		 */
 		@NotNull @CheckReturnValue
 		@SuppressWarnings("deprecation")
-		default OngoingUpdate delete(Named... variables) {
+		default OngoingUpdate delete(Named @NotNull ... variables) {
 			return delete(Expressions.createSymbolicNames(variables));
 		}
 
@@ -649,7 +649,7 @@ public interface StatementBuilder
 		 */
 		@NotNull @CheckReturnValue
 		@SuppressWarnings("deprecation")
-		default OngoingUpdate detachDelete(String... variables) {
+		default OngoingUpdate detachDelete(String @NotNull ... variables) {
 			return detachDelete(Expressions.createSymbolicNames(variables));
 		}
 
@@ -662,7 +662,7 @@ public interface StatementBuilder
 		 */
 		@NotNull @CheckReturnValue
 		@SuppressWarnings("deprecation")
-		default OngoingUpdate detachDelete(Named... variables) {
+		default OngoingUpdate detachDelete(Named @NotNull ... variables) {
 			return detachDelete(Expressions.createSymbolicNames(variables));
 		}
 
@@ -722,7 +722,7 @@ public interface StatementBuilder
 		 * @return An ongoing match and update
 		 */
 		@NotNull @CheckReturnValue
-		default BuildableMatchAndUpdate set(Named variable, Expression expression) {
+		default BuildableMatchAndUpdate set(@NotNull Named variable, Expression expression) {
 			return set(variable.getRequiredSymbolicName(), expression);
 		}
 
@@ -748,7 +748,7 @@ public interface StatementBuilder
 		 * @since 2020.1.5
 		 */
 		@NotNull @CheckReturnValue
-		default BuildableMatchAndUpdate mutate(Named variable, Expression properties) {
+		default BuildableMatchAndUpdate mutate(@NotNull Named variable, Expression properties) {
 			return mutate(variable.getRequiredSymbolicName(), properties);
 		}
 	}
@@ -915,7 +915,7 @@ public interface StatementBuilder
 		 * @return An ongoing match and update
 		 */
 		@NotNull @CheckReturnValue
-		default BuildableOngoingMergeAction set(Named variable, Expression expression) {
+		default BuildableOngoingMergeAction set(@NotNull Named variable, Expression expression) {
 			return set(variable.getRequiredSymbolicName(), expression);
 		}
 
@@ -941,7 +941,7 @@ public interface StatementBuilder
 		 * @since 2020.1.5
 		 */
 		@NotNull @CheckReturnValue
-		default BuildableOngoingMergeAction mutate(Named variable, Expression properties) {
+		default BuildableOngoingMergeAction mutate(@NotNull Named variable, Expression properties) {
 			return mutate(variable.getRequiredSymbolicName(), properties);
 		}
 	}

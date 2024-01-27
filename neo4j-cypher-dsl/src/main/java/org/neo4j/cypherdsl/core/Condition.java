@@ -41,7 +41,7 @@ public interface Condition extends Expression {
 	 * @return A new condition.
 	 */
 	@NotNull @Contract(pure = true)
-	default Condition and(Condition condition) {
+	default Condition and(@NotNull Condition condition) {
 		return CompoundCondition.create(this, Operator.AND, condition);
 	}
 
@@ -52,7 +52,7 @@ public interface Condition extends Expression {
 	 * @return A new condition.
 	 */
 	@NotNull @Contract(pure = true)
-	default Condition or(Condition condition) {
+	default Condition or(@NotNull Condition condition) {
 		return CompoundCondition.create(this, Operator.OR, condition);
 	}
 
@@ -63,7 +63,7 @@ public interface Condition extends Expression {
 	 * @return A new condition.
 	 */
 	@NotNull @Contract(pure = true)
-	default Condition xor(Condition condition) {
+	default Condition xor(@NotNull Condition condition) {
 		return CompoundCondition.create(this, Operator.XOR, condition);
 	}
 

@@ -35,6 +35,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.neo4j.cypherdsl.build.annotations.RegisterForReflection;
 import org.neo4j.cypherdsl.core.ParameterCollectingVisitor.ParameterInformation;
 import org.neo4j.cypherdsl.core.StatementCatalog.Clause;
@@ -103,9 +105,9 @@ class StatementCatalogBuildingVisitor extends ReflectiveVisitor {
 	/**
 	 * Delegating the hard work to the shared scope strategy in most cases.
 	 */
-	private final ScopingStrategy scopingStrategy;
+	private final @NotNull ScopingStrategy scopingStrategy;
 
-	private final ParameterCollectingVisitor allParameters;
+	private final @NotNull ParameterCollectingVisitor allParameters;
 
 	private final Map<Node, Set<Token>> currentUndirectedRelations = new HashMap<>();
 	private final Map<Node, Set<Token>> currentIncomingRelations = new HashMap<>();
@@ -128,7 +130,7 @@ class StatementCatalogBuildingVisitor extends ReflectiveVisitor {
 		this.allParameters = new ParameterCollectingVisitor(statementContext, renderConstantsAsParameters);
 	}
 
-	private Map<SymbolicName, PatternElement> createNewScope(Collection<IdentifiableElement> imports) {
+	private @NotNull Map<SymbolicName, PatternElement> createNewScope(@NotNull Collection<IdentifiableElement> imports) {
 		addRelationsInCurrentScope();
 
 		Map<SymbolicName, PatternElement> currentScope = patternLookup.isEmpty() ? Collections.emptyMap() : patternLookup.peek();
@@ -138,14 +140,14 @@ class StatementCatalogBuildingVisitor extends ReflectiveVisitor {
 		return newScope;
 	}
 
-	private void importIntoCurrentScope(Collection<IdentifiableElement> exports) {
+	private void importIntoCurrentScope(@NotNull Collection<IdentifiableElement> exports) {
 
 		Map<SymbolicName, PatternElement> previousScope = patternLookup.pop();
 		Map<SymbolicName, PatternElement> currentScope = patternLookup.isEmpty() ? new HashMap<>() : patternLookup.peek();
 		copyIdentifiableElements(exports, previousScope, currentScope);
 	}
 
-	private static void copyIdentifiableElements(Collection<IdentifiableElement> elements, Map<SymbolicName, PatternElement> source, Map<SymbolicName, PatternElement> target) {
+	private static void copyIdentifiableElements(@NotNull Collection<IdentifiableElement> elements, @NotNull Map<SymbolicName, PatternElement> source, @NotNull Map<SymbolicName, PatternElement> target) {
 		for (IdentifiableElement e : elements) {
 			if (e instanceof SymbolicName s && source.containsKey(s)) {
 				target.put(s, source.get(s));
@@ -163,7 +165,7 @@ class StatementCatalogBuildingVisitor extends ReflectiveVisitor {
 	 */
 	record Relationships(Set<Token> outgoing, Set<Token> incoming, Set<Token> undirected) {
 
-		static Relationships empty() {
+		static @NotNull Relationships empty() {
 			return new Relationships(Set.of(), Set.of(), Set.of());
 		}
 
@@ -171,12 +173,12 @@ class StatementCatalogBuildingVisitor extends ReflectiveVisitor {
 			this(new HashSet<>(), new HashSet<>(), new HashSet<>());
 		}
 
-		Relationships copy() {
+		@NotNull Relationships copy() {
 			return new Relationships(Set.copyOf(this.outgoing), Set.copyOf(this.incoming), Set.copyOf(this.undirected));
 		}
 	}
 
-	StatementCatalog getResult() {
+	@NotNull StatementCatalog getResult() {
 
 		addRelationsInCurrentScope();
 		var parameterInformation = allParameters.getResult();
@@ -196,7 +198,7 @@ class StatementCatalogBuildingVisitor extends ReflectiveVisitor {
 	 * @param nodesToRelations The map to process
 	 * @param targetProvider   The target where to store the tokens
 	 */
-	private void finish(Map<Node, Set<Token>> nodesToRelations, Function<Relationships, Set<Token>> targetProvider) {
+	private void finish(@NotNull Map<Node, Set<Token>> nodesToRelations, @NotNull Function<Relationships, Set<Token>> targetProvider) {
 		nodesToRelations.forEach((k, v) -> {
 			var labels = getAllLabels((Node) k.getSymbolicName().map(this::lookup).orElse(k));
 			labels.forEach(t -> {
@@ -258,13 +260,13 @@ class StatementCatalogBuildingVisitor extends ReflectiveVisitor {
 		currentClause.compareAndSet(Clause.WITH, Clause.UNKNOWN);
 	}
 
-	void enter(Node node) {
+	void enter(@NotNull Node node) {
 
 		node.getSymbolicName().ifPresent(s -> store(s, node));
 		currentPatternElement.push(node);
 	}
 
-	void enter(KeyValueMapEntry mapEntry) {
+	void enter(@NotNull KeyValueMapEntry mapEntry) {
 
 		var owner = currentPatternElement.peek();
 		if (owner == null) {
@@ -300,7 +302,7 @@ class StatementCatalogBuildingVisitor extends ReflectiveVisitor {
 		currentPatternElement.removeFirstOccurrence(node);
 	}
 
-	void enter(Relationship relationship) {
+	void enter(@NotNull Relationship relationship) {
 
 		relationship.getSymbolicName().ifPresent(s -> store(s, relationship));
 		currentPatternElement.push(relationship);
@@ -319,7 +321,7 @@ class StatementCatalogBuildingVisitor extends ReflectiveVisitor {
 	 * @param types     Types of the relation
 	 * @param direction Direction of the relation
 	 */
-	private void storeRelations(Node left, Node right, List<Token> types, Relationship.Direction direction) {
+	private void storeRelations(Node left, Node right, @NotNull List<Token> types, Relationship.@NotNull Direction direction) {
 
 		final Function<Node, Set<Token>> targetSupplier = unused -> new HashSet<>();
 		switch (direction) {
@@ -342,7 +344,7 @@ class StatementCatalogBuildingVisitor extends ReflectiveVisitor {
 		currentPatternElement.removeFirstOccurrence(relationship);
 	}
 
-	void enter(org.neo4j.cypherdsl.core.Property property) {
+	void enter(org.neo4j.cypherdsl.core.@NotNull Property property) {
 
 		if (property.getNames().size() != 1) {
 			return;
@@ -386,7 +388,7 @@ class StatementCatalogBuildingVisitor extends ReflectiveVisitor {
 		}
 	}
 
-	private static Set<Token> getAllLabels(Node node) {
+	private static @NotNull Set<Token> getAllLabels(@NotNull Node node) {
 		Set<Token> result = new TreeSet<>();
 		if (node.getLabels().isEmpty()) {
 			node.accept(segment -> {
@@ -403,7 +405,7 @@ class StatementCatalogBuildingVisitor extends ReflectiveVisitor {
 		return result;
 	}
 
-	private static void collectLabels(LabelExpression l, LabelExpression.Type parent, Set<Token> labels) {
+	private static void collectLabels(@Nullable LabelExpression l, LabelExpression.Type parent, @NotNull Set<Token> labels) {
 		if (l == null) {
 			return;
 		}
@@ -435,7 +437,7 @@ class StatementCatalogBuildingVisitor extends ReflectiveVisitor {
 		return result.get();
 	}
 
-	private PropertyFilter extractPropertyCondition(StatementCatalog.Property property, org.neo4j.cypherdsl.core.Condition condition) {
+	private @NotNull PropertyFilter extractPropertyCondition(StatementCatalog.Property property, org.neo4j.cypherdsl.core.@NotNull Condition condition) {
 
 		var left = new AtomicReference<Expression>();
 		var op = new AtomicReference<Operator>();
@@ -464,7 +466,7 @@ class StatementCatalogBuildingVisitor extends ReflectiveVisitor {
 		return new PropertyFilter(currentClause.get(), left.get(), op.get(), right.get(), parameterInformation.names, parameterInformation.values);
 	}
 
-	void enter(NodeLabel label) {
+	void enter(@NotNull NodeLabel label) {
 		this.tokens.add(new Token(Token.Type.NODE_LABEL, label.getValue()));
 		var currentCondition = currentConditions.peek();
 		if (currentCondition instanceof HasLabelCondition hasLabelCondition) {
@@ -483,7 +485,7 @@ class StatementCatalogBuildingVisitor extends ReflectiveVisitor {
 		return patternLookup.peek().get(s);
 	}
 
-	void enter(org.neo4j.cypherdsl.core.Condition condition) {
+	void enter(org.neo4j.cypherdsl.core.@NotNull Condition condition) {
 		if (TYPE_OF_COMPOUND_CONDITION.equals(condition.getClass().getName())) {
 			return;
 		}
@@ -500,7 +502,7 @@ class StatementCatalogBuildingVisitor extends ReflectiveVisitor {
 		this.literals.add(literal);
 	}
 
-	void leave(org.neo4j.cypherdsl.core.Condition condition) {
+	void leave(org.neo4j.cypherdsl.core.@NotNull Condition condition) {
 		if (TYPE_OF_COMPOUND_CONDITION.equals(condition.getClass().getName())) {
 			return;
 		}
@@ -531,7 +533,7 @@ class StatementCatalogBuildingVisitor extends ReflectiveVisitor {
 		currentScope.put(s, patternElement);
 	}
 
-	private ParameterInformation extractParameters(Expression... expressions) {
+	private @NotNull ParameterInformation extractParameters(Expression @NotNull ... expressions) {
 
 		var parameterCollectingVisitor = new ParameterCollectingVisitor(this.statementContext, this.renderConstantsAsParameters);
 		for (Expression expression : expressions) {
@@ -545,32 +547,32 @@ class StatementCatalogBuildingVisitor extends ReflectiveVisitor {
 
 	static final class DefaultStatementCatalog implements StatementCatalog {
 
-		private final Set<Token> tokens;
+		private final @NotNull Set<Token> tokens;
 
-		private final Set<Property> properties;
+		private final @NotNull Set<Property> properties;
 
-		private final Collection<LabelFilter> labelFilters;
+		private final @NotNull Collection<LabelFilter> labelFilters;
 
-		private final Map<Property, Collection<PropertyFilter>> propertyFilters;
+		private final @NotNull Map<Property, Collection<PropertyFilter>> propertyFilters;
 
 		private final Set<Expression> identifiableExpressions;
 
 		private final ParameterInformation parameterInformation;
 
-		private final Map<Token, Relationships> relationships;
+		private final @NotNull Map<Token, Relationships> relationships;
 
-		private final Set<Literal<?>> literals;
+		private final @NotNull Set<Literal<?>> literals;
 
 		@SuppressWarnings("squid:S107") // Totally fine with that number of args.
 		DefaultStatementCatalog(
-			Set<Token> tokens,
-			Set<LabelFilter> labelFilters,
-			Set<Property> properties,
-			Map<Property, Set<PropertyFilter>> propertyFilters,
+			@NotNull Set<Token> tokens,
+			@NotNull Set<LabelFilter> labelFilters,
+			@NotNull Set<Property> properties,
+			@NotNull Map<Property, Set<PropertyFilter>> propertyFilters,
 			Collection<Expression> identifiableExpressions,
 			ParameterInformation parameterInformation,
-			Map<Token, Relationships> relationships,
-			Set<Literal<?>> literals
+			@NotNull Map<Token, Relationships> relationships,
+			@NotNull Set<Literal<?>> literals
 		) {
 			this.tokens = Collections.unmodifiableSet(tokens);
 			this.labelFilters = Collections.unmodifiableSet(labelFilters);
@@ -589,22 +591,22 @@ class StatementCatalogBuildingVisitor extends ReflectiveVisitor {
 		}
 
 		@Override
-		public Set<Token> getAllTokens() {
+		public @NotNull Set<Token> getAllTokens() {
 			return tokens;
 		}
 
 		@Override
-		public Set<Property> getProperties() {
+		public @NotNull Set<Property> getProperties() {
 			return properties;
 		}
 
 		@Override
-		public Collection<LabelFilter> getAllLabelFilters() {
+		public @NotNull Collection<LabelFilter> getAllLabelFilters() {
 			return this.labelFilters;
 		}
 
 		@Override
-		public Map<Property, Collection<PropertyFilter>> getAllPropertyFilters() {
+		public @NotNull Map<Property, Collection<PropertyFilter>> getAllPropertyFilters() {
 			return this.propertyFilters;
 		}
 
@@ -614,27 +616,27 @@ class StatementCatalogBuildingVisitor extends ReflectiveVisitor {
 		}
 
 		@Override
-		public Map<String, Object> getParameters() {
+		public @NotNull Map<String, Object> getParameters() {
 			return parameterInformation.values;
 		}
 
 		@Override
-		public Collection<String> getParameterNames() {
+		public @NotNull Collection<String> getParameterNames() {
 			return parameterInformation.names;
 		}
 
 		@Override
-		public Map<String, String> getRenamedParameters() {
+		public @NotNull Map<String, String> getRenamedParameters() {
 			return parameterInformation.renames;
 		}
 
 		@Override
-		public Collection<Token> getOutgoingRelations(Token label) {
+		public Collection<Token> getOutgoingRelations(@NotNull Token label) {
 
 			return extractRelations(label, Relationships::outgoing);
 		}
 
-		private Collection<Token> extractRelations(Token label, Function<Relationships, Set<Token>> tokenProvider) {
+		private Collection<Token> extractRelations(@NotNull Token label, @NotNull Function<Relationships, Set<Token>> tokenProvider) {
 			if (label.type() != Token.Type.NODE_LABEL) {
 				throw new IllegalArgumentException(label + " must be a node label, not a relationship type");
 			}
@@ -643,7 +645,7 @@ class StatementCatalogBuildingVisitor extends ReflectiveVisitor {
 		}
 
 		@Override
-		public Collection<Token> getTargetNodes(Token type) {
+		public @NotNull Collection<Token> getTargetNodes(@NotNull Token type) {
 
 			if (type.type() != Token.Type.RELATIONSHIP_TYPE) {
 				throw new IllegalArgumentException(type + " must be a relationship type, not a node label");
@@ -658,13 +660,13 @@ class StatementCatalogBuildingVisitor extends ReflectiveVisitor {
 		}
 
 		@Override
-		public Collection<Token> getIncomingRelations(Token label) {
+		public Collection<Token> getIncomingRelations(@NotNull Token label) {
 
 			return extractRelations(label, Relationships::incoming);
 		}
 
 		@Override
-		public Collection<Token> getSourceNodes(Token type) {
+		public @NotNull Collection<Token> getSourceNodes(@NotNull Token type) {
 
 			if (type.type() != Token.Type.RELATIONSHIP_TYPE) {
 				throw new IllegalArgumentException(type + " must be a relationship type, not a node label");
@@ -679,13 +681,13 @@ class StatementCatalogBuildingVisitor extends ReflectiveVisitor {
 		}
 
 		@Override
-		public Collection<Token> getUndirectedRelations(Token label) {
+		public Collection<Token> getUndirectedRelations(@NotNull Token label) {
 
 			return extractRelations(label, Relationships::undirected);
 		}
 
 		@Override
-		public Set<Literal<?>> getLiterals() {
+		public @NotNull Set<Literal<?>> getLiterals() {
 			return literals;
 		}
 	}

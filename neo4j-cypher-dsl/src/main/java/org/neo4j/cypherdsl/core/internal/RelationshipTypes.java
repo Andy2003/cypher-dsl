@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.ast.Visitable;
 
 /**
@@ -43,7 +44,7 @@ public final class RelationshipTypes implements Visitable {
 	 * @param types The types to be included in this value holder
 	 * @return A new value holder
 	 */
-	public static RelationshipTypes of(String... types) {
+	public static @NotNull RelationshipTypes of(String @NotNull ... types) {
 
 		List<String> listOfTypes = Arrays.stream(types)
 			.filter(type -> !(type == null || type.isEmpty()))
@@ -64,7 +65,7 @@ public final class RelationshipTypes implements Visitable {
 	}
 
 	@Override
-	public String toString() {
+	public @NotNull String toString() {
 		return "RelationshipTypes{values=" + values + '}';
 	}
 }

@@ -60,7 +60,7 @@ final class InternalNodeImpl extends NodeBase<InternalNodeImpl> {
 
 	@NotNull
 	@Override
-	public InternalNodeImpl named(SymbolicName newSymbolicName) {
+	public InternalNodeImpl named(@NotNull SymbolicName newSymbolicName) {
 
 		Assertions.notNull(newSymbolicName, "Symbolic name is required.");
 		return new InternalNodeImpl(newSymbolicName, labels, labelExpression, properties, innerPredicate);

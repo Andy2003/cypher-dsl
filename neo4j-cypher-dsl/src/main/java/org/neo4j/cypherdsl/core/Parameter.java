@@ -24,6 +24,8 @@ import static org.apiguardian.api.API.Status.INTERNAL;
 import java.util.Objects;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.neo4j.cypherdsl.core.utils.Assertions;
 
 /**
@@ -43,11 +45,11 @@ public final class Parameter<T> implements Expression {
 	private final String name;
 	private final T value;
 
-	static Parameter<Object> create(String name) {
+	static @NotNull Parameter<Object> create(@NotNull String name) {
 		return create(name, NO_VALUE);
 	}
 
-	static <T> Parameter<T> create(String name, T value) {
+	static <T> @NotNull Parameter<T> create(@NotNull String name, T value) {
 
 		Assertions.hasText(name, "The name of the parameter is required!");
 
@@ -58,7 +60,7 @@ public final class Parameter<T> implements Expression {
 		return new Parameter<>(name, value);
 	}
 
-	static <T> Parameter<T> anon(T value) {
+	static <T> @NotNull Parameter<T> anon(T value) {
 
 		return new Parameter<>(null, value);
 	}
@@ -95,7 +97,7 @@ public final class Parameter<T> implements Expression {
 	 * @since 2021.0.0
 	 */
 	@API(status = STABLE, since = "2021.0.0")
-	public Parameter<?> withValue(Object newValue) {
+	public @NotNull Parameter<?> withValue(Object newValue) {
 		return create(name, newValue);
 	}
 
@@ -120,7 +122,7 @@ public final class Parameter<T> implements Expression {
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(@Nullable Object o) {
 		if (this == o) {
 			return true;
 		}

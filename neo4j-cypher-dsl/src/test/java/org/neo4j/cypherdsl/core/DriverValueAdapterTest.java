@@ -38,6 +38,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Stream;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -85,7 +86,7 @@ class DriverValueAdapterTest {
 			.isEqualTo("false");
 	}
 
-	static Stream<Arguments> scalarValuesShouldWork() {
+	static @NotNull Stream<Arguments> scalarValuesShouldWork() {
 
 		return Stream.of(
 			Arguments.of(Values.value("Hallo, 'Cypher"), "'Hallo, \\'Cypher'"),
@@ -122,7 +123,7 @@ class DriverValueAdapterTest {
 
 	@ParameterizedTest
 	@MethodSource
-	void scalarValuesShouldWork(Value value, String expected) {
+	void scalarValuesShouldWork(@NotNull Value value, String expected) {
 
 		var adapter = Cypher.adapt(value);
 		var adapted = adapter.asExpression();

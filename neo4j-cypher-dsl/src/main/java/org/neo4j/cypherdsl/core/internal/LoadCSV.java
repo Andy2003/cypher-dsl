@@ -47,7 +47,7 @@ public final class LoadCSV implements Clause {
 
 	private final String alias;
 
-	private final String fieldTerminator;
+	private final @Nullable String fieldTerminator;
 
 	/**
 	 * Constructs a new {@link LoadCSV} clause.

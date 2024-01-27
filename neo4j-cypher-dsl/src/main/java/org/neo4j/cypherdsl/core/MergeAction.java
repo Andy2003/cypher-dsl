@@ -22,6 +22,7 @@ import static org.apiguardian.api.API.Status.STABLE;
 import static org.apiguardian.api.API.Status.INTERNAL;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.ast.Visitable;
 import org.neo4j.cypherdsl.core.ast.Visitor;
 
@@ -68,7 +69,7 @@ public final class MergeAction implements Visitable {
 	 * @return An immutable action
 	 * @since 2021.3.0
 	 */
-	public static MergeAction of(Type type, Set set) {
+	public static @NotNull MergeAction of(Type type, Set set) {
 		return new MergeAction(type, set);
 	}
 
@@ -89,7 +90,7 @@ public final class MergeAction implements Visitable {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 		this.set.accept(visitor);

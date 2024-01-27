@@ -40,19 +40,19 @@ import org.neo4j.cypherdsl.core.annotations.CheckReturnValue;
 abstract class AbstractCase implements Case {
 
 	private CaseElse caseElse;
-	private final List<CaseWhenThen> caseWhenThens;
-	private Optional<String> prefix = Optional.empty();
-	private Optional<String> suffix = Optional.empty();
+	private final @NotNull List<CaseWhenThen> caseWhenThens;
+	private @NotNull Optional<String> prefix = Optional.empty();
+	private @NotNull Optional<String> suffix = Optional.empty();
 
-	public static Case create(@Nullable Expression expression) {
+	public static @NotNull Case create(@Nullable Expression expression) {
 		return expression == null ? new GenericCaseImpl() : new SimpleCaseImpl(expression);
 	}
 
-	AbstractCase(List<CaseWhenThen> caseWhenThens) {
+	AbstractCase(@NotNull List<CaseWhenThen> caseWhenThens) {
 		this.caseWhenThens = new ArrayList<>(caseWhenThens);
 	}
 
-	abstract Expression getCaseExpression();
+	abstract @Nullable Expression getCaseExpression();
 
 	@Override
 	public String toString() {
@@ -77,12 +77,12 @@ abstract class AbstractCase implements Case {
 	}
 
 	@Override
-	public Optional<String> getPrefix() {
+	public @NotNull Optional<String> getPrefix() {
 		return prefix;
 	}
 
 	@Override
-	public Optional<String> getSuffix() {
+	public @NotNull Optional<String> getSuffix() {
 		return suffix;
 	}
 
@@ -103,7 +103,7 @@ abstract class AbstractCase implements Case {
 			this(caseExpression, Collections.emptyList());
 		}
 
-		SimpleCaseImpl(Expression caseExpression, List<CaseWhenThen> caseWhenThens) {
+		SimpleCaseImpl(Expression caseExpression, @NotNull List<CaseWhenThen> caseWhenThens) {
 			super(caseWhenThens);
 			this.caseExpression = caseExpression;
 		}
@@ -118,7 +118,7 @@ abstract class AbstractCase implements Case {
 		 */
 		static final class EndingSimpleCase extends SimpleCaseImpl implements CaseEnding {
 
-			private EndingSimpleCase(Expression caseExpression, List<CaseWhenThen> caseWhenThens) {
+			private EndingSimpleCase(Expression caseExpression, @NotNull List<CaseWhenThen> caseWhenThens) {
 				super(caseExpression, caseWhenThens);
 			}
 
@@ -137,11 +137,11 @@ abstract class AbstractCase implements Case {
 			this(Collections.emptyList());
 		}
 
-		GenericCaseImpl(List<CaseWhenThen> caseWhenThens) {
+		GenericCaseImpl(@NotNull List<CaseWhenThen> caseWhenThens) {
 			super(caseWhenThens);
 		}
 
-		@Override
+		@Override @Nullable
 		Expression getCaseExpression() {
 			return null;
 		}
@@ -151,7 +151,7 @@ abstract class AbstractCase implements Case {
 		 */
 		static final class EndingGenericCase extends GenericCaseImpl implements CaseEnding {
 
-			private EndingGenericCase(List<CaseWhenThen> caseWhenThens) {
+			private EndingGenericCase(@NotNull List<CaseWhenThen> caseWhenThens) {
 				super(caseWhenThens);
 			}
 
@@ -165,7 +165,7 @@ abstract class AbstractCase implements Case {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 		visitor.enter(this);
 		if (getCaseExpression() != null) {
 			getCaseExpression().accept(visitor);

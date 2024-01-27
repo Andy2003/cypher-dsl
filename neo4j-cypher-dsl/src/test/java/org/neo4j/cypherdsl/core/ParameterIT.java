@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -92,7 +93,7 @@ class ParameterIT {
 
 	@ParameterizedTest
 	@MethodSource("conflictingParameters")
-	void shouldFailWithNoValueVsNull(Statement statement) {
+	void shouldFailWithNoValueVsNull(@NotNull Statement statement) {
 
 		assertThatExceptionOfType(ConflictingParametersException.class)
 			.isThrownBy(statement::getParameters);

@@ -20,6 +20,7 @@ package org.neo4j.cypherdsl.core.renderer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -65,7 +66,7 @@ class DefaultVisitorTest {
 
 	@EnumSource(TestEnum.class)
 	@ParameterizedTest
-	void underscoresInEnumsShouldBeRemoved(TestEnum testEnum) {
+	void underscoresInEnumsShouldBeRemoved(@NotNull TestEnum testEnum) {
 
 		DefaultVisitor visitorUnderTest = new DefaultVisitor(null);
 		visitorUnderTest.enter(testEnum);

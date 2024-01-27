@@ -48,7 +48,7 @@ final class RawLiteral implements Expression {
 
 	static class RawElement extends LiteralBase<String> {
 
-		RawElement(String content) {
+		RawElement(@NotNull String content) {
 			super(unescapeEscapedPlaceholders(content));
 		}
 
@@ -59,12 +59,12 @@ final class RawLiteral implements Expression {
 			return content;
 		}
 
-		private static String unescapeEscapedPlaceholders(String content) {
+		private static @NotNull String unescapeEscapedPlaceholders(@NotNull String content) {
 			return content.replace("\\$E", "$E");
 		}
 	}
 
-	static RawLiteral create(String format, Object... mixedArgs) {
+	static @NotNull RawLiteral create(@NotNull String format, Object @NotNull ... mixedArgs) {
 
 		Assertions.hasText(format, "Cannot create a raw literal without a format.");
 
@@ -135,14 +135,14 @@ final class RawLiteral implements Expression {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 		content.forEach(expression -> expression.accept(visitor));
 		visitor.leave(this);
 	}
 
-	private static Expression getMixedArg(Object argument) {
+	private static @NotNull Expression getMixedArg(Object argument) {
 		if (argument instanceof Expression expression) {
 			return expression;
 		}

@@ -43,14 +43,14 @@ abstract class AbstractNode extends AbstractPropertyContainer implements Node {
 
 	@NotNull
 	@Override
-	public final Condition isEqualTo(Node otherNode) {
+	public final Condition isEqualTo(@NotNull Node otherNode) {
 
 		return this.getRequiredSymbolicName().isEqualTo(otherNode.getRequiredSymbolicName());
 	}
 
 	@NotNull
 	@Override
-	public final Condition isNotEqualTo(Node otherNode) {
+	public final Condition isNotEqualTo(@NotNull Node otherNode) {
 
 		return this.getRequiredSymbolicName().isNotEqualTo(otherNode.getRequiredSymbolicName());
 	}
@@ -106,19 +106,19 @@ abstract class AbstractNode extends AbstractPropertyContainer implements Node {
 
 	@NotNull
 	@Override
-	public final Relationship relationshipTo(Node other, String... types) {
+	public final Relationship relationshipTo(@NotNull Node other, String... types) {
 		return new InternalRelationshipImpl(null, this, Relationship.Direction.LTR, null, other, types);
 	}
 
 	@NotNull
 	@Override
-	public final Relationship relationshipFrom(Node other, String... types) {
+	public final Relationship relationshipFrom(@NotNull Node other, String... types) {
 		return new InternalRelationshipImpl(null, this, Relationship.Direction.RTL, null, other, types);
 	}
 
 	@NotNull
 	@Override
-	public final Relationship relationshipBetween(Node other, String... types) {
+	public final Relationship relationshipBetween(@NotNull Node other, String... types) {
 		return new InternalRelationshipImpl(null, this, Relationship.Direction.UNI, null, other, types);
 	}
 

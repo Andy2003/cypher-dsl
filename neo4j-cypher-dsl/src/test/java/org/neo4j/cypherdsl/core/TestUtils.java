@@ -21,13 +21,15 @@ package org.neo4j.cypherdsl.core;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * @author Michael J. Simons
  * @soundtrack Helge Schneider - The Last Jazz
  */
 final class TestUtils {
 
-	static Method findMethod(Class<?> clazz, String name, Class<?>... paramTypes) {
+	static @NotNull Method findMethod(@NotNull Class<?> clazz, @NotNull String name, Class<?>... paramTypes) {
 		try {
 			return clazz.getDeclaredMethod(name, paramTypes);
 		} catch (NoSuchMethodException e) {
@@ -35,7 +37,7 @@ final class TestUtils {
 		}
 	}
 
-	static Object invokeMethod(Method method, Object target, Object... args) {
+	static Object invokeMethod(@NotNull Method method, Object target, Object... args) {
 		try {
 			return method.invoke(target, args);
 		} catch (InvocationTargetException e) {

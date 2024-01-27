@@ -48,7 +48,7 @@ public final class Reduction extends TypedSubtree<Visitable> {
 	 * @return An ongoing definition
 	 */
 	@NotNull @Contract(pure = true)
-	static OngoingDefinitionWithVariable of(SymbolicName variable) {
+	static OngoingDefinitionWithVariable of(@NotNull SymbolicName variable) {
 
 		Assertions.notNull(variable, "A variable is required");
 		return new Builder(variable);
@@ -124,28 +124,28 @@ public final class Reduction extends TypedSubtree<Visitable> {
 		}
 
 		@Override
-		public OngoingDefinitionWithList in(Expression list) {
+		public @NotNull OngoingDefinitionWithList in(Expression list) {
 
 			this.listExpression = list;
 			return this;
 		}
 
 		@Override
-		public OngoingDefinitionWithReducer map(Expression mapper) {
+		public @NotNull OngoingDefinitionWithReducer map(Expression mapper) {
 
 			this.mapExpression = mapper;
 			return this;
 		}
 
 		@Override
-		public OngoingDefinitionWithInitial accumulateOn(Expression accumulator) {
+		public @NotNull OngoingDefinitionWithInitial accumulateOn(Expression accumulator) {
 
 			this.accumulatorExpression = accumulator;
 			return this;
 		}
 
 		@Override
-		public FunctionInvocation withInitialValueOf(Expression initialValue) {
+		public @NotNull FunctionInvocation withInitialValueOf(@NotNull Expression initialValue) {
 
 			Expression accumulatorAssignment = accumulatorExpression.isEqualTo(initialValue);
 			ReductionPipeline reductionPipeline = new ReductionPipeline(variable, listExpression, mapExpression);
@@ -169,7 +169,7 @@ public final class Reduction extends TypedSubtree<Visitable> {
 		}
 
 		@Override
-		public void accept(Visitor visitor) {
+		public void accept(@NotNull Visitor visitor) {
 			visitor.enter(this);
 			this.variable.accept(visitor);
 			Operator.IN.accept(visitor);

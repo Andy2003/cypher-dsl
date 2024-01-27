@@ -25,6 +25,7 @@ import java.util.Optional;
 import org.apiguardian.api.API;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.neo4j.cypherdsl.core.FunctionInvocation.FunctionDefinition;
 import org.neo4j.cypherdsl.core.ast.Visitable;
 import org.neo4j.cypherdsl.core.ast.Visitor;
@@ -53,25 +54,25 @@ public final class NamedPath implements PatternElement, Named {
 	/**
 	 * The pattern defining this path.
 	 */
-	private final Visitable optionalPattern;
+	private final @Nullable Visitable optionalPattern;
 
-	static OngoingDefinitionWithName named(String name) {
+	static @NotNull OngoingDefinitionWithName named(String name) {
 
 		return named(SymbolicName.of(name));
 	}
 
-	static OngoingDefinitionWithName named(SymbolicName name) {
+	static @NotNull OngoingDefinitionWithName named(@NotNull SymbolicName name) {
 
 		Assertions.notNull(name, "A name is required");
 		return new Builder(name);
 	}
 
-	static OngoingShortestPathDefinitionWithName named(String name, FunctionDefinition algorithm) {
+	static @NotNull OngoingShortestPathDefinitionWithName named(String name, FunctionDefinition algorithm) {
 
 		return new ShortestPathBuilder(SymbolicName.of(name), algorithm);
 	}
 
-	static OngoingShortestPathDefinitionWithName named(SymbolicName name, FunctionDefinition algorithm) {
+	static @NotNull OngoingShortestPathDefinitionWithName named(@NotNull SymbolicName name, FunctionDefinition algorithm) {
 
 		Assertions.notNull(name, "A name is required");
 		return new ShortestPathBuilder(name, algorithm);
@@ -139,7 +140,7 @@ public final class NamedPath implements PatternElement, Named {
 		SymbolicName name, FunctionDefinition algorithm) implements OngoingShortestPathDefinitionWithName {
 
 		@Override
-		public NamedPath definedBy(Relationship relationship) {
+		public @NotNull NamedPath definedBy(@NotNull Relationship relationship) {
 			return new NamedPath(name, FunctionInvocation.create(algorithm, relationship));
 		}
 	}
@@ -166,7 +167,7 @@ public final class NamedPath implements PatternElement, Named {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 		this.name.accept(visitor);

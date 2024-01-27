@@ -30,6 +30,8 @@ import java.util.Objects;
 import java.util.Set;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This class provides some configuration settings for the Cypher-DSL, mainly around rendering of a statement. Instances
@@ -103,7 +105,7 @@ public final class Configuration {
 			targetLabel = targetLabel.trim();
 		}
 
-		private static RelationshipDefinition of(String definition) {
+		private static @NotNull RelationshipDefinition of(String definition) {
 			var tuple = Objects.requireNonNull(definition)
 				.replace("(", "").replace(")", "")
 				.split(",");
@@ -125,7 +127,7 @@ public final class Configuration {
 	 * @param definition The literal definition of the relationship
 	 * @return A new relationship definition
 	 */
-	public static RelationshipDefinition relationshipDefinition(String definition) {
+	public static @NotNull RelationshipDefinition relationshipDefinition(String definition) {
 		return RelationshipDefinition.of(definition);
 	}
 
@@ -137,7 +139,7 @@ public final class Configuration {
 	/**
 	 * Configure your favorite indentation style.
 	 */
-	private final IndentStyle indentStyle;
+	private final @NotNull IndentStyle indentStyle;
 
 	/**
 	 * The indentation sizes. Only applicable when using {@link IndentStyle#SPACE}. Defaults to {@literal 2}.
@@ -158,12 +160,12 @@ public final class Configuration {
 	 * make those statements produce the same rendering, given they have the same semantics.
 	 *
 	 */
-	private final Set<GeneratedNames> generatedNames;
+	private final @NotNull Set<GeneratedNames> generatedNames;
 
 	/**
 	 * The dialect to use when rendering a statement. The default dialect works well with Neo4j 4.4 and prior.
 	 */
-	private final Dialect dialect;
+	private final @NotNull Dialect dialect;
 
 	/**
 	 * A flag of the renderer should be instructed to enforce a schema.
@@ -196,7 +198,7 @@ public final class Configuration {
 	/**
 	 * {@return a new builder} for creating a new configuration from scratch
 	 */
-	public static Builder newConfig() {
+	public static @NotNull Builder newConfig() {
 		return Builder.newConfig();
 	}
 
@@ -207,18 +209,18 @@ public final class Configuration {
 	public static final class Builder {
 
 		private boolean prettyPrint = false;
-		private IndentStyle indentStyle = IndentStyle.SPACE;
+		private @NotNull IndentStyle indentStyle = IndentStyle.SPACE;
 		private int indentSize = 2;
 		private boolean alwaysEscapeNames = true;
 		private Dialect dialect = Dialect.NEO4J_4;
-		private Set<GeneratedNames> generatedNames = EnumSet.noneOf(GeneratedNames.class);
+		private @NotNull Set<GeneratedNames> generatedNames = EnumSet.noneOf(GeneratedNames.class);
 		private boolean enforceSchema = false;
-		private Map<String, List<RelationshipDefinition>> relationshipDefinitions = new HashMap<>();
+		private @NotNull Map<String, List<RelationshipDefinition>> relationshipDefinitions = new HashMap<>();
 
 		private Builder() {
 		}
 
-		static Builder newConfig() {
+		static @NotNull Builder newConfig() {
 			return new Builder();
 		}
 
@@ -228,7 +230,7 @@ public final class Configuration {
 		 * @param prettyPrint use {@literal true} for enabling pretty printing
 		 * @return this builder
 		 */
-		public Builder withPrettyPrint(boolean prettyPrint) {
+		public @NotNull Builder withPrettyPrint(boolean prettyPrint) {
 			this.prettyPrint = prettyPrint;
 			if (this.prettyPrint) {
 				return this.alwaysEscapeNames(false);
@@ -240,7 +242,7 @@ public final class Configuration {
 		 * @param indentStyle The new indentation style
 		 * @return this builder
 		 */
-		public Builder withIndentStyle(IndentStyle indentStyle) {
+		public @NotNull Builder withIndentStyle(@NotNull IndentStyle indentStyle) {
 
 			if (indentStyle == null) {
 				throw new IllegalArgumentException("Indent style is required.");
@@ -253,7 +255,7 @@ public final class Configuration {
 		 * @param indentSize The new indentation size
 		 * @return this builder
 		 */
-		public Builder withIndentSize(int indentSize) {
+		public @NotNull Builder withIndentSize(int indentSize) {
 			this.indentSize = indentSize;
 			return this;
 		}
@@ -264,7 +266,7 @@ public final class Configuration {
 		 * @param alwaysEscapeNames use {@literal true} to always escape names
 		 * @return this builder
 		 */
-		public Builder alwaysEscapeNames(boolean alwaysEscapeNames) {
+		public @NotNull Builder alwaysEscapeNames(boolean alwaysEscapeNames) {
 			this.alwaysEscapeNames = alwaysEscapeNames;
 			return this;
 		}
@@ -275,7 +277,7 @@ public final class Configuration {
 		 * @param useGeneratedNames Set to {@literal true} to use generated symbolic names, parameter names and aliases
 		 * @return this builder
 		 */
-		public Builder withGeneratedNames(boolean useGeneratedNames) {
+		public @NotNull Builder withGeneratedNames(boolean useGeneratedNames) {
 			if (useGeneratedNames) {
 				this.generatedNames = EnumSet.allOf(GeneratedNames.class);
 			} else {
@@ -290,7 +292,7 @@ public final class Configuration {
 		 * @param useGeneratedNames The set of objects for which generated names should be used
 		 * @return this builder
 		 */
-		public Builder withGeneratedNames(Set<GeneratedNames> useGeneratedNames) {
+		public @NotNull Builder withGeneratedNames(Set<GeneratedNames> useGeneratedNames) {
 			this.generatedNames = Objects.requireNonNullElseGet(useGeneratedNames, () -> EnumSet.noneOf(GeneratedNames.class));
 			return this;
 		}
@@ -303,7 +305,7 @@ public final class Configuration {
 		 * @return This builder. You can both use the original or this instance.
 		 * @since 2022.3.0
 		 */
-		public Builder withDialect(Dialect dialect) {
+		public @NotNull Builder withDialect(Dialect dialect) {
 			this.dialect = dialect;
 			return this;
 		}
@@ -316,7 +318,7 @@ public final class Configuration {
 		 * @since 2023.7.0
 		 */
 		@API(status = EXPERIMENTAL, since = "2023.7.0")
-		public Builder withRelationshipDefinition(RelationshipDefinition relationshipDefinition) {
+		public @NotNull Builder withRelationshipDefinition(@Nullable RelationshipDefinition relationshipDefinition) {
 			if (relationshipDefinition == null) {
 				return this;
 			}
@@ -334,7 +336,7 @@ public final class Configuration {
 		 * @since 2023.7.0
 		 */
 		@API(status = EXPERIMENTAL, since = "2023.7.0")
-		public Builder withEnforceSchema(boolean enforceSchema) {
+		public @NotNull Builder withEnforceSchema(boolean enforceSchema) {
 			this.enforceSchema = enforceSchema;
 			return this;
 		}
@@ -342,12 +344,12 @@ public final class Configuration {
 		/**
 		 * @return a new immutable configuration
 		 */
-		public Configuration build() {
+		public @NotNull Configuration build() {
 			return new Configuration(this);
 		}
 	}
 
-	private Configuration(Builder builder) {
+	private Configuration(@NotNull Builder builder) {
 		this.prettyPrint = builder.prettyPrint;
 		this.alwaysEscapeNames = builder.alwaysEscapeNames;
 		this.indentStyle = builder.indentStyle;
@@ -371,7 +373,7 @@ public final class Configuration {
 	/**
 	 * {@return the indentation style} whether to use tabs or spaces to indent things
 	 */
-	public IndentStyle getIndentStyle() {
+	public @NotNull IndentStyle getIndentStyle() {
 		return indentStyle;
 	}
 
@@ -393,7 +395,7 @@ public final class Configuration {
 	 * @return The set of object types for which generated names should be used
 	 * @since 2023.2.0
 	 */
-	public Set<GeneratedNames> getGeneratedNames() {
+	public @NotNull Set<GeneratedNames> getGeneratedNames() {
 		return generatedNames;
 	}
 
@@ -408,7 +410,7 @@ public final class Configuration {
 	/**
 	 * @return the target dialect
 	 */
-	public Dialect getDialect() {
+	public @NotNull Dialect getDialect() {
 		return dialect;
 	}
 
@@ -431,7 +433,7 @@ public final class Configuration {
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(@Nullable Object o) {
 		if (this == o) {
 			return true;
 		}
@@ -452,7 +454,7 @@ public final class Configuration {
 	}
 
 	@Override
-	public String toString() {
+	public @NotNull String toString() {
 		return "Configuration{" +
 			"prettyPrint=" + prettyPrint +
 			", indentStyle=" + indentStyle +

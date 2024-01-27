@@ -86,7 +86,7 @@ public final class Cypher {
 	 * @return A new node representation
 	 */
 	@NotNull @Contract(pure = true)
-	public static Node node(String primaryLabel, List<String> additionalLabels) {
+	public static Node node(String primaryLabel, @NotNull List<String> additionalLabels) {
 
 		return new InternalNodeImpl(primaryLabel, additionalLabels.toArray(new String[] {}));
 	}
@@ -119,7 +119,7 @@ public final class Cypher {
 	 * @since 2021.2.2
 	 */
 	@NotNull @Contract(pure = true)
-	public static Node node(String primaryLabel, MapExpression properties, Collection<String> additionalLabels) {
+	public static Node node(String primaryLabel, MapExpression properties, @NotNull Collection<String> additionalLabels) {
 
 		return node(primaryLabel, properties, additionalLabels.toArray(new String[] {}));
 	}
@@ -164,7 +164,7 @@ public final class Cypher {
 	 * @return A node matching any node with the symbolic the given {@code symbolicName}.
 	 */
 	@NotNull @Contract(pure = true)
-	public static Node anyNode(SymbolicName symbolicName) {
+	public static Node anyNode(@NotNull SymbolicName symbolicName) {
 		return new InternalNodeImpl().named(symbolicName);
 	}
 
@@ -191,7 +191,7 @@ public final class Cypher {
 	 * @since 2021.2.2
 	 */
 	@NotNull @Contract(pure = true)
-	public static Property property(String containerName, Collection<String> names) {
+	public static Property property(String containerName, @NotNull Collection<String> names) {
 		return property(name(containerName), names.toArray(new String[] {}));
 	}
 
@@ -204,7 +204,7 @@ public final class Cypher {
 	 * @return A new property.
 	 */
 	@NotNull @Contract(pure = true)
-	public static Property property(Expression expression, String... names) {
+	public static Property property(@NotNull Expression expression, String... names) {
 		return InternalPropertyImpl.create(expression, names);
 	}
 
@@ -218,7 +218,7 @@ public final class Cypher {
 	 * @since 2021.2.2
 	 */
 	@NotNull @Contract(pure = true)
-	public static Property property(Expression expression, Collection<String> names) {
+	public static Property property(@NotNull Expression expression, @NotNull Collection<String> names) {
 		return property(expression, names.toArray(new String[] {}));
 	}
 
@@ -232,7 +232,7 @@ public final class Cypher {
 	 * @since 2021.0.0
 	 */
 	@NotNull @Contract(pure = true)
-	public static Property property(String containerName, Expression lookup) {
+	public static Property property(String containerName, @NotNull Expression lookup) {
 		return property(name(containerName), lookup);
 	}
 
@@ -246,7 +246,7 @@ public final class Cypher {
 	 * @since 2021.0.0
 	 */
 	@NotNull @Contract(pure = true)
-	public static Property property(Expression expression, Expression lookup) {
+	public static Property property(Expression expression, @NotNull Expression lookup) {
 		return InternalPropertyImpl.create(expression, lookup);
 	}
 
@@ -270,7 +270,7 @@ public final class Cypher {
 	 * @since 1.1
 	 */
 	@NotNull @Contract(pure = true)
-	public static NamedPath.OngoingDefinitionWithName path(SymbolicName name) {
+	public static NamedPath.OngoingDefinitionWithName path(@NotNull SymbolicName name) {
 		return NamedPath.named(name);
 	}
 
@@ -294,7 +294,7 @@ public final class Cypher {
 	 * @since 1.1.1
 	 */
 	@NotNull @Contract(pure = true)
-	public static NamedPath.OngoingShortestPathDefinitionWithName shortestPath(SymbolicName name) {
+	public static NamedPath.OngoingShortestPathDefinitionWithName shortestPath(@NotNull SymbolicName name) {
 		return NamedPath.named(name, BuiltInFunctions.Scalars.SHORTEST_PATH);
 	}
 
@@ -317,7 +317,7 @@ public final class Cypher {
 	 * @return The new parameter
 	 */
 	@NotNull @Contract(pure = true)
-	public static Parameter<Object> parameter(String name) {
+	public static Parameter<Object> parameter(@NotNull String name) {
 		return Parameter.create(name);
 	}
 
@@ -332,7 +332,7 @@ public final class Cypher {
 	 * @since 2021.0.0
 	 */
 	@NotNull @Contract(pure = true)
-	public static <T> Parameter<T> parameter(String name, T value) {
+	public static <T> Parameter<T> parameter(@NotNull String name, T value) {
 		return Parameter.create(name, value);
 	}
 
@@ -371,7 +371,7 @@ public final class Cypher {
 	 */
 	@NotNull @Contract(pure = true)
 	public static StatementBuilder.OngoingReadingWithoutWhere optionalMatch(
-		Collection<? extends PatternElement> pattern) {
+		@NotNull Collection<? extends PatternElement> pattern) {
 
 		return optionalMatch(pattern.toArray(new PatternElement[] {}));
 	}
@@ -398,7 +398,7 @@ public final class Cypher {
 	 * @since 2021.2.2
 	 */
 	@NotNull @Contract(pure = true)
-	public static StatementBuilder.OngoingReadingWithoutWhere match(Collection<? extends PatternElement> pattern) {
+	public static StatementBuilder.OngoingReadingWithoutWhere match(@NotNull Collection<? extends PatternElement> pattern) {
 
 		return match(pattern.toArray(new PatternElement[] {}));
 	}
@@ -429,7 +429,7 @@ public final class Cypher {
 	 */
 	@NotNull @Contract(pure = true)
 	public static StatementBuilder.OngoingReadingWithoutWhere match(boolean optional,
-		Collection<? extends PatternElement> pattern) {
+		@NotNull Collection<? extends PatternElement> pattern) {
 
 		return match(optional, pattern.toArray(new PatternElement[] {}));
 	}
@@ -454,7 +454,7 @@ public final class Cypher {
 	 * @since 2021.2.2
 	 */
 	@NotNull @Contract(pure = true)
-	public static StatementBuilder.OngoingUpdate create(Collection<? extends PatternElement> pattern) {
+	public static StatementBuilder.OngoingUpdate create(@NotNull Collection<? extends PatternElement> pattern) {
 
 		return create(pattern.toArray(new PatternElement[] {}));
 	}
@@ -497,7 +497,7 @@ public final class Cypher {
 	 * @since 2023.9.0
 	 */
 	@SuppressWarnings("deprecation")
-	public static SubqueryExpressionBuilder subqueryWith(String... identifiableElements) {
+	public static @NotNull SubqueryExpressionBuilder subqueryWith(String... identifiableElements) {
 		return Expressions.with(identifiableElements);
 	}
 
@@ -509,7 +509,7 @@ public final class Cypher {
 	 * @since 2023.9.0
 	 */
 	@SuppressWarnings("deprecation")
-	public static SubqueryExpressionBuilder subqueryWith(IdentifiableElement... identifiableElements) {
+	public static @NotNull SubqueryExpressionBuilder subqueryWith(IdentifiableElement... identifiableElements) {
 		return Expressions.with(identifiableElements);
 	}
 
@@ -552,7 +552,7 @@ public final class Cypher {
 	 * @since 2021.2.2
 	 */
 	@NotNull @Contract(pure = true)
-	public static StatementBuilder.OngoingMerge merge(Collection<? extends PatternElement> pattern) {
+	public static StatementBuilder.OngoingMerge merge(@NotNull Collection<? extends PatternElement> pattern) {
 
 		return merge(pattern.toArray(new PatternElement[] {}));
 	}
@@ -592,7 +592,7 @@ public final class Cypher {
 	 * @since 2021.2.2
 	 */
 	@NotNull @Contract(pure = true)
-	public static StatementBuilder.OngoingUnwind unwind(Collection<? extends Expression> expressions) {
+	public static StatementBuilder.OngoingUnwind unwind(@NotNull Collection<? extends Expression> expressions) {
 
 		return unwind(expressions.toArray(new Expression[] {}));
 	}
@@ -604,7 +604,7 @@ public final class Cypher {
 	 * @return A sort item, providing means to specify ascending or descending order
 	 */
 	@NotNull @Contract(pure = true)
-	public static SortItem sort(Expression expression) {
+	public static SortItem sort(@NotNull Expression expression) {
 
 		return SortItem.create(expression, null);
 	}
@@ -618,7 +618,7 @@ public final class Cypher {
 	 * @since 2021.1.0
 	 */
 	@NotNull @Contract(pure = true)
-	public static SortItem sort(Expression expression, SortItem.Direction direction) {
+	public static SortItem sort(@NotNull Expression expression, SortItem.Direction direction) {
 
 		return SortItem.create(expression, direction);
 	}
@@ -655,7 +655,7 @@ public final class Cypher {
 	 * @since 2021.1.0
 	 */
 	@NotNull @Contract(pure = true)
-	public static MapExpression asExpression(Map<String, Object> map) {
+	public static MapExpression asExpression(@NotNull Map<String, Object> map) {
 
 		return MapExpression.create(map);
 	}
@@ -680,7 +680,7 @@ public final class Cypher {
 	 * @since 2021.2.2
 	 */
 	@NotNull @Contract(pure = true)
-	public static ListExpression listOf(Collection<? extends Expression> expressions) {
+	public static ListExpression listOf(@NotNull Collection<? extends Expression> expressions) {
 
 		return Cypher.listOf(expressions.toArray(new Expression[0]));
 	}
@@ -695,7 +695,7 @@ public final class Cypher {
 	 */
 	@SuppressWarnings("unchecked")
 	@NotNull @Contract(pure = true)
-	public static <T> Literal<T> literalOf(Object object) {
+	public static <T> Literal<T> literalOf(@Nullable Object object) {
 
 		if (object == null) {
 			return (Literal<T>) NullLiteral.INSTANCE;
@@ -803,7 +803,7 @@ public final class Cypher {
 	 * @return A union statement.
 	 */
 	@NotNull @Contract(pure = true)
-	public static UnionQuery union(Statement... statements) {
+	public static UnionQuery union(@NotNull Statement... statements) {
 		return unionImpl(false, statements);
 	}
 
@@ -815,7 +815,7 @@ public final class Cypher {
 	 * @since 2021.2.2
 	 */
 	@NotNull @Contract(pure = true)
-	public static UnionQuery union(Collection<Statement> statements) {
+	public static UnionQuery union(@NotNull Collection<@NotNull Statement> statements) {
 		return union(statements.toArray(new Statement[] {}));
 	}
 
@@ -826,7 +826,7 @@ public final class Cypher {
 	 * @return A union statement.
 	 */
 	@NotNull @Contract(pure = true)
-	public static Statement unionAll(Statement... statements) {
+	public static Statement unionAll(@NotNull Statement... statements) {
 		return unionImpl(true, statements);
 	}
 
@@ -838,7 +838,7 @@ public final class Cypher {
 	 * @since 2021.2.2
 	 */
 	@NotNull @Contract(pure = true)
-	public static Statement unionAll(Collection<Statement> statements) {
+	public static Statement unionAll(@NotNull Collection<Statement> statements) {
 		return unionAll(statements.toArray(new Statement[] {}));
 	}
 
@@ -874,7 +874,7 @@ public final class Cypher {
 	 * @since 2020.0.0
 	 */
 	@NotNull @Contract(pure = true)
-	public static OngoingDefinitionWithPattern listBasedOn(RelationshipPattern relationshipPattern) {
+	public static OngoingDefinitionWithPattern listBasedOn(@NotNull RelationshipPattern relationshipPattern) {
 		return PatternComprehension.basedOn(relationshipPattern);
 	}
 
@@ -886,7 +886,7 @@ public final class Cypher {
 	 * @since 2020.1.1
 	 */
 	@NotNull @Contract(pure = true)
-	public static OngoingDefinitionWithPattern listBasedOn(NamedPath namedPath) {
+	public static OngoingDefinitionWithPattern listBasedOn(@NotNull NamedPath namedPath) {
 		return PatternComprehension.basedOn(namedPath);
 	}
 
@@ -898,7 +898,7 @@ public final class Cypher {
 	 * @since 1.0.1
 	 */
 	@NotNull @Contract(pure = true)
-	public static OngoingDefinitionWithVariable listWith(SymbolicName variable) {
+	public static OngoingDefinitionWithVariable listWith(@NotNull SymbolicName variable) {
 		return ListComprehension.with(variable);
 	}
 
@@ -938,7 +938,7 @@ public final class Cypher {
 	 * @return An ongoing definition of a call
 	 */
 	@NotNull @Contract(pure = true)
-	public static OngoingStandaloneCallWithoutArguments call(String procedureName) {
+	public static OngoingStandaloneCallWithoutArguments call(@NotNull String procedureName) {
 
 		Assertions.hasText(procedureName, "The procedure name must not be null or empty.");
 		return call(procedureName.split("\\."));
@@ -963,7 +963,7 @@ public final class Cypher {
 	 * @since 2021.2.2
 	 */
 	@NotNull @Contract(pure = true)
-	public static OngoingStandaloneCallWithoutArguments call(Collection<String> namespaceAndProcedure) {
+	public static OngoingStandaloneCallWithoutArguments call(@NotNull Collection<String> namespaceAndProcedure) {
 		return call(namespaceAndProcedure.toArray(new String[] {}));
 	}
 
@@ -992,7 +992,7 @@ public final class Cypher {
 	 * @since 2020.1.0
 	 */
 	@NotNull @Contract(pure = true)
-	public static Expression subList(Expression targetExpression, Integer start, Integer end) {
+	public static Expression subList(@NotNull Expression targetExpression, Integer start, Integer end) {
 
 		return ListOperator.subList(targetExpression, Cypher.literalOf(start), Cypher.literalOf(end));
 	}
@@ -1007,7 +1007,7 @@ public final class Cypher {
 	 * @since 2020.1.0
 	 */
 	@NotNull @Contract(pure = true)
-	public static Expression subList(Expression targetExpression, Expression start, Expression end) {
+	public static Expression subList(@NotNull Expression targetExpression, @NotNull Expression start, @NotNull Expression end) {
 
 		return ListOperator.subList(targetExpression, start, end);
 	}
@@ -1021,7 +1021,7 @@ public final class Cypher {
 	 * @since 2020.1.0
 	 */
 	@NotNull @Contract(pure = true)
-	public static Expression subListFrom(Expression targetExpression, Integer start) {
+	public static Expression subListFrom(@NotNull Expression targetExpression, Integer start) {
 
 		return ListOperator.subListFrom(targetExpression, Cypher.literalOf(start));
 	}
@@ -1035,7 +1035,7 @@ public final class Cypher {
 	 * @since 2020.1.0
 	 */
 	@NotNull @Contract(pure = true)
-	public static Expression subListFrom(Expression targetExpression, Expression start) {
+	public static Expression subListFrom(@NotNull Expression targetExpression, @NotNull Expression start) {
 
 		return ListOperator.subListFrom(targetExpression, start);
 	}
@@ -1049,7 +1049,7 @@ public final class Cypher {
 	 * @since 2020.1.0
 	 */
 	@NotNull @Contract(pure = true)
-	public static Expression subListUntil(Expression targetExpression, Integer end) {
+	public static Expression subListUntil(@NotNull Expression targetExpression, Integer end) {
 
 		return ListOperator.subListUntil(targetExpression, Cypher.literalOf(end));
 	}
@@ -1063,7 +1063,7 @@ public final class Cypher {
 	 * @since 2020.1.0
 	 */
 	@NotNull @Contract(pure = true)
-	public static Expression subListUntil(Expression targetExpression, Expression end) {
+	public static Expression subListUntil(@NotNull Expression targetExpression, @NotNull Expression end) {
 
 		return ListOperator.subListUntil(targetExpression, end);
 	}
@@ -1077,7 +1077,7 @@ public final class Cypher {
 	 * @since 2020.1.0
 	 */
 	@NotNull @Contract(pure = true)
-	public static ListOperator valueAt(Expression targetExpression, Integer index) {
+	public static ListOperator valueAt(@NotNull Expression targetExpression, Integer index) {
 
 		return valueAt(targetExpression, Cypher.literalOf(index));
 	}
@@ -1091,7 +1091,7 @@ public final class Cypher {
 	 * @since 2020.1.0
 	 */
 	@NotNull @Contract(pure = true)
-	public static ListOperator valueAt(Expression targetExpression, Expression index) {
+	public static ListOperator valueAt(@NotNull Expression targetExpression, @NotNull Expression index) {
 
 		return ListOperator.valueAt(targetExpression, index);
 	}
@@ -1110,7 +1110,7 @@ public final class Cypher {
 	 * @since 2021.0.2
 	 */
 	@NotNull @Contract(pure = true)
-	public static Expression raw(String format, Object... mixedArgs) {
+	public static Expression raw(@NotNull String format, Object... mixedArgs) {
 
 		return RawLiteral.create(format, mixedArgs);
 	}
@@ -1147,7 +1147,7 @@ public final class Cypher {
 	 * @since 2021.1.0
 	 */
 	@NotNull @Contract(pure = true)
-	public static <FE> ForeignAdapter<FE> adapt(FE expression) {
+	public static <FE> ForeignAdapter<FE> adapt(@NotNull FE expression) {
 
 		ForeignAdapterFactory initializedForeignAdapterFactory = foreignAdapterFactory;
 		if (initializedForeignAdapterFactory == null) {
@@ -1194,7 +1194,7 @@ public final class Cypher {
 	 * @return An ongoing definition of a {@code LOAD CSV} clause
 	 * @since 2021.2.1
 	 */
-	public static LoadCSVStatementBuilder.OngoingLoadCSV loadCSV(URI from) {
+	public static LoadCSVStatementBuilder.@NotNull OngoingLoadCSV loadCSV(URI from) {
 
 		return loadCSV(from, false);
 	}
@@ -1206,12 +1206,12 @@ public final class Cypher {
 	 * @param withHeaders Set to {@literal true} if the csv file contains header
 	 * @return An ongoing definition of a {@code LOAD CSV} clause
 	 */
-	public static LoadCSVStatementBuilder.OngoingLoadCSV loadCSV(URI from, boolean withHeaders) {
+	public static LoadCSVStatementBuilder.@NotNull OngoingLoadCSV loadCSV(URI from, boolean withHeaders) {
 
 		return LoadCSVStatementBuilder.loadCSV(from, withHeaders);
 	}
 
-	private static UnionQuery unionImpl(boolean unionAll, Statement... statements) {
+	private static @NotNull UnionQuery unionImpl(boolean unionAll, Statement @NotNull ... statements) {
 
 		Assertions.isTrue(statements != null && statements.length >= 2, "At least two statements are required!");
 
@@ -1262,7 +1262,7 @@ public final class Cypher {
 	 * @return The new buildable statement
 	 * @since 2023.0.0
 	 */
-	public static UseStatement use(String target, Statement statement) {
+	public static @NotNull UseStatement use(@NotNull String target, Statement statement) {
 		return DecoratedQuery.decorate(statement, UseClauseImpl.of(target));
 	}
 
@@ -1275,7 +1275,7 @@ public final class Cypher {
 	 * @return The new buildable statement
 	 * @since 2023.0.0
 	 */
-	public static UseStatement use(Parameter<?> target, Statement statement) {
+	public static @NotNull UseStatement use(Parameter<?> target, Statement statement) {
 		return DecoratedQuery.decorate(statement, UseClauseImpl.of(target));
 	}
 
@@ -1288,7 +1288,7 @@ public final class Cypher {
 	 * @return The new buildable statement
 	 * @since 2023.0.0
 	 */
-	public static UseStatement use(StringLiteral target, Statement statement) {
+	public static @NotNull UseStatement use(StringLiteral target, Statement statement) {
 		return DecoratedQuery.decorate(statement, UseClauseImpl.of(target));
 	}
 
@@ -1304,7 +1304,7 @@ public final class Cypher {
 	 */
 	@Deprecated(forRemoval = true, since = "2023.4.0")
 	@SuppressWarnings({ "squid:S1133" }) // Yes, I promise, this will be removed at some point, but not yet.
-	public static UseStatement use(SymbolicName target, Statement statement) {
+	public static @NotNull UseStatement use(SymbolicName target, Statement statement) {
 		return use((Expression) target, statement);
 	}
 
@@ -1318,7 +1318,7 @@ public final class Cypher {
 	 * @return The new buildable statement
 	 * @since 2023.4.0
 	 */
-	public static UseStatement use(Expression target, Statement statement) {
+	public static @NotNull UseStatement use(Expression target, Statement statement) {
 		return DecoratedQuery.decorate(statement, UseClauseImpl.of(target));
 	}
 
@@ -1331,7 +1331,7 @@ public final class Cypher {
 	 * @since 2023.9.0
 	 */
 	@SuppressWarnings("deprecation")
-	public static Condition includesAll(Expression lhs, Expression rhs) {
+	public static @NotNull Condition includesAll(@NotNull Expression lhs, Expression rhs) {
 		return Conditions.includesAll(lhs, rhs);
 	}
 
@@ -1344,7 +1344,7 @@ public final class Cypher {
 	 * @since 2023.9.0
 	 */
 	@SuppressWarnings("deprecation")
-	public static Condition includesAny(Expression lhs, Expression rhs) {
+	public static @NotNull Condition includesAny(@NotNull Expression lhs, Expression rhs) {
 		return Conditions.includesAny(lhs, rhs);
 	}
 
@@ -1354,7 +1354,7 @@ public final class Cypher {
 	 * @since 2023.9.0
 	 */
 	@SuppressWarnings("deprecation")
-	public static Condition matching(RelationshipPattern relationshipPattern) {
+	public static @NotNull Condition matching(RelationshipPattern relationshipPattern) {
 		return Conditions.matching(relationshipPattern);
 	}
 
@@ -1368,7 +1368,7 @@ public final class Cypher {
 	 * @since 2023.9.0
 	 */
 	@SuppressWarnings("deprecation")
-	public static Condition matches(Expression lhs, Expression rhs) {
+	public static @NotNull Condition matches(@NotNull Expression lhs, @NotNull Expression rhs) {
 		return Conditions.matches(lhs, rhs);
 	}
 
@@ -1381,7 +1381,7 @@ public final class Cypher {
 	 * @since 2023.9.0
 	 */
 	@SuppressWarnings("deprecation")
-	public static Condition isEqualTo(Expression lhs, Expression rhs) {
+	public static @NotNull Condition isEqualTo(@NotNull Expression lhs, @NotNull Expression rhs) {
 		return Conditions.isEqualTo(lhs, rhs);
 	}
 
@@ -1394,7 +1394,7 @@ public final class Cypher {
 	 * @since 2023.9.0
 	 */
 	@SuppressWarnings("deprecation")
-	public static Condition isNotEqualTo(Expression lhs, Expression rhs) {
+	public static @NotNull Condition isNotEqualTo(@NotNull Expression lhs, @NotNull Expression rhs) {
 		return Conditions.isNotEqualTo(lhs, rhs);
 	}
 
@@ -1407,7 +1407,7 @@ public final class Cypher {
 	 * @since 2023.9.0
 	 */
 	@SuppressWarnings("deprecation")
-	public static Condition lt(Expression lhs, Expression rhs) {
+	public static @NotNull Condition lt(@NotNull Expression lhs, @NotNull Expression rhs) {
 		return Conditions.lt(lhs, rhs);
 	}
 
@@ -1420,7 +1420,7 @@ public final class Cypher {
 	 * @since 2023.9.0
 	 */
 	@SuppressWarnings("deprecation")
-	public static Condition lte(Expression lhs, Expression rhs) {
+	public static @NotNull Condition lte(@NotNull Expression lhs, @NotNull Expression rhs) {
 		return Conditions.lte(lhs, rhs);
 	}
 
@@ -1433,7 +1433,7 @@ public final class Cypher {
 	 * @since 2023.9.0
 	 */
 	@SuppressWarnings("deprecation")
-	public static Condition gte(Expression lhs, Expression rhs) {
+	public static @NotNull Condition gte(@NotNull Expression lhs, @NotNull Expression rhs) {
 		return Conditions.gte(lhs, rhs);
 	}
 
@@ -1446,7 +1446,7 @@ public final class Cypher {
 	 * @since 2023.9.0
 	 */
 	@SuppressWarnings("deprecation")
-	public static Condition gt(Expression lhs, Expression rhs) {
+	public static @NotNull Condition gt(@NotNull Expression lhs, @NotNull Expression rhs) {
 		return Conditions.gt(lhs, rhs);
 	}
 
@@ -1485,7 +1485,7 @@ public final class Cypher {
 	 * @since 2023.9.0
 	 */
 	@SuppressWarnings("deprecation")
-	public static Condition startsWith(Expression lhs, Expression rhs) {
+	public static @NotNull Condition startsWith(@NotNull Expression lhs, @NotNull Expression rhs) {
 		return Conditions.startsWith(lhs, rhs);
 	}
 
@@ -1498,7 +1498,7 @@ public final class Cypher {
 	 * @since 2023.9.0
 	 */
 	@SuppressWarnings("deprecation")
-	public static Condition contains(Expression lhs, Expression rhs) {
+	public static @NotNull Condition contains(@NotNull Expression lhs, @NotNull Expression rhs) {
 		return Conditions.contains(lhs, rhs);
 	}
 
@@ -1511,7 +1511,7 @@ public final class Cypher {
 	 * @since 2023.9.0
 	 */
 	@SuppressWarnings("deprecation")
-	public static Condition endsWith(Expression lhs, Expression rhs) {
+	public static @NotNull Condition endsWith(@NotNull Expression lhs, @NotNull Expression rhs) {
 		return Conditions.endsWith(lhs, rhs);
 	}
 
@@ -1536,7 +1536,7 @@ public final class Cypher {
 	 * @since 2023.9.0
 	 */
 	@SuppressWarnings("deprecation")
-	public static Condition isNull(Expression expression) {
+	public static @NotNull Condition isNull(@NotNull Expression expression) {
 		return Conditions.isNull(expression);
 	}
 
@@ -1548,7 +1548,7 @@ public final class Cypher {
 	 * @since 2023.9.0
 	 */
 	@SuppressWarnings("deprecation")
-	public static Condition isNotNull(Expression expression) {
+	public static @NotNull Condition isNotNull(@NotNull Expression expression) {
 		return Conditions.isNotNull(expression);
 	}
 
@@ -1563,7 +1563,7 @@ public final class Cypher {
 	 * @since 2023.9.0
 	 */
 	@SuppressWarnings("deprecation")
-	public static Condition isEmpty(Expression expression) {
+	public static @NotNull Condition isEmpty(Expression expression) {
 		return Predicates.isEmpty(expression);
 	}
 
@@ -1572,7 +1572,7 @@ public final class Cypher {
 	 * @since 2023.9.0
 	 */
 	@SuppressWarnings("deprecation")
-	public static Condition isTrue() {
+	public static @NotNull Condition isTrue() {
 		return Conditions.isTrue();
 	}
 
@@ -1581,7 +1581,7 @@ public final class Cypher {
 	 * @since 2023.9.0
 	 */
 	@SuppressWarnings("deprecation")
-	public static Condition isFalse() {
+	public static @NotNull Condition isFalse() {
 		return Conditions.isFalse();
 	}
 
@@ -1592,7 +1592,7 @@ public final class Cypher {
 	 * @since 2023.9.0
 	 */
 	@SuppressWarnings("deprecation")
-	public static Condition hasLabelsOrType(SymbolicName symbolicName, String... labelsOrTypes) {
+	public static @NotNull Condition hasLabelsOrType(@NotNull SymbolicName symbolicName, String... labelsOrTypes) {
 		return Conditions.hasLabelsOrType(symbolicName, labelsOrTypes);
 	}
 
@@ -1606,7 +1606,7 @@ public final class Cypher {
 	 */
 	@NotNull
 	@SuppressWarnings("deprecation")
-	public static CountExpression count(PatternElement requiredPattern, PatternElement... patternElement) {
+	public static CountExpression count(@NotNull PatternElement requiredPattern, PatternElement... patternElement) {
 		return Expressions.count(requiredPattern, patternElement);
 	}
 
@@ -1619,7 +1619,7 @@ public final class Cypher {
 	 */
 	@NotNull
 	@SuppressWarnings("deprecation")
-	public static CountExpression count(UnionQuery union) {
+	public static CountExpression count(@NotNull UnionQuery union) {
 		return Expressions.count(union);
 	}
 
@@ -1635,7 +1635,7 @@ public final class Cypher {
 	 */
 	@NotNull
 	@SuppressWarnings("deprecation")
-	public static CountExpression count(Statement statement, IdentifiableElement... imports) {
+	public static CountExpression count(@NotNull Statement statement, IdentifiableElement... imports) {
 		return Expressions.count(statement, imports);
 	}
 
@@ -1648,7 +1648,7 @@ public final class Cypher {
 	 * @since 2023.9.0
 	 */
 	@SuppressWarnings("deprecation")
-	public static CountExpression count(List<PatternElement> pattern, @Nullable Where where) {
+	public static @NotNull CountExpression count(@NotNull List<PatternElement> pattern, @Nullable Where where) {
 		return Expressions.count(pattern, where);
 	}
 
@@ -1662,7 +1662,7 @@ public final class Cypher {
 	 * @since 2023.9.0
 	 */
 	@SuppressWarnings("deprecation")
-	@NotNull public static Expression collect(Statement statement) {
+	@NotNull public static Expression collect(@NotNull Statement statement) {
 		return Expressions.collect(statement);
 	}
 
@@ -1677,12 +1677,12 @@ public final class Cypher {
 	}
 
 	@SuppressWarnings("deprecation")
-	public static SymbolicName[] createSymbolicNames(String[] variables) {
+	public static SymbolicName @NotNull [] createSymbolicNames(String @NotNull [] variables) {
 		return Expressions.createSymbolicNames(variables);
 	}
 
 	@SuppressWarnings("deprecation")
-	public static SymbolicName[] createSymbolicNames(Named[] variables) {
+	public static SymbolicName @NotNull [] createSymbolicNames(Named @NotNull [] variables) {
 		return Expressions.createSymbolicNames(variables);
 	}
 
@@ -1879,7 +1879,7 @@ public final class Cypher {
 	 */
 	@Contract(pure = true) @NotNull
 	@SuppressWarnings("deprecation")
-	public static FunctionInvocation properties(Node node) {
+	public static FunctionInvocation properties(@NotNull Node node) {
 		return Functions.properties(node);
 	}
 
@@ -1892,7 +1892,7 @@ public final class Cypher {
 	 */
 	@Contract(pure = true) @NotNull
 	@SuppressWarnings("deprecation")
-	public static FunctionInvocation properties(Relationship relationship) {
+	public static FunctionInvocation properties(@NotNull Relationship relationship) {
 		return Functions.properties(relationship);
 	}
 
@@ -1905,7 +1905,7 @@ public final class Cypher {
 	 */
 	@Contract(pure = true) @NotNull
 	@SuppressWarnings("deprecation")
-	public static FunctionInvocation properties(MapExpression map) {
+	public static FunctionInvocation properties(@NotNull MapExpression map) {
 		return Functions.properties(map);
 	}
 
@@ -1934,7 +1934,7 @@ public final class Cypher {
 	 */
 	@Contract(pure = true) @NotNull
 	@SuppressWarnings("deprecation")
-	public static FunctionInvocation left(Expression expression, Expression length) {
+	public static FunctionInvocation left(Expression expression, @NotNull Expression length) {
 		return Functions.left(expression, length);
 	}
 
@@ -1994,7 +1994,7 @@ public final class Cypher {
 	 */
 	@Contract(pure = true) @NotNull
 	@SuppressWarnings("deprecation")
-	public static FunctionInvocation right(Expression expression, Expression length) {
+	public static FunctionInvocation right(Expression expression, @NotNull Expression length) {
 		return Functions.right(expression, length);
 	}
 
@@ -2024,7 +2024,7 @@ public final class Cypher {
 	 */
 	@Contract(pure = true) @NotNull
 	@SuppressWarnings("deprecation")
-	public static FunctionInvocation substring(Expression original, Expression start,
+	public static FunctionInvocation substring(Expression original, @NotNull Expression start,
 		Expression length) {
 		return Functions.substring(original, start, length);
 	}
@@ -2132,7 +2132,7 @@ public final class Cypher {
 	 */
 	@Contract(pure = true) @NotNull
 	@SuppressWarnings("deprecation")
-	public static FunctionInvocation size(RelationshipPattern pattern) {
+	public static FunctionInvocation size(@NotNull RelationshipPattern pattern) {
 		return Functions.size(pattern);
 	}
 
@@ -2250,7 +2250,7 @@ public final class Cypher {
 	 * @since 2023.9.0
 	 */
 	@SuppressWarnings("deprecation")
-	public static FunctionInvocation withinBBox(Expression point, Expression lowerLeft, Expression upperRight) {
+	public static @NotNull FunctionInvocation withinBBox(Expression point, Expression lowerLeft, Expression upperRight) {
 		return Functions.withinBBox(point, lowerLeft, upperRight);
 	}
 
@@ -2405,8 +2405,8 @@ public final class Cypher {
 	 */
 	@Contract(pure = true) @NotNull
 	@SuppressWarnings("deprecation")
-	public static FunctionInvocation percentileCont(Expression expression,
-		Number percentile) {
+	public static FunctionInvocation percentileCont(@NotNull Expression expression,
+		@NotNull Number percentile) {
 		return Functions.percentileCont(expression, percentile);
 	}
 
@@ -2421,8 +2421,8 @@ public final class Cypher {
 	 */
 	@Contract(pure = true) @NotNull
 	@SuppressWarnings("deprecation")
-	public static FunctionInvocation percentileContDistinct(Expression expression,
-		Number percentile) {
+	public static FunctionInvocation percentileContDistinct(@NotNull Expression expression,
+		@NotNull Number percentile) {
 		return Functions.percentileContDistinct(expression, percentile);
 	}
 
@@ -2437,8 +2437,8 @@ public final class Cypher {
 	 */
 	@Contract(pure = true) @NotNull
 	@SuppressWarnings("deprecation")
-	public static FunctionInvocation percentileDisc(Expression expression,
-		Number percentile) {
+	public static FunctionInvocation percentileDisc(@NotNull Expression expression,
+		@NotNull Number percentile) {
 		return Functions.percentileDisc(expression, percentile);
 	}
 
@@ -2453,8 +2453,8 @@ public final class Cypher {
 	 */
 	@Contract(pure = true) @NotNull
 	@SuppressWarnings("deprecation")
-	public static FunctionInvocation percentileDiscDistinct(Expression expression,
-		Number percentile) {
+	public static FunctionInvocation percentileDiscDistinct(@NotNull Expression expression,
+		@NotNull Number percentile) {
 		return Functions.percentileDiscDistinct(expression, percentile);
 	}
 
@@ -2742,8 +2742,8 @@ public final class Cypher {
 	 */
 	@Contract(pure = true) @NotNull
 	@SuppressWarnings("deprecation")
-	public static FunctionInvocation calendarDate(Integer year, Integer month,
-		Integer day) {
+	public static FunctionInvocation calendarDate(@NotNull Integer year, @NotNull Integer month,
+		@NotNull Integer day) {
 		return Functions.calendarDate(year, month, day);
 	}
 
@@ -2759,7 +2759,7 @@ public final class Cypher {
 	 */
 	@Contract(pure = true) @NotNull
 	@SuppressWarnings("deprecation")
-	public static FunctionInvocation weekDate(Integer year, Integer week,
+	public static FunctionInvocation weekDate(@NotNull Integer year, Integer week,
 		Integer dayOfWeek) {
 		return Functions.weekDate(year, week, dayOfWeek);
 	}
@@ -2776,7 +2776,7 @@ public final class Cypher {
 	 */
 	@Contract(pure = true) @NotNull
 	@SuppressWarnings("deprecation")
-	public static FunctionInvocation quarterDate(Integer year, Integer quarter,
+	public static FunctionInvocation quarterDate(@NotNull Integer year, Integer quarter,
 		Integer dayOfQuarter) {
 		return Functions.quarterDate(year, quarter, dayOfQuarter);
 	}
@@ -2792,7 +2792,7 @@ public final class Cypher {
 	 */
 	@Contract(pure = true) @NotNull
 	@SuppressWarnings("deprecation")
-	public static FunctionInvocation ordinalDate(Integer year, Integer ordinalDay) {
+	public static FunctionInvocation ordinalDate(@NotNull Integer year, Integer ordinalDay) {
 		return Functions.ordinalDate(year, ordinalDay);
 	}
 
@@ -3183,7 +3183,7 @@ public final class Cypher {
 	 */
 	@Contract(pure = true) @NotNull
 	@SuppressWarnings("deprecation")
-	public static FunctionInvocation shortestPath(Relationship relationship) {
+	public static FunctionInvocation shortestPath(@NotNull Relationship relationship) {
 		return Functions.shortestPath(relationship);
 	}
 
@@ -3625,7 +3625,7 @@ public final class Cypher {
 	 * @since 2023.9.0
 	 */
 	@SuppressWarnings("deprecation")
-	public static FunctionInvocation randomUUID() {
+	public static @NotNull FunctionInvocation randomUUID() {
 		return Functions.randomUUID();
 	}
 
@@ -3693,7 +3693,7 @@ public final class Cypher {
 	 * @return A new map projection
 	 * @since 2023.9.0
 	 */
-	public static MapProjection createProjection(SymbolicName name, Object... content) {
+	public static @NotNull MapProjection createProjection(SymbolicName name, Object... content) {
 		return MapProjection.create(name, content);
 	}
 
@@ -3706,7 +3706,7 @@ public final class Cypher {
 	 * @since 2023.9.0
 	 */
 	@SuppressWarnings("deprecation")
-	public static Operation minus(Expression e) {
+	public static @NotNull Operation minus(@NotNull Expression e) {
 		return Operations.minus(e);
 	}
 
@@ -3719,42 +3719,42 @@ public final class Cypher {
 	 * @since 2023.9.0
 	 */
 	@SuppressWarnings("deprecation")
-	public static Expression plus(Expression e) {
+	public static @NotNull Expression plus(@NotNull Expression e) {
 		return Operations.plus(e);
 	}
 
 	@SuppressWarnings("deprecation")
-	public static Operation concat(Expression op1, Expression op2) {
+	public static @NotNull Operation concat(@NotNull Expression op1, @NotNull Expression op2) {
 		return Operations.concat(op1, op2);
 	}
 
 	@SuppressWarnings("deprecation")
-	public static Operation add(Expression op1, Expression op2) {
+	public static @NotNull Operation add(@NotNull Expression op1, @NotNull Expression op2) {
 		return Operations.add(op1, op2);
 	}
 
 	@SuppressWarnings("deprecation")
-	public static Operation subtract(Expression op1, Expression op2) {
+	public static @NotNull Operation subtract(@NotNull Expression op1, @NotNull Expression op2) {
 		return Operations.subtract(op1, op2);
 	}
 
 	@SuppressWarnings("deprecation")
-	public static Operation multiply(Expression op1, Expression op2) {
+	public static @NotNull Operation multiply(@NotNull Expression op1, @NotNull Expression op2) {
 		return Operations.multiply(op1, op2);
 	}
 
 	@SuppressWarnings("deprecation")
-	public static Operation divide(Expression op1, Expression op2) {
+	public static @NotNull Operation divide(@NotNull Expression op1, @NotNull Expression op2) {
 		return Operations.divide(op1, op2);
 	}
 
 	@SuppressWarnings("deprecation")
-	public static Operation remainder(Expression op1, Expression op2) {
+	public static @NotNull Operation remainder(@NotNull Expression op1, @NotNull Expression op2) {
 		return Operations.remainder(op1, op2);
 	}
 
 	@SuppressWarnings("deprecation")
-	public static Operation pow(Expression op1, Expression op2) {
+	public static @NotNull Operation pow(@NotNull Expression op1, @NotNull Expression op2) {
 		return Operations.pow(op1, op2);
 	}
 
@@ -3768,7 +3768,7 @@ public final class Cypher {
 	 * @since 2023.9.0
 	 */
 	@SuppressWarnings("deprecation")
-	public static Operation set(Expression target, Expression value) {
+	public static @NotNull Operation set(@NotNull Expression target, @NotNull Expression value) {
 		return Operations.set(target, value);
 	}
 
@@ -3782,7 +3782,7 @@ public final class Cypher {
 	 * @since 2023.9.0
 	 */
 	@SuppressWarnings("deprecation")
-	public static Operation mutate(Expression target, MapExpression value) {
+	public static @NotNull Operation mutate(@NotNull Expression target, @NotNull MapExpression value) {
 		return Operations.mutate(target, value);
 	}
 
@@ -3796,7 +3796,7 @@ public final class Cypher {
 	 * @since 2023.9.0
 	 */
 	@SuppressWarnings("deprecation")
-	public static Operation mutate(Expression target, Expression value) {
+	public static @NotNull Operation mutate(@NotNull Expression target, @NotNull Expression value) {
 		return Operations.mutate(target, value);
 	}
 
@@ -3809,7 +3809,7 @@ public final class Cypher {
 	 * @since 2023.9.0
 	 */
 	@SuppressWarnings("deprecation")
-	public static Operation setLabel(Node target, String... label) {
+	public static @NotNull Operation setLabel(@NotNull Node target, String... label) {
 		return Operations.set(target, label);
 	}
 
@@ -3822,7 +3822,7 @@ public final class Cypher {
 	 * @since 2023.9.0
 	 */
 	@SuppressWarnings("deprecation")
-	public static Operation removeLabel(Node target, String... label) {
+	public static @NotNull Operation removeLabel(@NotNull Node target, String... label) {
 		return Operations.remove(target, label);
 	}
 
@@ -3850,7 +3850,7 @@ public final class Cypher {
 	 */
 	@Contract(pure = true) @NotNull
 	@SuppressWarnings("deprecation")
-	public static Condition exists(RelationshipPattern pattern) {
+	public static Condition exists(@NotNull RelationshipPattern pattern) {
 		return Predicates.exists(pattern);
 	}
 
@@ -3867,7 +3867,7 @@ public final class Cypher {
 	 * @since 2023.9.0
 	 */
 	@SuppressWarnings("deprecation")
-	public static Condition exists(Statement statement, IdentifiableElement... imports) {
+	public static @NotNull Condition exists(@NotNull Statement statement, IdentifiableElement... imports) {
 		return Predicates.exists(statement, imports);
 	}
 
@@ -3881,7 +3881,7 @@ public final class Cypher {
 	 * @since 2023.9.0
 	 */
 	@SuppressWarnings("deprecation")
-	public static Condition exists(PatternElement pattern) {
+	public static @NotNull Condition exists(@NotNull PatternElement pattern) {
 		return Predicates.exists(pattern);
 	}
 
@@ -3895,7 +3895,7 @@ public final class Cypher {
 	 * @since 2023.9.0
 	 */
 	@SuppressWarnings("deprecation")
-	public static Condition exists(List<PatternElement> pattern) {
+	public static @NotNull Condition exists(@NotNull List<PatternElement> pattern) {
 		return Predicates.exists(pattern);
 	}
 
@@ -3910,7 +3910,7 @@ public final class Cypher {
 	 * @since 2023.9.0
 	 */
 	@SuppressWarnings("deprecation")
-	public static Condition exists(List<PatternElement> pattern, @Nullable Where where) {
+	public static @NotNull Condition exists(@NotNull List<PatternElement> pattern, @Nullable Where where) {
 		return Predicates.exists(pattern, where);
 	}
 
@@ -3937,7 +3937,7 @@ public final class Cypher {
 	@Contract(pure = true) @NotNull
 	@SuppressWarnings("deprecation")
 	public static Predicates.OngoingListBasedPredicateFunction all(
-		SymbolicName variable) {
+		@NotNull SymbolicName variable) {
 		return Predicates.all(variable);
 	}
 
@@ -3964,7 +3964,7 @@ public final class Cypher {
 	@Contract(pure = true) @NotNull
 	@SuppressWarnings("deprecation")
 	public static Predicates.OngoingListBasedPredicateFunction any(
-		SymbolicName variable) {
+		@NotNull SymbolicName variable) {
 		return Predicates.any(variable);
 	}
 
@@ -3991,7 +3991,7 @@ public final class Cypher {
 	@Contract(pure = true) @NotNull
 	@SuppressWarnings("deprecation")
 	public static Predicates.OngoingListBasedPredicateFunction none(
-		SymbolicName variable) {
+		@NotNull SymbolicName variable) {
 		return Predicates.none(variable);
 	}
 
@@ -4018,7 +4018,7 @@ public final class Cypher {
 	@Contract(pure = true) @NotNull
 	@SuppressWarnings("deprecation")
 	public static Predicates.OngoingListBasedPredicateFunction single(
-		SymbolicName variable) {
+		@NotNull SymbolicName variable) {
 		return Predicates.single(variable);
 	}
 

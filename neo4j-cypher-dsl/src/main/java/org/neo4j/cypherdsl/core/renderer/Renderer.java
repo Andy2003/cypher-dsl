@@ -21,6 +21,7 @@ package org.neo4j.cypherdsl.core.renderer;
 import static org.apiguardian.api.API.Status.STABLE;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.Statement;
 
 /**
@@ -46,7 +47,7 @@ public sealed interface Renderer permits ConfigurableRenderer, GeneralizedRender
 	 *
 	 * @return The default renderer.
 	 */
-	static Renderer getDefaultRenderer() {
+	static @NotNull Renderer getDefaultRenderer() {
 		return getRenderer(Configuration.defaultConfig());
 	}
 
@@ -56,7 +57,7 @@ public sealed interface Renderer permits ConfigurableRenderer, GeneralizedRender
 	 * @param configuration The configuration for this renderer
 	 * @return A new renderer (might be a shared instance).
 	 */
-	static Renderer getRenderer(Configuration configuration) {
+	static @NotNull Renderer getRenderer(Configuration configuration) {
 		return getRenderer(configuration, Renderer.class);
 	}
 
@@ -69,7 +70,7 @@ public sealed interface Renderer permits ConfigurableRenderer, GeneralizedRender
 	 * @return A new renderer (might be a shared instance).
 	 * @since 2023.1.0
 	 */
-	static <T extends Renderer> T getRenderer(Configuration configuration, Class<T> type) {
+	static <T extends Renderer> @NotNull T getRenderer(Configuration configuration, @NotNull Class<T> type) {
 		return type.cast(ConfigurableRenderer.create(configuration));
 	}
 }

@@ -42,9 +42,9 @@ import org.neo4j.cypherdsl.core.utils.Assertions;
 @API(status = STABLE, since = "1.0")
 public final class RelationshipChain implements RelationshipPattern, ExposesPatternLengthAccessors<RelationshipChain> {
 
-	private final LinkedList<Relationship> relationships;
+	private final @NotNull LinkedList<Relationship> relationships;
 
-	static RelationshipChain create(Relationship firstElement) {
+	static @NotNull RelationshipChain create(Relationship firstElement) {
 
 		return new RelationshipChain(firstElement);
 	}
@@ -54,22 +54,22 @@ public final class RelationshipChain implements RelationshipPattern, ExposesPatt
 		this.relationships.add(firstElement);
 	}
 
-	private RelationshipChain(List<Relationship> firstElements, Relationship lastElement) {
+	private RelationshipChain(@NotNull List<Relationship> firstElements, Relationship lastElement) {
 		this.relationships = new LinkedList<>(firstElements);
 		this.relationships.add(lastElement);
 	}
 
-	private RelationshipChain(List<Relationship> elements) {
+	private RelationshipChain(@NotNull List<Relationship> elements) {
 		this.relationships = new LinkedList<>(elements);
 	}
 
-	RelationshipChain add(Relationship element) {
+	@NotNull RelationshipChain add(@NotNull Relationship element) {
 
 		Assertions.notNull(element, "Elements of a relationship chain must not be null.");
 		return new RelationshipChain(this.relationships, element);
 	}
 
-	RelationshipChain replaceLast(Relationship element) {
+	@NotNull RelationshipChain replaceLast(@NotNull Relationship element) {
 
 		Assertions.notNull(element, "Elements of a relationship chain must not be null.");
 		RelationshipChain newChain = new RelationshipChain(this.relationships);
@@ -246,7 +246,7 @@ public final class RelationshipChain implements RelationshipPattern, ExposesPatt
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 

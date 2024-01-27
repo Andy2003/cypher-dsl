@@ -82,7 +82,7 @@ public interface ExposesSubqueryCall {
 	 * @since 2021.3.0
 	 */
 	@NotNull @CheckReturnValue
-	default StatementBuilder.OngoingReadingWithoutWhere call(Statement statement, String... imports) {
+	default StatementBuilder.OngoingReadingWithoutWhere call(Statement statement, String @NotNull ... imports) {
 		return call(statement, Arrays.stream(imports).map(SymbolicName::of).toArray(SymbolicName[]::new));
 	}
 
@@ -141,7 +141,7 @@ public interface ExposesSubqueryCall {
 	 * @since 2022.3.0
 	 */
 	@NotNull @CheckReturnValue
-	default BuildableSubquery callInTransactions(Statement statement, String... imports) {
+	default BuildableSubquery callInTransactions(Statement statement, String @NotNull ... imports) {
 		return callInTransactions(statement, null, Arrays.stream(imports).map(SymbolicName::of).toArray(SymbolicName[]::new));
 	}
 
@@ -157,7 +157,7 @@ public interface ExposesSubqueryCall {
 	 * @since 2022.3.0
 	 */
 	@NotNull @CheckReturnValue
-	default BuildableSubquery callInTransactions(Statement statement, Integer rows, String... imports) {
+	default BuildableSubquery callInTransactions(Statement statement, Integer rows, String @NotNull ... imports) {
 		return callInTransactions(statement, rows, Arrays.stream(imports).map(SymbolicName::of).toArray(SymbolicName[]::new));
 	}
 
@@ -172,7 +172,7 @@ public interface ExposesSubqueryCall {
 	 * @return An ongoing reading, that is also buildable for outer queries that are void.
 	 * @since 2022.3.0
 	 */
-	default BuildableSubquery callInTransactions(Statement statement, IdentifiableElement... imports) {
+	default @NotNull BuildableSubquery callInTransactions(Statement statement, IdentifiableElement... imports) {
 		return callInTransactions(statement, null, imports);
 	}
 

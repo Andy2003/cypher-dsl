@@ -20,6 +20,8 @@ package org.neo4j.cypherdsl.core;
 
 import java.util.List;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.neo4j.cypherdsl.core.ast.TypedSubtree;
 import org.neo4j.cypherdsl.core.ast.Visitable;
 
@@ -34,7 +36,7 @@ import org.neo4j.cypherdsl.core.ast.Visitable;
  */
 class ExpressionList extends TypedSubtree<Expression> {
 
-	ExpressionList(List<Expression> returnItems) {
+	ExpressionList(@NotNull List<Expression> returnItems) {
 		super(returnItems);
 	}
 
@@ -44,7 +46,7 @@ class ExpressionList extends TypedSubtree<Expression> {
 
 	@Override
 	@SuppressWarnings("deprecation")
-	protected Visitable prepareVisit(Expression child) {
+	protected @Nullable Visitable prepareVisit(Expression child) {
 		return Expressions.nameOrExpression(child);
 	}
 

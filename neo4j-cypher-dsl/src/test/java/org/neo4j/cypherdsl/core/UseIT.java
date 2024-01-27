@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.assertj.core.api.Assertions;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -49,14 +50,14 @@ class UseIT {
 		       myDatabase, USE myDatabase MATCH (n) RETURN n
 		       myComposite.myConstituent, USE myComposite.myConstituent MATCH (n) RETURN n
 		""")
-	void simpleUseShouldWork(String target, String expected) {
+	void simpleUseShouldWork(@NotNull String target, String expected) {
 
 		var statement = Cypher.match(Cypher.anyNode("n")).returning("n").build();
 		var cypher = Cypher.use(target, statement).getCypher();
 		assertThat(cypher).isEqualTo(expected);
 	}
 
-	static Stream<Arguments> graphByNameShouldWork() {
+	static @NotNull Stream<Arguments> graphByNameShouldWork() {
 		return Stream.of(
 			Arguments.of(Cypher.literalOf("myComposite.myConstituent"), "USE graph.byName('myComposite.myConstituent') MATCH (n) RETURN n"),
 			Arguments.of(Cypher.parameter("graphName"), "USE graph.byName($graphName) MATCH (n) RETURN n")

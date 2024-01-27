@@ -23,6 +23,7 @@ import static org.apiguardian.api.API.Status.DEPRECATED;
 import java.util.Set;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.utils.Assertions;
 
 /**
@@ -49,7 +50,7 @@ public final class Operations {
 	 * @return An unary minus operation.
 	 * @since 2021.2.3
 	 */
-	public static Operation minus(Expression e) {
+	public static @NotNull Operation minus(@NotNull Expression e) {
 
 		return Operation.create(Operator.UNARY_MINUS, e);
 	}
@@ -62,42 +63,42 @@ public final class Operations {
 	 * @return An unary plus operation.
 	 * @since 2021.2.3
 	 */
-	public static Expression plus(Expression e) {
+	public static @NotNull Expression plus(@NotNull Expression e) {
 
 		return Operation.create(Operator.UNARY_PLUS, e);
 	}
 
-	static Operation concat(Expression op1, Expression op2) {
+	static @NotNull Operation concat(@NotNull Expression op1, @NotNull Expression op2) {
 
 		return Operation.create(op1, Operator.CONCAT, op2);
 	}
 
-	static Operation add(Expression op1, Expression op2) {
+	static @NotNull Operation add(@NotNull Expression op1, @NotNull Expression op2) {
 
 		return Operation.create(op1, Operator.ADDITION, op2);
 	}
 
-	static Operation subtract(Expression op1, Expression op2) {
+	static @NotNull Operation subtract(@NotNull Expression op1, @NotNull Expression op2) {
 
 		return Operation.create(op1, Operator.SUBTRACTION, op2);
 	}
 
-	static Operation multiply(Expression op1, Expression op2) {
+	static @NotNull Operation multiply(@NotNull Expression op1, @NotNull Expression op2) {
 
 		return Operation.create(op1, Operator.MULTIPLICATION, op2);
 	}
 
-	static Operation divide(Expression op1, Expression op2) {
+	static @NotNull Operation divide(@NotNull Expression op1, @NotNull Expression op2) {
 
 		return Operation.create(op1, Operator.DIVISION, op2);
 	}
 
-	static Operation remainder(Expression op1, Expression op2) {
+	static @NotNull Operation remainder(@NotNull Expression op1, @NotNull Expression op2) {
 
 		return Operation.create(op1, Operator.MODULO_DIVISION, op2);
 	}
 
-	static Operation pow(Expression op1, Expression op2) {
+	static @NotNull Operation pow(@NotNull Expression op1, @NotNull Expression op2) {
 
 		return Operation.create(op1, Operator.EXPONENTIATION, op2);
 	}
@@ -111,7 +112,7 @@ public final class Operations {
 	 * @return A new operation.
 	 * @since 2021.2.3
 	 */
-	public static Operation set(Expression target, Expression value) {
+	public static @NotNull Operation set(@NotNull Expression target, @NotNull Expression value) {
 
 		return Operation.create(target, Operator.SET, value);
 	}
@@ -125,7 +126,7 @@ public final class Operations {
 	 * @return A new operation.
 	 * @since 2020.1.5
 	 */
-	public static Operation mutate(Expression target, MapExpression value) {
+	public static @NotNull Operation mutate(@NotNull Expression target, @NotNull MapExpression value) {
 
 		return Operation.create(target, Operator.MUTATE, value);
 	}
@@ -139,7 +140,7 @@ public final class Operations {
 	 * @return A new operation.
 	 * @since 2020.1.5
 	 */
-	public static Operation mutate(Expression target, Expression value) {
+	public static @NotNull Operation mutate(@NotNull Expression target, @NotNull Expression value) {
 
 		Assertions.notNull(value, "New properties value must not be null");
 		Assertions.isTrue(Property.class.isAssignableFrom(value.getClass()) || VALID_MUTATORS.contains(value.getClass()),
@@ -158,7 +159,7 @@ public final class Operations {
 	 * @deprecated use {@link Cypher#setLabel(Node, String...)} instead.
 	 */
 	@Deprecated
-	public static Operation set(Node target, String... label) {
+	public static @NotNull Operation set(@NotNull Node target, String... label) {
 
 		return Operation.create(target, Operator.SET_LABEL, label);
 	}
@@ -173,7 +174,7 @@ public final class Operations {
 	 * @deprecated use {@link Cypher#removeLabel(Node, String...)} instead.
 	 */
 	@Deprecated
-	public static Operation remove(Node target, String... label) {
+	public static @NotNull Operation remove(@NotNull Node target, String... label) {
 
 		return Operation.create(target, Operator.REMOVE_LABEL, label);
 	}

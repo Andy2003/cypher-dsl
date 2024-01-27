@@ -23,6 +23,7 @@ import static org.apiguardian.api.API.Status.STABLE;
 import java.util.List;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.ast.Visitable;
 import org.neo4j.cypherdsl.core.ast.Visitor;
 
@@ -42,7 +43,7 @@ final class NodeLabels implements Visitable {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 		visitor.enter(this);
 		values.forEach(value -> value.accept(visitor));
 		visitor.leave(this);

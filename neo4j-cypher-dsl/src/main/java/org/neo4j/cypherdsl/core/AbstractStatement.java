@@ -25,6 +25,7 @@ import java.util.Map;
 
 import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.neo4j.cypherdsl.core.internal.DefaultStatementContext;
 import org.neo4j.cypherdsl.core.renderer.Renderer;
 
@@ -53,13 +54,13 @@ abstract class AbstractStatement implements Statement {
 	/**
 	 * The rendered Cypher statement.
 	 */
-	private volatile String cypher;
+	private volatile @Nullable String cypher;
 
 	/**
 	 * The catalog for this statement, will be lazily available and needs refreshment if parameter rendering changes.
 	 */
 	@SuppressWarnings("squid:S3077")
-	private volatile StatementCatalog statementCatalog;
+	private volatile @Nullable StatementCatalog statementCatalog;
 
 	@NotNull
 	@Override
@@ -137,7 +138,7 @@ abstract class AbstractStatement implements Statement {
 		return result;
 	}
 
-	private StatementCatalog getCatalog0() {
+	private @NotNull StatementCatalog getCatalog0() {
 
 		var catalogBuildingVisitor = new StatementCatalogBuildingVisitor(getContext(), isRenderConstantsAsParameters());
 		this.accept(catalogBuildingVisitor);

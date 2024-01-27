@@ -22,6 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.stream.Stream;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -41,7 +42,7 @@ class DialectIT {
 
 	// end::dialect-example[]
 
-	static Stream<Arguments> nPropExists() {
+	static @NotNull Stream<Arguments> nPropExists() {
 		return Stream.of(
 			Arguments.of(Dialect.NEO4J_4, false, "MATCH (n:`Movie`) WHERE exists(n.title) RETURN n"),
 			Arguments.of(Dialect.NEO4J_4, true, "MATCH (n:`Movie`) WHERE NOT (exists(n.title)) RETURN n"),
@@ -65,7 +66,7 @@ class DialectIT {
 		assertThat(cypher).isEqualTo(expected);
 	}
 
-	static Stream<Arguments> distanceFunction() {
+	static @NotNull Stream<Arguments> distanceFunction() {
 		return Stream.of(
 			Arguments.of(Dialect.NEO4J_4, "MATCH (n) RETURN distance(n.a, n.b)"),
 			Arguments.of(Dialect.NEO4J_5, "MATCH (n) RETURN point.distance(n.a, n.b)")
@@ -84,7 +85,7 @@ class DialectIT {
 	}
 
 
-	static Stream<Arguments> elementId() {
+	static @NotNull Stream<Arguments> elementId() {
 		return Stream.of(
 			Arguments.of(Dialect.NEO4J_4, "MATCH (n) RETURN toString(id(n))"),
 			Arguments.of(Dialect.NEO4J_5, "MATCH (n) RETURN elementId(n)")

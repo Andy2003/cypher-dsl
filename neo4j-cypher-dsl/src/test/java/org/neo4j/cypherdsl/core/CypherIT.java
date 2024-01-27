@@ -31,6 +31,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -3162,7 +3163,7 @@ class CypherIT {
 	class OperationsAndComparisons {
 
 		@SuppressWarnings("unused") // This the source of test parameters
-		private Stream<Arguments> operatorsToTest() {
+		private @NotNull Stream<Arguments> operatorsToTest() {
 			return Stream.of(
 				Arguments.of("Unary minus", Cypher.minus(Cypher.literalOf(1)), "RETURN -1"),
 				Arguments.of("Unary plus", Cypher.plus(Cypher.literalOf(1)), "RETURN +1")
@@ -4743,7 +4744,7 @@ class CypherIT {
 	@Nested
 	class PrettyPrinting {
 
-		private final Statement statement;
+		private final @NotNull Statement statement;
 
 		PrettyPrinting() {
 			Node otherNode = Cypher.anyNode("other");
@@ -5063,7 +5064,7 @@ class CypherIT {
 	@Nested
 	class QuantifiedPathPatterns {
 
-		RelationshipPattern relationshipPattern = Cypher.node("A").named("a")
+		@NotNull RelationshipPattern relationshipPattern = Cypher.node("A").named("a")
 			.relationshipTo(Cypher.node("B").named("b"), "X");
 
 		@Test

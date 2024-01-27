@@ -36,7 +36,7 @@ import org.neo4j.cypherdsl.core.utils.Assertions;
 @API(status = STABLE, since = "1.0")
 public final class Comparison implements Condition {
 
-	static Comparison create(Operator operator, Expression expression) {
+	static @NotNull Comparison create(@NotNull Operator operator, @NotNull Expression expression) {
 
 		Assertions.isTrue(operator.isUnary(), "Operator must be unary.");
 		Assertions.notNull(expression, "Expression must not be null.");
@@ -48,7 +48,7 @@ public final class Comparison implements Condition {
 		};
 	}
 
-	static Comparison create(Expression lhs, Operator operator, Expression rhs) {
+	static @NotNull Comparison create(@NotNull Expression lhs, @NotNull Operator operator, @NotNull Expression rhs) {
 
 		Assertions.notNull(lhs, "Left expression must not be null.");
 		Assertions.notNull(operator, "Operator must not be empty.");
@@ -74,7 +74,7 @@ public final class Comparison implements Condition {
 
 	@Override
 	@SuppressWarnings("deprecation")
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		EnterResult result = visitor.enterWithResult(this);
 		if (result == EnterResult.CONTINUE) {

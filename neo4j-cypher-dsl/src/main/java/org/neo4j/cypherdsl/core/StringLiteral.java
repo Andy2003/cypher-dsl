@@ -27,6 +27,7 @@ import java.util.regex.Pattern;
 
 import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * The string representation of a string literal will be a quoted Cypher string in single tickmarks with
@@ -60,7 +61,7 @@ public final class StringLiteral extends LiteralBase<CharSequence> {
 	 * @param unescapedString The string to escape
 	 * @return An empty optional when the unescaped string is {@literal null}, an escaped string otherwise
 	 */
-	static Optional<String> escapeString(CharSequence unescapedString) {
+	static @NotNull Optional<String> escapeString(@Nullable CharSequence unescapedString) {
 
 		if (unescapedString == null) {
 			return Optional.empty();

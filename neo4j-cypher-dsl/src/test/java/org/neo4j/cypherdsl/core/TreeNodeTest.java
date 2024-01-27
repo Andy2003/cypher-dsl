@@ -23,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import java.util.NoSuchElementException;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -30,7 +31,7 @@ import org.junit.jupiter.api.Test;
  */
 class TreeNodeTest {
 
-	private final static TreeNode<Integer> ROOT;
+	private final static @NotNull TreeNode<Integer> ROOT;
 
 	static {
 		ROOT = TreeNode.root(10);

@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.ast.Visitor;
 import org.neo4j.cypherdsl.core.utils.Assertions;
 
@@ -35,7 +36,7 @@ import org.neo4j.cypherdsl.core.utils.Assertions;
 final class UnionQueryImpl extends AbstractStatement implements Statement.UnionQuery {
 
 	@SuppressWarnings("squid:S6416") // This is about the assertion, Sonar suddenly things this is an issue: Idk. We want the exception.
-	static UnionQueryImpl create(boolean unionAll, List<Statement> queries) {
+	static @NotNull UnionQueryImpl create(boolean unionAll, @NotNull List<Statement> queries) {
 
 		Assertions.isTrue(queries != null && queries.size() >= 2, "At least two queries are needed.");
 
@@ -62,7 +63,7 @@ final class UnionQueryImpl extends AbstractStatement implements Statement.UnionQ
 	 * @param newAdditionalQueries more additional queries
 	 * @return A new union query
 	 */
-	UnionQueryImpl addAdditionalQueries(List<Statement> newAdditionalQueries) {
+	@NotNull UnionQueryImpl addAdditionalQueries(@NotNull List<Statement> newAdditionalQueries) {
 
 		List<Statement> queries = new ArrayList<>();
 		queries.add(firstQuery);
@@ -77,7 +78,7 @@ final class UnionQueryImpl extends AbstractStatement implements Statement.UnionQ
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 		this.firstQuery.accept(visitor);

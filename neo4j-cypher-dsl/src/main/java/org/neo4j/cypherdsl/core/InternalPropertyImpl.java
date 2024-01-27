@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 
 import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.neo4j.cypherdsl.core.ast.Visitor;
 import org.neo4j.cypherdsl.core.utils.Assertions;
 
@@ -40,26 +41,26 @@ import org.neo4j.cypherdsl.core.utils.Assertions;
 @API(status = INTERNAL, since = "2021.1.0")
 final class InternalPropertyImpl implements Property {
 
-	static Property create(Named parentContainer, String... names) {
+	static @NotNull Property create(@NotNull Named parentContainer, String... names) {
 
 		SymbolicName requiredSymbolicName = extractRequiredSymbolicName(parentContainer);
 		return new InternalPropertyImpl(Optional.of(parentContainer), requiredSymbolicName, createListOfChainedNames(names), null);
 	}
 
-	static Property create(Expression containerReference, String... names) {
+	static @NotNull Property create(@NotNull Expression containerReference, String... names) {
 
 		Assertions.notNull(containerReference, "The property container is required.");
 		return new InternalPropertyImpl(Optional.empty(), containerReference, createListOfChainedNames(names), null);
 	}
 
-	static Property create(Named parentContainer, Expression lookup) {
+	static @NotNull Property create(@NotNull Named parentContainer, @NotNull Expression lookup) {
 
 		SymbolicName requiredSymbolicName = extractRequiredSymbolicName(parentContainer);
 		return new InternalPropertyImpl(Optional.of(parentContainer), requiredSymbolicName,
 			Collections.singletonList(PropertyLookup.forExpression(lookup)), null);
 	}
 
-	static Property create(Expression containerReference, Expression lookup) {
+	static @NotNull Property create(Expression containerReference, @NotNull Expression lookup) {
 
 		return new InternalPropertyImpl(Optional.empty(), containerReference,
 			Collections.singletonList(PropertyLookup.forExpression(lookup)), null);
@@ -68,7 +69,7 @@ final class InternalPropertyImpl implements Property {
 	/**
 	 * The reference to the container itself is optional.
 	 */
-	private final Named container;
+	private final @Nullable Named container;
 
 	/**
 	 * The expression pointing to the {@link #container} above is not.
@@ -86,7 +87,7 @@ final class InternalPropertyImpl implements Property {
 	private final String externalReference;
 
 	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-	InternalPropertyImpl(Optional<Named> container, Expression containerReference, List<PropertyLookup> names,
+	InternalPropertyImpl(@NotNull Optional<Named> container, Expression containerReference, List<PropertyLookup> names,
 		String externalReference) {
 
 		this.container = container.orElse(null);
@@ -102,7 +103,7 @@ final class InternalPropertyImpl implements Property {
 	}
 
 	@Override
-	public Named getContainer() {
+	public @Nullable Named getContainer() {
 		return container;
 	}
 
@@ -133,19 +134,19 @@ final class InternalPropertyImpl implements Property {
 	@NotNull
 	@Override
 	@SuppressWarnings("deprecation")
-	public Operation to(Expression expression) {
+	public Operation to(@NotNull Expression expression) {
 		return Operations.set(this, expression);
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 		visitor.enter(this);
 		this.containerReference.accept(visitor);
 		this.names.forEach(name -> name.accept(visitor));
 		visitor.leave(this);
 	}
 
-	private static List<PropertyLookup> createListOfChainedNames(String... names) {
+	private static List<PropertyLookup> createListOfChainedNames(String @NotNull ... names) {
 
 		Assertions.notEmpty(names, "The properties name is required.");
 
@@ -157,7 +158,7 @@ final class InternalPropertyImpl implements Property {
 		}
 	}
 
-	private static SymbolicName extractRequiredSymbolicName(Named parentContainer) {
+	private static @NotNull SymbolicName extractRequiredSymbolicName(@NotNull Named parentContainer) {
 		try {
 			return parentContainer.getRequiredSymbolicName();
 		} catch (IllegalStateException e) {

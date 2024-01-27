@@ -23,6 +23,7 @@ import static org.apiguardian.api.API.Status.INTERNAL;
 import java.util.Optional;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.ast.ProvidesAffixes;
 import org.neo4j.cypherdsl.core.ast.TypedSubtree;
 import org.neo4j.cypherdsl.core.ast.Visitable;
@@ -48,12 +49,12 @@ final class Arguments extends TypedSubtree<Expression> implements ProvidesAffixe
 	}
 
 	@Override
-	public Optional<String> getPrefix() {
+	public @NotNull Optional<String> getPrefix() {
 		return Optional.of("(");
 	}
 
 	@Override
-	public Optional<String> getSuffix() {
+	public @NotNull Optional<String> getSuffix() {
 		return Optional.of(")");
 	}
 

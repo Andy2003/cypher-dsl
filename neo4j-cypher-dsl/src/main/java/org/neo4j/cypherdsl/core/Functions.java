@@ -25,6 +25,7 @@ import java.util.TimeZone;
 import org.apiguardian.api.API;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.neo4j.cypherdsl.core.BuiltInFunctions.Aggregates;
 import org.neo4j.cypherdsl.core.BuiltInFunctions.Lists;
 import org.neo4j.cypherdsl.core.BuiltInFunctions.Predicates;
@@ -290,7 +291,7 @@ public final class Functions {
 	 * @return A function call for {@code properties())}
 	 */
 	@NotNull @Contract(pure = true)
-	public static FunctionInvocation properties(Node node) {
+	public static FunctionInvocation properties(@NotNull Node node) {
 
 		Assertions.notNull(node, Cypher.MESSAGES.getString(MessageKeys.ASSERTIONS_NODE_REQUIRED));
 
@@ -304,7 +305,7 @@ public final class Functions {
 	 * @return A function call for {@code properties())}
 	 */
 	@NotNull @Contract(pure = true)
-	public static FunctionInvocation properties(Relationship relationship) {
+	public static FunctionInvocation properties(@NotNull Relationship relationship) {
 
 		Assertions.notNull(relationship, Cypher.MESSAGES.getString(MessageKeys.ASSERTIONS_RELATIONSHIP_REQUIRED));
 
@@ -318,7 +319,7 @@ public final class Functions {
 	 * @return A function call for {@code properties())}
 	 */
 	@NotNull @Contract(pure = true)
-	public static FunctionInvocation properties(MapExpression map) {
+	public static FunctionInvocation properties(@NotNull MapExpression map) {
 
 		return FunctionInvocation.create(Scalars.PROPERTIES, map);
 	}
@@ -346,7 +347,7 @@ public final class Functions {
 	 * @since 2023.0.2
 	 */
 	@NotNull @Contract(pure = true)
-	public static FunctionInvocation left(Expression expression, Expression length) {
+	public static FunctionInvocation left(@Nullable Expression expression, @NotNull Expression length) {
 
 		if (expression != null && length == null) {
 			throw new IllegalArgumentException("length might not be null when the expression is not null");
@@ -414,7 +415,7 @@ public final class Functions {
 	 * @since 2023.0.2
 	 */
 	@NotNull @Contract(pure = true)
-	public static FunctionInvocation right(Expression expression, Expression length) {
+	public static FunctionInvocation right(@Nullable Expression expression, @NotNull Expression length) {
 
 		if (expression != null && length == null) {
 			throw new IllegalArgumentException("length might not be null when the expression is not null");
@@ -451,7 +452,7 @@ public final class Functions {
 	 * @since 2023.0.2
 	 */
 	@NotNull @Contract(pure = true)
-	public static FunctionInvocation substring(Expression original, Expression start, Expression length) {
+	public static FunctionInvocation substring(Expression original, @NotNull Expression start, @Nullable Expression length) {
 
 		Assertions.notNull(start, "start is required");
 		if (length != null) {
@@ -460,7 +461,7 @@ public final class Functions {
 		return FunctionInvocation.create(Strings.SUBSTRING, expressionOrNullLit(original), start);
 	}
 
-	private static Expression expressionOrNullLit(Expression expression) {
+	private static @NotNull Expression expressionOrNullLit(@Nullable Expression expression) {
 		return expression == null ? Cypher.literalNull() : expression;
 	}
 
@@ -568,7 +569,7 @@ public final class Functions {
 	 * @return A function call for {@code size()} for a pattern
 	 */
 	@NotNull @Contract(pure = true)
-	public static FunctionInvocation size(RelationshipPattern pattern) {
+	public static FunctionInvocation size(@NotNull RelationshipPattern pattern) {
 
 		return FunctionInvocation.create(Scalars.SIZE, pattern);
 	}
@@ -685,7 +686,7 @@ public final class Functions {
 	 * @return A function call for {@code point.withinBBox}
 	 * @since 2022.7.3
 	 */
-	public static FunctionInvocation withinBBox(Expression point, Expression lowerLeft, Expression upperRight) {
+	public static @NotNull FunctionInvocation withinBBox(Expression point, Expression lowerLeft, Expression upperRight) {
 
 		return FunctionInvocation.create(() -> "point.withinBBox", point, lowerLeft, upperRight);
 	}
@@ -824,7 +825,7 @@ public final class Functions {
 		return FunctionInvocation.createDistinct(Aggregates.MIN, expression);
 	}
 
-	private static void assertPercentileArguments(Aggregates builtIn, Expression expression, Number percentile) {
+	private static void assertPercentileArguments(@NotNull Aggregates builtIn, @NotNull Expression expression, @NotNull Number percentile) {
 		Assertions
 			.notNull(expression, "The numeric expression for " + builtIn.getImplementationName() + " is required.");
 		Assertions.notNull(percentile, "The percentile for " + builtIn.getImplementationName() + " is required.");
@@ -842,7 +843,7 @@ public final class Functions {
 	 * @return A function call for {@code percentileCont()}
 	 */
 	@NotNull @Contract(pure = true)
-	public static FunctionInvocation percentileCont(Expression expression, Number percentile) {
+	public static FunctionInvocation percentileCont(@NotNull Expression expression, @NotNull Number percentile) {
 
 		assertPercentileArguments(Aggregates.PERCENTILE_CONT, expression, percentile);
 
@@ -858,7 +859,7 @@ public final class Functions {
 	 * @return A function call for {@code percentileCont()}
 	 */
 	@NotNull @Contract(pure = true)
-	public static FunctionInvocation percentileContDistinct(Expression expression, Number percentile) {
+	public static FunctionInvocation percentileContDistinct(@NotNull Expression expression, @NotNull Number percentile) {
 
 		assertPercentileArguments(Aggregates.PERCENTILE_CONT, expression, percentile);
 
@@ -874,7 +875,7 @@ public final class Functions {
 	 * @return A function call for {@code percentileDisc()}
 	 */
 	@NotNull @Contract(pure = true)
-	public static FunctionInvocation percentileDisc(Expression expression, Number percentile) {
+	public static FunctionInvocation percentileDisc(@NotNull Expression expression, @NotNull Number percentile) {
 
 		assertPercentileArguments(Aggregates.PERCENTILE_DISC, expression, percentile);
 
@@ -890,7 +891,7 @@ public final class Functions {
 	 * @return A function call for {@code percentileDisc()}
 	 */
 	@NotNull @Contract(pure = true)
-	public static FunctionInvocation percentileDiscDistinct(Expression expression, Number percentile) {
+	public static FunctionInvocation percentileDiscDistinct(@NotNull Expression expression, @NotNull Number percentile) {
 
 		assertPercentileArguments(Aggregates.PERCENTILE_DISC, expression, percentile);
 
@@ -1024,7 +1025,7 @@ public final class Functions {
 	 * @return A function call for {@code range()}
 	 */
 	@NotNull @Contract(pure = true)
-	public static FunctionInvocation range(@NotNull Expression start, @NotNull Expression end, Expression step) {
+	public static FunctionInvocation range(@NotNull Expression start, @NotNull Expression end, @Nullable Expression step) {
 
 		Assertions.notNull(start, "The expression for range is required.");
 		Assertions.notNull(end, "The expression for range is required.");
@@ -1185,7 +1186,7 @@ public final class Functions {
 	 * @since 2020.1.0
 	 */
 	@NotNull @Contract(pure = true)
-	public static FunctionInvocation calendarDate(Integer year, Integer month, Integer day) {
+	public static FunctionInvocation calendarDate(@NotNull Integer year, @NotNull Integer month, @NotNull Integer day) {
 
 		Assertions.notNull(year, Cypher.MESSAGES.getString(MessageKeys.ASSERTIONS_YEAR_REQUIRED));
 		Assertions.notNull(month, Cypher.MESSAGES.getString(MessageKeys.ASSERTIONS_MONTH_REQUIRED));
@@ -1205,7 +1206,7 @@ public final class Functions {
 	 * @since 2020.1.0
 	 */
 	@NotNull @Contract(pure = true)
-	public static FunctionInvocation weekDate(Integer year, Integer week, Integer dayOfWeek) {
+	public static FunctionInvocation weekDate(@NotNull Integer year, @Nullable Integer week, @Nullable Integer dayOfWeek) {
 
 		Assertions.notNull(year, Cypher.MESSAGES.getString(MessageKeys.ASSERTIONS_YEAR_REQUIRED));
 		Object[] parameters = new Object[2 + (week == null ? 0 : 2) + (dayOfWeek == null ? 0 : 2)];
@@ -1237,7 +1238,7 @@ public final class Functions {
 	 * @since 2020.1.0
 	 */
 	@NotNull @Contract(pure = true)
-	public static FunctionInvocation quarterDate(Integer year, Integer quarter, Integer dayOfQuarter) {
+	public static FunctionInvocation quarterDate(@NotNull Integer year, @Nullable Integer quarter, @Nullable Integer dayOfQuarter) {
 
 		Assertions.notNull(year, Cypher.MESSAGES.getString(MessageKeys.ASSERTIONS_YEAR_REQUIRED));
 		Object[] parameters = new Object[2 + (quarter == null ? 0 : 2) + (dayOfQuarter == null ? 0 : 2)];
@@ -1265,7 +1266,7 @@ public final class Functions {
 	 * @since 2020.1.0
 	 */
 	@NotNull @Contract(pure = true)
-	public static FunctionInvocation ordinalDate(Integer year, Integer ordinalDay) {
+	public static FunctionInvocation ordinalDate(@NotNull Integer year, @Nullable Integer ordinalDay) {
 
 		Assertions.notNull(year, Cypher.MESSAGES.getString(MessageKeys.ASSERTIONS_YEAR_REQUIRED));
 		Object[] parameters = new Object[2 + (ordinalDay == null ? 0 : 2)];
@@ -1587,7 +1588,7 @@ public final class Functions {
 			.create(BuiltInFunctions.Temporals.TIME, timezoneMapLiteralOf(timeZone));
 	}
 
-	private static Expression timezoneMapLiteralOf(TimeZone timeZone) {
+	private static @NotNull Expression timezoneMapLiteralOf(@NotNull TimeZone timeZone) {
 		return Cypher.mapOf("timezone", Cypher.literalOf(timeZone.getID()));
 	}
 
@@ -1695,7 +1696,7 @@ public final class Functions {
 	 * @since 2020.0.0
 	 */
 	@NotNull @Contract(pure = true)
-	public static FunctionInvocation shortestPath(Relationship relationship) {
+	public static FunctionInvocation shortestPath(@NotNull Relationship relationship) {
 
 		return FunctionInvocation.create(Scalars.SHORTEST_PATH, relationship);
 	}
@@ -1782,7 +1783,7 @@ public final class Functions {
 	 * @since 2021.0.0
 	 */
 	@NotNull @Contract(pure = true)
-	public static FunctionInvocation round(Expression value, Expression... expression) {
+	public static FunctionInvocation round(Expression value, Expression @Nullable ... expression) {
 
 		if (expression == null || expression.length == 0) {
 			return FunctionInvocation.create(BuiltInFunctions.MathematicalFunctions.ROUND, value);
@@ -2170,7 +2171,7 @@ public final class Functions {
 	 * @return A function call for {@code randomUUID({})}.
 	 * @since 2022.2.1
 	 */
-	public static FunctionInvocation randomUUID() {
+	public static @NotNull FunctionInvocation randomUUID() {
 		return FunctionInvocation.create(() -> "randomUUID");
 	}
 

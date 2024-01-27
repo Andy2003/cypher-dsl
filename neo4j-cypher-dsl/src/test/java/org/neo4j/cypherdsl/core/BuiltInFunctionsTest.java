@@ -20,6 +20,7 @@ package org.neo4j.cypherdsl.core;
 
 import java.util.Locale;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -40,7 +41,7 @@ class BuiltInFunctionsTest {
 		 */
 		@ParameterizedTest
 		@EnumSource(BuiltInFunctions.MathematicalFunctions.class)
-		void functionNameSanityCheck(BuiltInFunctions.MathematicalFunctions function) {
+		void functionNameSanityCheck(BuiltInFunctions.@NotNull MathematicalFunctions function) {
 
 			Assertions.assertEquals(function.getImplementationName(), function.name().toLowerCase(Locale.ROOT));
 		}

@@ -67,14 +67,14 @@ public interface Literal<T> extends Expression {
 		/**
 		 * Value holding the unsupported type.
 		 */
-		private final Class<?> unsupportedType;
+		private final @NotNull Class<?> unsupportedType;
 
-		UnsupportedLiteralException(String message, Object unsupportedObject) {
+		UnsupportedLiteralException(String message, @NotNull Object unsupportedObject) {
 			super(message);
 			this.unsupportedType = unsupportedObject.getClass();
 		}
 
-		UnsupportedLiteralException(Object unsupportedObject) {
+		UnsupportedLiteralException(@NotNull Object unsupportedObject) {
 			super("Unsupported literal type: " + unsupportedObject.getClass());
 			this.unsupportedType = unsupportedObject.getClass();
 		}
@@ -82,7 +82,7 @@ public interface Literal<T> extends Expression {
 		/**
 		 * @return the type that wasn't supported as literal
 		 */
-		public Class<?> getUnsupportedType() {
+		public @NotNull Class<?> getUnsupportedType() {
 			return unsupportedType;
 		}
 	}

@@ -23,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 
 import java.util.Collections;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.neo4j.cypherdsl.core.ast.Visitor;
 
@@ -35,7 +36,7 @@ class ClausesTest {
 	void updatingClausesShouldBeCheckInForeach() {
 
 		Clause anonymousClause = new Clause() {
-			@Override public void accept(Visitor visitor) {
+			@Override public void accept(@NotNull Visitor visitor) {
 				Clause.super.accept(visitor);
 			}
 		};

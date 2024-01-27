@@ -22,6 +22,7 @@ import static org.apiguardian.api.API.Status.STABLE;
 import static org.apiguardian.api.API.Status.INTERNAL;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.ast.Visitor;
 import org.neo4j.cypherdsl.core.utils.Assertions;
 
@@ -49,13 +50,13 @@ public final class PropertyLookup implements Expression {
 	 * @return A property lookup
 	 * @since 2021.3.0
 	 */
-	public static PropertyLookup forName(String name) {
+	public static @NotNull PropertyLookup forName(String name) {
 
 		Assertions.hasText(name, "The property's name is required.");
 		return new PropertyLookup(SymbolicName.unsafe(name), false);
 	}
 
-	static PropertyLookup forExpression(Expression expression) {
+	static @NotNull PropertyLookup forExpression(@NotNull Expression expression) {
 
 		Assertions.notNull(expression, "The expression is required");
 		return new PropertyLookup(expression, true);
@@ -88,7 +89,7 @@ public final class PropertyLookup implements Expression {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 		propertyKeyName.accept(visitor);

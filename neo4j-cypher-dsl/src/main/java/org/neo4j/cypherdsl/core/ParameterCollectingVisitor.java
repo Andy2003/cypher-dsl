@@ -26,6 +26,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.ast.Visitable;
 import org.neo4j.cypherdsl.core.ast.Visitor;
 import org.neo4j.cypherdsl.core.internal.ConstantParameterHolder;
@@ -47,11 +48,11 @@ final class ParameterCollectingVisitor implements Visitor {
 
 	static class ParameterInformation {
 
-		final Set<String> names;
-		final Map<String, Object> values;
-		final Map<String, String> renames;
+		final @NotNull Set<String> names;
+		final @NotNull Map<String, Object> values;
+		final @NotNull Map<String, String> renames;
 
-		ParameterInformation(Set<String> names, Map<String, Object> values, Map<String, String> renames) {
+		ParameterInformation(@NotNull Set<String> names, @NotNull Map<String, Object> values, @NotNull Map<String, String> renames) {
 			this.names = Collections.unmodifiableSet(names);
 			this.values = Collections.unmodifiableMap(values);
 			this.renames = Collections.unmodifiableMap(renames);
@@ -66,7 +67,7 @@ final class ParameterCollectingVisitor implements Visitor {
 	final Map<String, String> parameterMapping = new TreeMap<>();
 	private final Map<String, Set<Object>> erroneousParameters = new TreeMap<>();
 
-	private final NameResolvingStrategy nameGenerator;
+	private final @NotNull NameResolvingStrategy nameGenerator;
 
 	ParameterCollectingVisitor(StatementContext statementContext, boolean renderConstantsAsParameters) {
 		this.statementContext = statementContext;
@@ -111,7 +112,7 @@ final class ParameterCollectingVisitor implements Visitor {
 		}
 	}
 
-	ParameterInformation getResult() {
+	@NotNull ParameterInformation getResult() {
 
 		if (!erroneousParameters.isEmpty()) {
 			throw new ConflictingParametersException(erroneousParameters);

@@ -40,29 +40,29 @@ import org.neo4j.cypherdsl.core.ast.Visitor;
 @Neo4jVersion(minimum = "5.0")
 public final class CountExpression implements SubqueryExpression, ExposesWhere<Expression> {
 
-	private final ImportingWith importingWith;
+	private final @NotNull ImportingWith importingWith;
 	private final List<Visitable> fragments;
 	@Nullable
 	private final Where innerWhere;
 
-	static CountExpression count(Statement statement, IdentifiableElement... imports) {
+	static @NotNull CountExpression count(@NotNull Statement statement, IdentifiableElement... imports) {
 
 		return new CountExpression(ImportingWith.of(imports), List.of(statement), null);
 	}
 
-	static CountExpression count(Visitable patternOrUnion) {
+	static @NotNull CountExpression count(@NotNull Visitable patternOrUnion) {
 		return new CountExpression(new ImportingWith(), List.of(patternOrUnion), null);
 	}
 
-	static CountExpression count(@Nullable With optionalWith, Visitable patternOrUnion) {
+	static @NotNull CountExpression count(@Nullable With optionalWith, @NotNull Visitable patternOrUnion) {
 		return new CountExpression(new ImportingWith(optionalWith, null), List.of(patternOrUnion), null);
 	}
 
-	static CountExpression count(List<PatternElement> patternElements, @Nullable Where innerWhere) {
+	static @NotNull CountExpression count(@NotNull List<PatternElement> patternElements, @Nullable Where innerWhere) {
 		return new CountExpression(new ImportingWith(), patternElements, innerWhere);
 	}
 
-	private CountExpression(ImportingWith optionalWith, List<? extends Visitable> fragments, @Nullable Where innerWhere) {
+	private CountExpression(@NotNull ImportingWith optionalWith, @NotNull List<? extends Visitable> fragments, @Nullable Where innerWhere) {
 
 		var patternOrUnion = fragments.size() == 1 ? fragments.get(0) : null;
 
@@ -101,7 +101,7 @@ public final class CountExpression implements SubqueryExpression, ExposesWhere<E
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 		importingWith.accept(visitor);

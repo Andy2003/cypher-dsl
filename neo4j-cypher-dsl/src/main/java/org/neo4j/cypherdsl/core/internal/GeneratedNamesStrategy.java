@@ -29,6 +29,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.AliasedExpression;
 import org.neo4j.cypherdsl.core.IdentifiableElement;
 import org.neo4j.cypherdsl.core.Parameter;
@@ -45,7 +46,7 @@ final class GeneratedNamesStrategy implements NameResolvingStrategy {
 
 	record Key(Object value) {
 
-		static Key of(Object o) {
+		static @NotNull Key of(Object o) {
 			if (o instanceof AliasedExpression aliasedExpression) {
 				return new Key(aliasedExpression.asName());
 			}
@@ -86,12 +87,12 @@ final class GeneratedNamesStrategy implements NameResolvingStrategy {
 	/**
 	 * @return the lookup table for names in the current scope
 	 */
-	Map<Key, String> nameLookup() {
+	@NotNull Map<Key, String> nameLookup() {
 		return Objects.requireNonNull(scopedNameLookup.peek());
 	}
 
 	@Override
-	public void enterScope(Visitable cause, Collection<IdentifiableElement> imports) {
+	public void enterScope(Visitable cause, @NotNull Collection<IdentifiableElement> imports) {
 
 		var newNameLookup = new HashMap<Key, String>();
 		var newUsedNames = new HashSet<String>();
@@ -113,7 +114,7 @@ final class GeneratedNamesStrategy implements NameResolvingStrategy {
 	}
 
 	@Override
-	public void leaveScope(Visitable cause, Collection<IdentifiableElement> exports) {
+	public void leaveScope(Visitable cause, @NotNull Collection<IdentifiableElement> exports) {
 
 		this.scopedVariableCount.pop();
 		var innerNameLookup = this.scopedNameLookup.pop();
@@ -169,7 +170,7 @@ final class GeneratedNamesStrategy implements NameResolvingStrategy {
 	}
 
 	@Override
-	public String resolve(AliasedExpression aliasedExpression, boolean isNew, boolean inLastReturn) {
+	public String resolve(@NotNull AliasedExpression aliasedExpression, boolean isNew, boolean inLastReturn) {
 
 		if (!(config.contains(GeneratedNames.ALL_ALIASES) || (config.contains(GeneratedNames.INTERNAL_ALIASES_ONLY) && !inLastReturn))) {
 			return aliasedExpression.getAlias();

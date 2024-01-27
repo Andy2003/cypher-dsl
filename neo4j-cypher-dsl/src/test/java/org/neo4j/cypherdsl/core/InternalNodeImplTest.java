@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -126,7 +128,7 @@ class InternalNodeImplTest {
 	@TestInstance(Lifecycle.PER_CLASS)
 	class PropertiesShouldBeHandled {
 
-		private Stream<Arguments> createNodesWithProperties() {
+		private @NotNull Stream<Arguments> createNodesWithProperties() {
 			return Stream.of(
 				Arguments.of(new InternalNodeImpl("N").named("n").withProperties("p", Cypher.literalTrue())),
 				Arguments.of(new InternalNodeImpl("N").named("n").withProperties(MapExpression.create(false, "p", Cypher.literalTrue())))
@@ -135,11 +137,11 @@ class InternalNodeImplTest {
 
 		@ParameterizedTest
 		@MethodSource("createNodesWithProperties")
-		void shouldAddProperties(Node node) {
+		void shouldAddProperties(@NotNull Node node) {
 
 			AtomicBoolean failTest = new AtomicBoolean(true);
 			node.accept(new Visitor() {
-				Class<?> expectedTypeOfNextSegment = null;
+				@Nullable Class<?> expectedTypeOfNextSegment = null;
 
 				@Override
 				public void enter(Visitable segment) {

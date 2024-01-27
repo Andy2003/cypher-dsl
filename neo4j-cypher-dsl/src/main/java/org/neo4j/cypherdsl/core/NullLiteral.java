@@ -21,6 +21,7 @@ package org.neo4j.cypherdsl.core;
 import static org.apiguardian.api.API.Status.STABLE;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents the literal value {@literal null}.
@@ -40,7 +41,7 @@ public final class NullLiteral extends LiteralBase<Void> {
 	}
 
 	@Override
-	public String asString() {
+	public @NotNull String asString() {
 		return "NULL";
 	}
 }

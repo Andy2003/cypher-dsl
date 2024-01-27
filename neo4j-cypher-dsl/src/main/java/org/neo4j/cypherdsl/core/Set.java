@@ -25,6 +25,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.neo4j.cypherdsl.core.ast.Visitor;
 
 /**
@@ -45,7 +47,7 @@ public final class Set extends AbstractClause implements UpdatingClause {
 	 * @return A {@link Set} clause
 	 * @since 2023.4.0
 	 */
-	static Set set(Expression update, Expression... more) {
+	static @NotNull Set set(@NotNull Expression update, Expression @Nullable ... more) {
 
 		if (more == null || more.length == 0) {
 			return new Set(new ExpressionList(List.of(update)));
@@ -65,7 +67,7 @@ public final class Set extends AbstractClause implements UpdatingClause {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 		setItems.accept(visitor);

@@ -30,7 +30,7 @@ import org.jetbrains.annotations.NotNull;
  */
 final class DurationLiteral extends LiteralBase<Duration> {
 
-	static Literal<Duration> of(Duration duration) {
+	static @NotNull Literal<Duration> of(Duration duration) {
 		return new DurationLiteral(duration);
 	}
 

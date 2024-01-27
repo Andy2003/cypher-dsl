@@ -34,23 +34,23 @@ import org.jetbrains.annotations.NotNull;
 @API(status = INTERNAL, since = "2021.1.0")
 final class InternalRelationshipImpl extends RelationshipBase<NodeBase<?>, NodeBase<?>, InternalRelationshipImpl> {
 
-	InternalRelationshipImpl(SymbolicName symbolicName, Node left,
-		Direction direction, QuantifiedPathPattern.Quantifier quantifier, Node right, String... types) {
+	InternalRelationshipImpl(SymbolicName symbolicName, @NotNull Node left,
+		Direction direction, QuantifiedPathPattern.Quantifier quantifier, @NotNull Node right, String... types) {
 		super(symbolicName, left, direction, quantifier, right, types);
 	}
 
-	InternalRelationshipImpl(SymbolicName symbolicName, Node left,
-		Direction direction, Properties properties, QuantifiedPathPattern.Quantifier quantifier, Node right, String... types) {
+	InternalRelationshipImpl(SymbolicName symbolicName, @NotNull Node left,
+		Direction direction, Properties properties, QuantifiedPathPattern.Quantifier quantifier, @NotNull Node right, String... types) {
 		super(symbolicName, left, direction, properties, quantifier, right, types);
 	}
 
-	InternalRelationshipImpl(Node left, Details details, QuantifiedPathPattern.Quantifier quantifier, Node right) {
+	InternalRelationshipImpl(@NotNull Node left, @NotNull Details details, QuantifiedPathPattern.Quantifier quantifier, @NotNull Node right) {
 		super(left, details, quantifier, right);
 	}
 
 	@NotNull
 	@Override
-	public InternalRelationshipImpl named(SymbolicName newSymbolicName) {
+	public InternalRelationshipImpl named(@NotNull SymbolicName newSymbolicName) {
 
 		return new InternalRelationshipImpl(this.left, this.details.named(newSymbolicName), quantifier, this.right);
 	}

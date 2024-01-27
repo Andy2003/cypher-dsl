@@ -69,7 +69,7 @@ public interface ExecutableStatement {
 	 * @return An executable statement. Maybe a {@link ExecutableResultStatement}, depending on the input.
 	 * @see #of(Statement)
 	 */
-	static ExecutableStatement makeExecutable(Statement statement) {
+	static @NotNull ExecutableStatement makeExecutable(@NotNull Statement statement) {
 		if (statement.doesReturnOrYield()) {
 			return new DefaultExecutableResultStatement(statement);
 		}
@@ -83,7 +83,7 @@ public interface ExecutableStatement {
 	 * @return An executable result statement.
 	 * @see #of(ResultStatement)
 	 */
-	static ExecutableResultStatement makeExecutable(ResultStatement statement) {
+	static @NotNull ExecutableResultStatement makeExecutable(ResultStatement statement) {
 		return new DefaultExecutableResultStatement(statement);
 	}
 
@@ -94,7 +94,7 @@ public interface ExecutableStatement {
 	 * @return An executable statement. Maybe a {@link ExecutableResultStatement}, depending on the input.
 	 * @see #makeExecutable(Statement)
 	 */
-	static ExecutableStatement of(Statement statement) {
+	static @NotNull ExecutableStatement of(@NotNull Statement statement) {
 		return makeExecutable(statement);
 	}
 
@@ -105,7 +105,7 @@ public interface ExecutableStatement {
 	 * @return An executable result statement.
 	 * @see #makeExecutable(ResultStatement)
 	 */
-	static ExecutableResultStatement of(ResultStatement statement) {
+	static @NotNull ExecutableResultStatement of(ResultStatement statement) {
 		return makeExecutable(statement);
 	}
 

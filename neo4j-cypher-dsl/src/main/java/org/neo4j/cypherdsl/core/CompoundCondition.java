@@ -48,7 +48,7 @@ final class CompoundCondition implements Condition, ProvidesAffixes {
 	private static final CompoundCondition EMPTY_CONDITION = new CompoundCondition(null);
 	static final EnumSet<Operator> VALID_OPERATORS = EnumSet.of(Operator.AND, Operator.OR, Operator.XOR);
 
-	static CompoundCondition create(Condition left, Operator operator, Condition right) {
+	static CompoundCondition create(@NotNull Condition left, @NotNull Operator operator, @NotNull Condition right) {
 
 		Assertions.isTrue(VALID_OPERATORS.contains(operator),
 			"Operator " + operator + " is not a valid operator for a compound condition.");
@@ -61,7 +61,7 @@ final class CompoundCondition implements Condition, ProvidesAffixes {
 			.add(operator, right);
 	}
 
-	static CompoundCondition copyOf(CompoundCondition other) {
+	static @NotNull CompoundCondition copyOf(@NotNull CompoundCondition other) {
 
 		CompoundCondition result = new CompoundCondition(other.operator);
 		result.conditions.addAll(other.conditions);
@@ -75,7 +75,7 @@ final class CompoundCondition implements Condition, ProvidesAffixes {
 
 	private final Operator operator;
 
-	private final List<Condition> conditions;
+	private final @NotNull List<Condition> conditions;
 
 	private CompoundCondition(Operator operator) {
 		this.operator = operator;
@@ -101,7 +101,7 @@ final class CompoundCondition implements Condition, ProvidesAffixes {
 	}
 
 	private CompoundCondition add(
-		Operator chainingOperator,
+		@NotNull Operator chainingOperator,
 		Condition condition
 	) {
 		if (this == EMPTY_CONDITION) {
@@ -163,7 +163,7 @@ final class CompoundCondition implements Condition, ProvidesAffixes {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		// There is nothing to visit here
 		if (this.conditions.isEmpty()) {
@@ -189,19 +189,19 @@ final class CompoundCondition implements Condition, ProvidesAffixes {
 	}
 
 	private static void acceptVisitorWithOperatorForChildCondition(
-		Visitor visitor, Operator operator, Condition condition
+		@NotNull Visitor visitor, Operator operator, @NotNull Condition condition
 	) {
 		Visitable.visitIfNotNull(operator, visitor);
 		condition.accept(visitor);
 	}
 
 	@Override
-	public Optional<String> getPrefix() {
+	public @NotNull Optional<String> getPrefix() {
 		return Optional.of("(");
 	}
 
 	@Override
-	public Optional<String> getSuffix() {
+	public @NotNull Optional<String> getSuffix() {
 		return Optional.of(")");
 	}
 

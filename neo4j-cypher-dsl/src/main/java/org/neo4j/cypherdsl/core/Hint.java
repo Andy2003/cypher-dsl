@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.ast.ProvidesAffixes;
 import org.neo4j.cypherdsl.core.ast.TypedSubtree;
 import org.neo4j.cypherdsl.core.ast.Visitable;
@@ -74,7 +75,7 @@ public final class Hint implements Visitable {
 		}
 
 		@Override
-		public void accept(Visitor visitor) {
+		public void accept(@NotNull Visitor visitor) {
 
 			visitor.enter(this);
 			this.symbolicName.accept(visitor);
@@ -89,7 +90,7 @@ public final class Hint implements Visitable {
 	}
 
 	private static final class IndexReferences extends TypedSubtree<IndexReference> {
-		IndexReferences(List<IndexReference> indexReferences) {
+		IndexReferences(@NotNull List<IndexReference> indexReferences) {
 			super(indexReferences);
 		}
 	}
@@ -98,17 +99,17 @@ public final class Hint implements Visitable {
 	 * Internal helper class to wrap up the properties used inside an index.
 	 */
 	private static final class IndexProperties extends TypedSubtree<SymbolicName> implements ProvidesAffixes {
-		IndexProperties(List<SymbolicName> properties) {
+		IndexProperties(@NotNull List<SymbolicName> properties) {
 			super(properties);
 		}
 
 		@Override
-		public Optional<String> getPrefix() {
+		public @NotNull Optional<String> getPrefix() {
 			return Optional.of("(");
 		}
 
 		@Override
-		public Optional<String> getSuffix() {
+		public @NotNull Optional<String> getSuffix() {
 			return Optional.of(")");
 		}
 	}
@@ -121,7 +122,7 @@ public final class Hint implements Visitable {
 	 * @return A hint
 	 * @since 2021.2.3
 	 */
-	public static Hint useIndexFor(boolean seek, Property... properties) {
+	public static @NotNull Hint useIndexFor(boolean seek, Property @NotNull ... properties) {
 
 		Assertions.notEmpty(properties, "Cannot use an index without properties!");
 
@@ -169,7 +170,7 @@ public final class Hint implements Visitable {
 	 * @return A hint
 	 * @since 2021.2.3
 	 */
-	public static Hint useScanFor(Node node) {
+	public static @NotNull Hint useScanFor(@NotNull Node node) {
 
 		Assertions.notNull(node, "Cannot apply a SCAN hint without a node.");
 		List<NodeLabel> labels = node.getLabels();
@@ -187,17 +188,17 @@ public final class Hint implements Visitable {
 	 * @return A hint
 	 * @since 2021.2.3
 	 */
-	public static Hint useJoinOn(SymbolicName... name) {
+	public static @NotNull Hint useJoinOn(SymbolicName @NotNull ... name) {
 
 		Assertions.notEmpty(name, "At least one name is required to define a JOIN hint.");
 		return new Hint(Type.JOIN_ON, Arrays.stream(name).map(IndexReference::new).toList(), null);
 	}
 
 	private final Type type;
-	private final IndexReferences indexReferences;
+	private final @NotNull IndexReferences indexReferences;
 	private final IndexProperties optionalProperties;
 
-	private Hint(Type type, List<IndexReference> indexReferences, IndexProperties optionalProperties) {
+	private Hint(Type type, @NotNull List<IndexReference> indexReferences, IndexProperties optionalProperties) {
 
 		this.type = type;
 		this.indexReferences = new IndexReferences(indexReferences);
@@ -205,7 +206,7 @@ public final class Hint implements Visitable {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 		this.type.accept(visitor);

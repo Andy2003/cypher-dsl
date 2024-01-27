@@ -24,6 +24,8 @@ import static org.apiguardian.api.API.Status.INTERNAL;
 import java.util.List;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.neo4j.cypherdsl.core.DefaultStatementBuilder.OrderBuilder;
 import org.neo4j.cypherdsl.core.ast.Visitable;
 import org.neo4j.cypherdsl.core.ast.Visitor;
@@ -39,13 +41,13 @@ import org.neo4j.cypherdsl.core.utils.Assertions;
 @API(status = STABLE, since = "1.0")
 public final class Return implements Clause {
 
-	private final Distinct distinct;
+	private final @Nullable Distinct distinct;
 
-	private final ReturnBody body;
+	private final @NotNull ReturnBody body;
 
 	private final boolean raw;
 
-	static Return create(boolean raw, boolean distinct, List<Expression> returnList, OrderBuilder orderBuilder) {
+	static @Nullable Return create(boolean raw, boolean distinct, @NotNull List<Expression> returnList, @NotNull OrderBuilder orderBuilder) {
 
 		if (returnList.isEmpty()) {
 			return null;
@@ -71,7 +73,7 @@ public final class Return implements Clause {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 		Visitable.visitIfNotNull(this.distinct, visitor);
@@ -87,11 +89,11 @@ public final class Return implements Clause {
 		return raw;
 	}
 
-	Distinct getDistinct() {
+	@Nullable Distinct getDistinct() {
 		return distinct;
 	}
 
-	ReturnBody getBody() {
+	@NotNull ReturnBody getBody() {
 		return body;
 	}
 

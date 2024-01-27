@@ -29,6 +29,7 @@ import java.util.Optional;
 
 import org.apiguardian.api.API;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.neo4j.cypherdsl.core.ast.Visitable;
 import org.neo4j.cypherdsl.core.ast.Visitor;
 import org.neo4j.cypherdsl.core.utils.Assertions;
@@ -80,13 +81,13 @@ public abstract class NodeBase<SELF extends Node> extends AbstractNode implement
 	 * @param labels The list of labels, no primary is given
 	 * @param properties A seto f properties
 	 */
-	protected NodeBase(SymbolicName symbolicName, List<NodeLabel> labels, Properties properties) {
+	protected NodeBase(SymbolicName symbolicName, @NotNull List<NodeLabel> labels, Properties properties) {
 
 		this(symbolicName, new ArrayList<>(labels), null, properties, null);
 	}
 
 	@Override
-	public final SELF named(String newSymbolicName) {
+	public final @NotNull SELF named(String newSymbolicName) {
 
 		Assertions.hasText(newSymbolicName, "Symbolic name is required.");
 		return named(SymbolicName.of(newSymbolicName));
@@ -104,7 +105,7 @@ public abstract class NodeBase<SELF extends Node> extends AbstractNode implement
 
 	@Override
 	@NotNull
-	public final SELF withProperties(Object... keysAndValues) {
+	public final SELF withProperties(Object @Nullable ... keysAndValues) {
 
 		MapExpression newProperties = null;
 		if (keysAndValues != null && keysAndValues.length != 0) {
@@ -121,7 +122,7 @@ public abstract class NodeBase<SELF extends Node> extends AbstractNode implement
 	 */
 	@Override
 	@NotNull
-	public final SELF withProperties(Map<String, Object> newProperties) {
+	public final SELF withProperties(@NotNull Map<String, Object> newProperties) {
 
 		return withProperties(MapExpression.create(newProperties));
 	}
@@ -196,7 +197,7 @@ public abstract class NodeBase<SELF extends Node> extends AbstractNode implement
 	}
 
 	@Override
-	public final void accept(Visitor visitor) {
+	public final void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 		this.getSymbolicName().ifPresent(s -> s.accept(visitor));
@@ -209,7 +210,7 @@ public abstract class NodeBase<SELF extends Node> extends AbstractNode implement
 		visitor.leave(this);
 	}
 
-	private static List<NodeLabel> assertLabels(String primaryLabel, String[] additionalLabels) {
+	private static @NotNull List<NodeLabel> assertLabels(String primaryLabel, String @Nullable [] additionalLabels) {
 
 		Assertions.hasText(primaryLabel, "A primary label is required.");
 

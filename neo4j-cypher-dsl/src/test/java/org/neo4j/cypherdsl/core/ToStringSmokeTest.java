@@ -23,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import java.util.stream.Stream;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -34,7 +35,7 @@ import org.neo4j.cypherdsl.core.ast.Visitable;
  */
 class ToStringSmokeTest {
 
-	static Stream<Arguments> toStringShouldWork() {
+	static @NotNull Stream<Arguments> toStringShouldWork() {
 
 		return Stream.of(
 			Arguments.of(Cypher.node("Person").named("n"), "(n:Person)"),
@@ -51,7 +52,7 @@ class ToStringSmokeTest {
 
 	@ParameterizedTest
 	@MethodSource
-	void toStringShouldWork(Visitable visitable, String expected) {
+	void toStringShouldWork(@NotNull Visitable visitable, String expected) {
 		assertThat(visitable).hasToString(visitable.getClass().getSimpleName() + "{cypher=" + expected + "}");
 	}
 

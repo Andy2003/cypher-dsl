@@ -105,7 +105,7 @@ public abstract class ReflectiveVisitor extends VisitorWithResult {
 		 * @param handler The delegate
 		 * @return the result
 		 */
-		public static PreEnterResult delegateTo(Visitor handler) {
+		public static @NotNull PreEnterResult delegateTo(Visitor handler) {
 			return new PreEnterResult(handler);
 		}
 
@@ -126,7 +126,7 @@ public abstract class ReflectiveVisitor extends VisitorWithResult {
 	/**
 	 * Keeps track of the ASTs current level.
 	 */
-	protected Deque<Visitable> currentVisitedElements = new LinkedList<>();
+	protected @NotNull Deque<Visitable> currentVisitedElements = new LinkedList<>();
 
 	/**
 	 * If theres any special delegate for a dialect or similar for a given visitable, it will be tracked here.
@@ -161,7 +161,7 @@ public abstract class ReflectiveVisitor extends VisitorWithResult {
 	protected abstract void postLeave(Visitable visitable);
 
 	@Override
-	public final EnterResult enterWithResult(Visitable visitable) {
+	public final EnterResult enterWithResult(@NotNull Visitable visitable) {
 
 		PreEnterResult preEnterResult = getPreEnterResult(visitable);
 		if (preEnterResult != PreEnterResult.skip()) {
@@ -177,7 +177,7 @@ public abstract class ReflectiveVisitor extends VisitorWithResult {
 	}
 
 	@Override
-	public final void leave(Visitable visitable) {
+	public final void leave(@Nullable Visitable visitable) {
 
 		if (visitable != null && currentVisitedElements.peek() == visitable) {
 			if (visitablesAndDelegates.containsKey(visitable)) {
@@ -208,7 +208,7 @@ public abstract class ReflectiveVisitor extends VisitorWithResult {
 	}
 
 	@SuppressWarnings("PMD.EmptyCatchBlock")
-	private static Optional<Method> findHandleFor(TargetAndPhase targetAndPhase) {
+	private static @NotNull Optional<Method> findHandleFor(@NotNull TargetAndPhase targetAndPhase) {
 
 		Class<?> visitorClass = targetAndPhase.visitorClass;
 		do { // Loop over the hierarchy of visitors so that we catch overloaded and inherited methods.
@@ -230,7 +230,7 @@ public abstract class ReflectiveVisitor extends VisitorWithResult {
 
 	@SuppressWarnings("squid:S3011") // Very much the point of the whole thing
 	@NotNull
-	private static Method getMethodInPhaseWithActualVisitor(TargetAndPhase targetAndPhase, Class<?> visitorClass, Class<?> clazz) throws NoSuchMethodException {
+	private static Method getMethodInPhaseWithActualVisitor(@NotNull TargetAndPhase targetAndPhase, @NotNull Class<?> visitorClass, Class<?> clazz) throws NoSuchMethodException {
 		Method method = visitorClass.getDeclaredMethod(targetAndPhase.phase.methodName, clazz);
 		method.setAccessible(true);
 		return method;
@@ -242,13 +242,13 @@ public abstract class ReflectiveVisitor extends VisitorWithResult {
 		 * The most concrete visitor class. It may be that the handle that is eventually found will not be called
 		 * with that class, but with a parent. The attribute here is just a starting point and later on, a cache key.
 		 */
-		private final Class<? extends ReflectiveVisitor> visitorClass;
+		private final @NotNull Class<? extends ReflectiveVisitor> visitorClass;
 
-		private final Set<Class<?>> classHierarchyOfVisitable;
+		private final @NotNull Set<Class<?>> classHierarchyOfVisitable;
 
 		private final Phase phase;
 
-		<T extends ReflectiveVisitor> TargetAndPhase(T visitor, Class<? extends Visitable> concreteVisitableClass, Phase phase) {
+		<T extends ReflectiveVisitor> TargetAndPhase(@NotNull T visitor, Class<? extends Visitable> concreteVisitableClass, Phase phase) {
 			this.visitorClass = visitor.getClass();
 			this.phase = phase;
 			this.classHierarchyOfVisitable = new LinkedHashSet<>();

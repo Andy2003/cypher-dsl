@@ -21,6 +21,7 @@ package org.neo4j.cypherdsl.core;
 import static org.apiguardian.api.API.Status.INTERNAL;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.Statement.UseStatement;
 import org.neo4j.cypherdsl.core.ast.Visitable;
 import org.neo4j.cypherdsl.core.ast.Visitor;
@@ -47,17 +48,17 @@ sealed class DecoratedQuery extends AbstractStatement implements UseStatement {
 	private final Visitable decoration;
 	private final Statement target;
 
-	static DecoratedQuery explain(Statement target) {
+	static @NotNull DecoratedQuery explain(Statement target) {
 
 		return DecoratedQuery.decorate(target, Decoration.EXPLAIN);
 	}
 
-	static DecoratedQuery profile(Statement target) {
+	static @NotNull DecoratedQuery profile(Statement target) {
 
 		return DecoratedQuery.decorate(target, Decoration.PROFILE);
 	}
 
-	private static DecoratedQuery decorate(Statement target, Decoration decoration) {
+	private static @NotNull DecoratedQuery decorate(Statement target, Decoration decoration) {
 
 		if (target instanceof DecoratedQuery decoratedQuery && !(decoratedQuery.decoration instanceof Use)) {
 			throw new IllegalArgumentException("Cannot explain an already explained or profiled query.");
@@ -70,7 +71,7 @@ sealed class DecoratedQuery extends AbstractStatement implements UseStatement {
 		return new DecoratedQuery(target, decoration);
 	}
 
-	static DecoratedQuery decorate(Statement target, Use use) {
+	static @NotNull DecoratedQuery decorate(Statement target, Use use) {
 
 		if (target instanceof DecoratedQuery decoratedQuery) {
 			String message;
@@ -91,7 +92,7 @@ sealed class DecoratedQuery extends AbstractStatement implements UseStatement {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		this.decoration.accept(visitor);
 		this.target.accept(visitor);

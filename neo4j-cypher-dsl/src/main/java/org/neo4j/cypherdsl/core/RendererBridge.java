@@ -18,6 +18,7 @@
  */
 package org.neo4j.cypherdsl.core;
 
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.ast.Visitable;
 import org.neo4j.cypherdsl.core.renderer.Configuration;
 import org.neo4j.cypherdsl.core.renderer.Dialect;
@@ -36,7 +37,7 @@ class RendererBridge {
 		.withDialect(Dialect.NEO4J_5)
 		.alwaysEscapeNames(false).build();
 
-	static String render(Visitable visitable) {
+	static String render(@NotNull Visitable visitable) {
 		String name;
 		Class<? extends Visitable> clazz = visitable.getClass();
 		if (clazz.isAnonymousClass()) {

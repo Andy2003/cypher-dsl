@@ -75,7 +75,7 @@ public final class ListOperator implements Expression, Visitable {
 		}
 
 		@Override
-		public void accept(Visitor visitor) {
+		public void accept(@NotNull Visitor visitor) {
 
 			visitor.enter(this);
 			Visitable.visitIfNotNull(this.optionalStart, visitor);
@@ -85,12 +85,12 @@ public final class ListOperator implements Expression, Visitable {
 		}
 
 		@Override
-		public Optional<String> getPrefix() {
+		public @NotNull Optional<String> getPrefix() {
 			return Optional.of("[");
 		}
 
 		@Override
-		public Optional<String> getSuffix() {
+		public @NotNull Optional<String> getSuffix() {
 			return Optional.of("]");
 		}
 
@@ -108,7 +108,7 @@ public final class ListOperator implements Expression, Visitable {
 	/**
 	 * The actual operator's details.
 	 */
-	private final Details details;
+	private final @NotNull Details details;
 
 	/**
 	 * Creates a closed range with given boundaries.
@@ -118,7 +118,7 @@ public final class ListOperator implements Expression, Visitable {
 	 * @param end              The exclusive end
 	 * @return A range literal.
 	 */
-	static ListOperator subList(Expression targetExpression, Expression start, Expression end) {
+	static @NotNull ListOperator subList(@NotNull Expression targetExpression, @NotNull Expression start, @NotNull Expression end) {
 
 		Assertions.notNull(targetExpression, Cypher.MESSAGES.getString(MessageKeys.ASSERTIONS_RANGE_TARGET_REQUIRED));
 		Assertions.notNull(start, Cypher.MESSAGES.getString(MessageKeys.ASSERTIONS_RANGE_START_REQUIRED));
@@ -134,7 +134,7 @@ public final class ListOperator implements Expression, Visitable {
 	 * @param start            The inclusive start
 	 * @return A range literal.
 	 */
-	static ListOperator subListFrom(Expression targetExpression, Expression start) {
+	static @NotNull ListOperator subListFrom(@NotNull Expression targetExpression, @NotNull Expression start) {
 
 		Assertions.notNull(targetExpression, Cypher.MESSAGES.getString(MessageKeys.ASSERTIONS_RANGE_TARGET_REQUIRED));
 		Assertions.notNull(start, Cypher.MESSAGES.getString(MessageKeys.ASSERTIONS_RANGE_START_REQUIRED));
@@ -149,7 +149,7 @@ public final class ListOperator implements Expression, Visitable {
 	 * @param end              The exclusive end
 	 * @return A range literal.
 	 */
-	static ListOperator subListUntil(Expression targetExpression, Expression end) {
+	static @NotNull ListOperator subListUntil(@NotNull Expression targetExpression, @NotNull Expression end) {
 
 		Assertions.notNull(targetExpression, Cypher.MESSAGES.getString(MessageKeys.ASSERTIONS_RANGE_TARGET_REQUIRED));
 		Assertions.notNull(end, Cypher.MESSAGES.getString(MessageKeys.ASSERTIONS_RANGE_END_REQUIRED));
@@ -164,7 +164,7 @@ public final class ListOperator implements Expression, Visitable {
 	 * @param index            The index of the range
 	 * @return A range literal.
 	 */
-	static ListOperator valueAt(Expression targetExpression, Expression index) {
+	static @NotNull ListOperator valueAt(@NotNull Expression targetExpression, @NotNull Expression index) {
 
 		Assertions.notNull(targetExpression, Cypher.MESSAGES.getString(MessageKeys.ASSERTIONS_RANGE_TARGET_REQUIRED));
 		Assertions.notNull(index, Cypher.MESSAGES.getString(MessageKeys.ASSERTIONS_RANGE_INDEX_REQUIRED));
@@ -180,7 +180,7 @@ public final class ListOperator implements Expression, Visitable {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 		this.targetExpression.accept(visitor);

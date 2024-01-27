@@ -21,6 +21,7 @@ package org.neo4j.cypherdsl.core.executables;
 import static org.apiguardian.api.API.Status.STABLE;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.ResultStatement;
 import org.neo4j.cypherdsl.core.Statement;
 import org.neo4j.driver.reactivestreams.ReactiveQueryRunner;
@@ -48,7 +49,7 @@ public interface ReactiveExecutableStatement extends ExecutableStatement {
 	 * @return An executable statement. Maybe a {@link ExecutableResultStatement}, depending on the input.
 	 * @see #of(Statement)
 	 */
-	static ReactiveExecutableStatement makeExecutable(Statement statement) {
+	static @NotNull ReactiveExecutableStatement makeExecutable(@NotNull Statement statement) {
 		if (statement.doesReturnOrYield()) {
 			return new DefaultReactiveExecutableResultStatement(statement);
 		}
@@ -62,7 +63,7 @@ public interface ReactiveExecutableStatement extends ExecutableStatement {
 	 * @return An executable result statement.
 	 * @see #of(ResultStatement)
 	 */
-	static ReactiveExecutableResultStatement makeExecutable(ResultStatement statement) {
+	static @NotNull ReactiveExecutableResultStatement makeExecutable(ResultStatement statement) {
 		return new DefaultReactiveExecutableResultStatement(statement);
 	}
 
@@ -73,7 +74,7 @@ public interface ReactiveExecutableStatement extends ExecutableStatement {
 	 * @return An executable statement. Maybe a {@link ExecutableResultStatement}, depending on the input.
 	 * @see #makeExecutable(Statement)
 	 */
-	static ReactiveExecutableStatement of(Statement statement) {
+	static @NotNull ReactiveExecutableStatement of(@NotNull Statement statement) {
 		return makeExecutable(statement);
 	}
 
@@ -84,7 +85,7 @@ public interface ReactiveExecutableStatement extends ExecutableStatement {
 	 * @return An executable result statement.
 	 * @see #makeExecutable(ResultStatement)
 	 */
-	static ReactiveExecutableResultStatement of(ResultStatement statement) {
+	static @NotNull ReactiveExecutableResultStatement of(ResultStatement statement) {
 		return makeExecutable(statement);
 	}
 

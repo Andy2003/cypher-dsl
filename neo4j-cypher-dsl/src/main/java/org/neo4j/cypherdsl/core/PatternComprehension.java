@@ -39,13 +39,13 @@ import org.neo4j.cypherdsl.core.annotations.CheckReturnValue;
 @API(status = STABLE, since = "1.0")
 public final class PatternComprehension implements Expression {
 
-	static OngoingDefinitionWithPattern basedOn(RelationshipPattern pattern) {
+	static @NotNull OngoingDefinitionWithPattern basedOn(@NotNull RelationshipPattern pattern) {
 
 		Assertions.notNull(pattern, "A pattern is required");
 		return new Builder(pattern);
 	}
 
-	static OngoingDefinitionWithPattern basedOn(NamedPath pattern) {
+	static @NotNull OngoingDefinitionWithPattern basedOn(@NotNull NamedPath pattern) {
 
 		Assertions.notNull(pattern, "A pattern is required");
 		return new Builder(pattern);
@@ -63,7 +63,7 @@ public final class PatternComprehension implements Expression {
 		 */
 		@NotNull @Contract(pure = true)
 		@SuppressWarnings("deprecation")
-		default PatternComprehension returning(Named... variables) {
+		default PatternComprehension returning(Named @NotNull ... variables) {
 			return returning(Expressions.createSymbolicNames(variables));
 		}
 
@@ -99,7 +99,7 @@ public final class PatternComprehension implements Expression {
 		 * @since 2020.1.4
 		 */
 		@NotNull @CheckReturnValue
-		default OngoingDefinitionWithPatternAndWhere where(RelationshipPattern pathPattern) {
+		default OngoingDefinitionWithPatternAndWhere where(@NotNull RelationshipPattern pathPattern) {
 
 			Assertions.notNull(pathPattern, "The path pattern must not be null.");
 			return this.where(RelationshipPatternCondition.of(pathPattern));
@@ -124,25 +124,25 @@ public final class PatternComprehension implements Expression {
 		}
 
 		@Override
-		public OngoingDefinitionWithPatternAndWhere where(Condition condition) {
+		public @NotNull OngoingDefinitionWithPatternAndWhere where(@NotNull Condition condition) {
 			conditionBuilder.where(condition);
 			return this;
 		}
 
 		@Override
-		public OngoingDefinitionWithPatternAndWhere and(Condition condition) {
+		public @NotNull OngoingDefinitionWithPatternAndWhere and(@NotNull Condition condition) {
 			conditionBuilder.and(condition);
 			return this;
 		}
 
 		@Override
-		public OngoingDefinitionWithPatternAndWhere or(Condition condition) {
+		public @NotNull OngoingDefinitionWithPatternAndWhere or(@NotNull Condition condition) {
 			conditionBuilder.or(condition);
 			return this;
 		}
 
 		@Override
-		public PatternComprehension returning(Expression... expressions) {
+		public @NotNull PatternComprehension returning(Expression... expressions) {
 			Where where = conditionBuilder.buildCondition().map(Where::new).orElse(null);
 			return new PatternComprehension(pattern, where, ListExpression.listOrSingleExpression(expressions));
 		}
@@ -159,7 +159,7 @@ public final class PatternComprehension implements Expression {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 		visitor.enter(this);
 		this.pattern.accept(visitor);
 		Visitable.visitIfNotNull(this.where, visitor);

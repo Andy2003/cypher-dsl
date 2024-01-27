@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.ast.Visitable;
 import org.neo4j.cypherdsl.core.ast.Visitor;
 
@@ -46,7 +47,7 @@ public final class ProcedureName implements Visitable {
 	 * @param namespaceAndProcedure List of names
 	 * @return A new procedure
 	 */
-	public static ProcedureName from(String... namespaceAndProcedure) {
+	public static @NotNull ProcedureName from(String @NotNull ... namespaceAndProcedure) {
 		if (namespaceAndProcedure.length == 1) {
 			return new ProcedureName(namespaceAndProcedure[0]);
 		} else {
@@ -61,7 +62,7 @@ public final class ProcedureName implements Visitable {
 	 * @param procedure The actual name of the procedure
 	 * @return A new procedure
 	 */
-	public static ProcedureName from(List<String> namespace, String procedure) {
+	public static @NotNull ProcedureName from(@NotNull List<String> namespace, String procedure) {
 		if (namespace.isEmpty()) {
 			return new ProcedureName(procedure);
 		} else {
@@ -82,7 +83,7 @@ public final class ProcedureName implements Visitable {
 	/**
 	 * @return the fully qualified, Cypher name of this procedure
 	 */
-	public String getQualifiedName() {
+	public @NotNull String getQualifiedName() {
 
 		String namespace = "";
 		if (this.optionalNamespace != null) {
@@ -92,7 +93,7 @@ public final class ProcedureName implements Visitable {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 
 		visitor.enter(this);
 		Visitable.visitIfNotNull(this.optionalNamespace, visitor);

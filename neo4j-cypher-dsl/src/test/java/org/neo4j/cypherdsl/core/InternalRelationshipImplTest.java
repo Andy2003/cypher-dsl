@@ -25,6 +25,8 @@ import java.util.HashSet;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -55,7 +57,7 @@ class InternalRelationshipImplTest {
 	@TestInstance(Lifecycle.PER_CLASS)
 	class PropertiesShouldBeHandled {
 
-		private Stream<Arguments> createNodesWithProperties() {
+		private @NotNull Stream<Arguments> createNodesWithProperties() {
 			return Stream.of(
 				Arguments.of(Cypher.node("N").named("n").relationshipTo(Cypher.anyNode())
 					.withProperties("p", Cypher.literalTrue())),
@@ -66,11 +68,11 @@ class InternalRelationshipImplTest {
 
 		@ParameterizedTest
 		@MethodSource("createNodesWithProperties")
-		void shouldAddProperties(Relationship relationship) {
+		void shouldAddProperties(@NotNull Relationship relationship) {
 
 			AtomicBoolean failTest = new AtomicBoolean(true);
 			relationship.accept(new Visitor() {
-				Class<?> expectedTypeOfNextSegment = null;
+				@Nullable Class<?> expectedTypeOfNextSegment = null;
 
 				@Override
 				public void enter(Visitable segment) {

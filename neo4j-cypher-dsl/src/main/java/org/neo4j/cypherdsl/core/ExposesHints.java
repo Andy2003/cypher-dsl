@@ -97,7 +97,7 @@ public interface ExposesHints {
 	 * @return A statement using a JOIN hint.
 	 */
 	@NotNull @CheckReturnValue
-	default StatementBuilder.OngoingReadingWithoutWhere usingJoinOn(Node... nodes) {
+	default StatementBuilder.OngoingReadingWithoutWhere usingJoinOn(Node @NotNull ... nodes) {
 
 		Assertions.notEmpty(nodes, "At least one node is required to define a JOIN hint.");
 		return this.usingJoinOn(Arrays.stream(nodes).map(Node::getRequiredSymbolicName).toArray(SymbolicName[]::new));

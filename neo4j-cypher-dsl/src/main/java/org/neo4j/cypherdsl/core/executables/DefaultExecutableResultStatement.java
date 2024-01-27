@@ -27,6 +27,7 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.Statement;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Result;
@@ -47,13 +48,13 @@ class DefaultExecutableResultStatement extends DefaultExecutableStatement implem
 	}
 
 	@Override
-	public final <T> List<T> fetchWith(SimpleQueryRunner queryRunner, Function<Record, T> mappingFunction) {
+	public final <T> List<T> fetchWith(@NotNull SimpleQueryRunner queryRunner, Function<Record, T> mappingFunction) {
 
 		return queryRunner.run(this.createQuery()).list(mappingFunction);
 	}
 
 	@Override
-	public final <T> CompletableFuture<List<T>> fetchWith(AsyncQueryRunner queryRunner,
+	public final <T> CompletableFuture<List<T>> fetchWith(@NotNull AsyncQueryRunner queryRunner,
 		Function<Record, T> mappingFunction) {
 
 		return queryRunner.runAsync(createQuery())
@@ -62,7 +63,7 @@ class DefaultExecutableResultStatement extends DefaultExecutableStatement implem
 	}
 
 	@Override
-	public final ResultSummary streamWith(SimpleQueryRunner queryRunner, Consumer<Stream<Record>> consumer) {
+	public final ResultSummary streamWith(@NotNull SimpleQueryRunner queryRunner, @NotNull Consumer<Stream<Record>> consumer) {
 
 		Result result = queryRunner.run(this.createQuery());
 		try (Stream<Record> stream = result.stream()) {

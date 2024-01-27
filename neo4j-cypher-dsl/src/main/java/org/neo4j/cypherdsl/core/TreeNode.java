@@ -30,6 +30,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.ast.Visitable;
 import org.neo4j.cypherdsl.core.ast.Visitor;
 
@@ -53,7 +54,7 @@ public final class TreeNode<E> {
 	 * @param statement The statement that should be represented as a tree
 	 * @return A tree with the statement as root
 	 */
-	public static TreeNode<Visitable> from(Statement statement) {
+	public static TreeNode<Visitable> from(@NotNull Statement statement) {
 		var visitor = new TreeBuildingVisitor();
 		statement.accept(visitor);
 		return visitor.root;
@@ -66,13 +67,13 @@ public final class TreeNode<E> {
 	 * @param <E>   The type of the value
 	 * @return The new node
 	 */
-	static <E> TreeNode<E> root(E value) {
+	static <E> @NotNull TreeNode<E> root(E value) {
 		return new TreeNode<>(null, 0, value);
 	}
 
 	private final TreeNode<E> parent;
 	private final int level;
-	private final List<TreeNode<E>> children;
+	private final @NotNull List<TreeNode<E>> children;
 	private final E value;
 
 	private TreeNode(TreeNode<E> parent, int level, E value) {
@@ -89,7 +90,7 @@ public final class TreeNode<E> {
 	 * @param childValue The value of the new child node
 	 * @return The new child (this node will be the parent of the new node)
 	 */
-	TreeNode<E> append(E childValue) {
+	@NotNull TreeNode<E> append(E childValue) {
 		var newChild = new TreeNode<>(this, this.level + 1, childValue);
 		this.children.add(newChild);
 		return newChild;
@@ -133,14 +134,14 @@ public final class TreeNode<E> {
 	/**
 	 * @return a breadth-first iterator of this node and it's children
 	 */
-	public Iterator<TreeNode<E>> breadthFirst() {
+	public @NotNull Iterator<TreeNode<E>> breadthFirst() {
 		return new BreadthFirstIterator<>(this);
 	}
 
 	/**
 	 * @return a depth-first, pre-ordered iterator of this node and it's children
 	 */
-	public Iterator<TreeNode<E>> preOrder() {
+	public @NotNull Iterator<TreeNode<E>> preOrder() {
 		return new PreOrderIterator<>(this);
 	}
 
@@ -150,11 +151,11 @@ public final class TreeNode<E> {
 	 * @param target   The target to which to print this tree to
 	 * @param toString How to format nodes if this type
 	 */
-	public void printTo(Consumer<CharSequence> target, Function<TreeNode<E>, String> toString) {
+	public void printTo(@NotNull Consumer<CharSequence> target, @NotNull Function<TreeNode<E>, String> toString) {
 		this.printTo0(target, toString, this, "", true);
 	}
 
-	private void printTo0(Consumer<CharSequence> target, Function<TreeNode<E>, String> toString, TreeNode<E> node, String prefix, boolean isTail) {
+	private void printTo0(@NotNull Consumer<CharSequence> target, @NotNull Function<TreeNode<E>, String> toString, @NotNull TreeNode<E> node, String prefix, boolean isTail) {
 
 		var localValue = toString.apply(node);
 		var connector = isTail ? "└── " : "├── ";
@@ -196,7 +197,7 @@ public final class TreeNode<E> {
 
 	private static final class BreadthFirstIterator<E> implements Iterator<TreeNode<E>> {
 
-		private final Queue<TreeNode<E>> queue;
+		private final @NotNull Queue<TreeNode<E>> queue;
 
 		BreadthFirstIterator(TreeNode<E> root) {
 			this.queue = new ArrayDeque<>();
@@ -209,7 +210,7 @@ public final class TreeNode<E> {
 		}
 
 		@Override
-		public TreeNode<E> next() {
+		public @NotNull TreeNode<E> next() {
 			if (queue.isEmpty()) {
 				throw new NoSuchElementException();
 			}
@@ -221,9 +222,9 @@ public final class TreeNode<E> {
 
 	private static final class PreOrderIterator<E> implements Iterator<TreeNode<E>> {
 
-		private final Deque<Iterator<TreeNode<E>>> stack;
+		private final @NotNull Deque<Iterator<TreeNode<E>>> stack;
 
-		PreOrderIterator(TreeNode<E> root) {
+		PreOrderIterator(@NotNull TreeNode<E> root) {
 			this.stack = new ArrayDeque<>();
 			this.stack.push(List.of(root).iterator());
 		}
@@ -234,7 +235,7 @@ public final class TreeNode<E> {
 		}
 
 		@Override
-		public TreeNode<E> next() {
+		public @NotNull TreeNode<E> next() {
 			if (stack.isEmpty()) {
 				throw new NoSuchElementException();
 			}

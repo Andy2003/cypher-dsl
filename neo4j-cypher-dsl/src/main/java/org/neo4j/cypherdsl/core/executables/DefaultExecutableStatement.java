@@ -66,13 +66,13 @@ class DefaultExecutableStatement implements ExecutableStatement {
 	}
 
 	@Override
-	public final ResultSummary executeWith(SimpleQueryRunner queryRunner) {
+	public final ResultSummary executeWith(@NotNull SimpleQueryRunner queryRunner) {
 
 		return queryRunner.run(createQuery()).consume();
 	}
 
 	@Override
-	public final CompletableFuture<ResultSummary> executeWith(AsyncQueryRunner queryRunner) {
+	public final CompletableFuture<ResultSummary> executeWith(@NotNull AsyncQueryRunner queryRunner) {
 
 		return queryRunner.runAsync(createQuery())
 			.thenCompose(ResultCursor::consumeAsync)
@@ -85,7 +85,7 @@ class DefaultExecutableStatement implements ExecutableStatement {
 	 *
 	 * @return A query.
 	 */
-	final Query createQuery() {
+	final @NotNull Query createQuery() {
 
 		return new Query(delegate.getCypher(), getParameters());
 	}

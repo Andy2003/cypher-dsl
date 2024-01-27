@@ -21,6 +21,7 @@ package org.neo4j.cypherdsl.core;
 import static org.apiguardian.api.API.Status.STABLE;
 
 import org.apiguardian.api.API;
+import org.jetbrains.annotations.NotNull;
 import org.neo4j.cypherdsl.core.ast.Visitable;
 import org.neo4j.cypherdsl.core.ast.Visitor;
 import org.neo4j.cypherdsl.core.utils.Assertions;
@@ -33,7 +34,7 @@ import org.neo4j.cypherdsl.core.utils.Assertions;
 @API(status = STABLE, since = "1.0")
 public final class Skip implements Visitable {
 
-	static Skip create(Expression expression) {
+	static @NotNull Skip create(@NotNull Expression expression) {
 
 		Assertions.notNull(expression, "Cannot skip a value of null.");
 
@@ -47,7 +48,7 @@ public final class Skip implements Visitable {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(@NotNull Visitor visitor) {
 		visitor.enter(this);
 		expression.accept(visitor);
 		visitor.leave(this);
